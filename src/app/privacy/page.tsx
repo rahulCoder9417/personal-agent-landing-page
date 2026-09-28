@@ -44,7 +44,16 @@ const promises = [
   },
 ];
 
+const waitlistData = [
+  "Your email address and, if you pick one, the chat app you'd use",
+  "Your IP address, and your approximate location worked out from it (country, region, city)",
+  "Browser details: user agent, language, time zone and screen size",
+  "How you found us: the referring page, the page you signed up on and any campaign tags in its link",
+  "When you joined, and how many times you've signed up",
+];
+
 const retention = [
+  ["Beta waitlist signups", "Until you ask us to remove them"],
   ["Messages, approvals, automations, activity log", "Until you delete them or your account"],
   ["Raw incoming events (technical)", "30 days"],
   ["Backups", "14 days rolling; deleted accounts are cleared within 30 days"],
@@ -77,6 +86,19 @@ export default function PrivacyPage() {
               </section>
             ))}
           </div>
+
+          <section id="waitlist" className="mt-14 scroll-mt-24">
+            <h2 className="text-2xl font-extrabold tracking-[-0.03em]">When you join the beta waitlist</h2>
+            <p className="mt-2 leading-relaxed text-muted">
+              We store the following so we can send beta invites, stop spam and fake signups, and understand where interest
+              comes from. We don&apos;t sell it. To be removed, reply to any email from us.
+            </p>
+            <ul className="mt-5 flex list-disc flex-col gap-2 pl-5 leading-relaxed text-muted">
+              {waitlistData.map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ul>
+          </section>
 
           <section className="mt-14">
             <h2 className="text-2xl font-extrabold tracking-[-0.03em]">How long we keep things</h2>

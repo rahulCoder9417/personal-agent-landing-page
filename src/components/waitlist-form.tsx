@@ -1,11 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState, type FormEvent } from "react";
 
 const CHANNELS = ["WhatsApp", "Telegram", "iMessage"] as const;
 const FALLBACK_ERROR = "We couldn't save your spot. Try again in a minute.";
 
 type State = { status: "idle" | "sending" | "done" | "error"; message?: string };
+
+// Stored with the signup (see /privacy#waitlist): helps us plan the beta and spot spam.
+function browserDetails() {
+  return {
+    page: `${window.location.pathname}${window.location.search}`,
+    referrer: document.referrer || null,
+    language: navigator.language,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    screen: `${window.screen.width}x${window.screen.height}`,
+  };
+}
 
 export function WaitlistForm({ showChannels = false, className = "" }: { showChannels?: boolean; className?: string }) {
   const uid = useId();
@@ -22,7 +34,7 @@ export function WaitlistForm({ showChannels = false, className = "" }: { showCha
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email, channel, company }),
+        body: JSON.stringify({ email, channel, company, meta: browserDetails() }),
       });
       const data: { error?: string } = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error ?? FALLBACK_ERROR);
@@ -106,7 +118,12 @@ export function WaitlistForm({ showChannels = false, className = "" }: { showCha
           {state.message}
         </p>
       ) : (
-        <p className="mt-3 text-center text-xs text-muted">One email when your invite is ready. No spam.</p>
+        <p className="mt-3 text-center text-xs text-muted">
+          One email when your invite is ready. No spam.{" "}
+          <Link href="/privacy#waitlist" className="underline underline-offset-2 hover:text-fg">
+            What we store
+          </Link>
+        </p>
       )}
     </form>
   );
