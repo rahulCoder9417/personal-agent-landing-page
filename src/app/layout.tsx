@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
+  // The page is designed light-only; tell the Dark Reader extension not to repaint it.
+  other: { "darkreader-lock": "true" },
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -37,7 +39,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#fbfaf7",
-  colorScheme: "light",
+  // "only light" also opts out of Chrome's forced dark mode for websites.
+  colorScheme: "only light",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
