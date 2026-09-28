@@ -1,4 +1,5 @@
 import { apps, useCases } from "@/lib/content";
+import { AgentFigure } from "./agent";
 import { BrandIcon } from "./brand-icon";
 import { Section } from "./section";
 
@@ -58,23 +59,37 @@ export function UseCases() {
       eyebrow="Popular use cases"
       title="Delegate the busywork."
       lede="Real requests, the way you'd actually type them. Or send a voice note."
-      className="bg-surface-2/50"
     >
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {useCases.map((u) => (
-          <li key={u.ask} className="flex flex-col rounded-2xl border border-line bg-surface p-5 shadow-soft">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">{u.tag}</span>
-              <span className="flex -space-x-1.5">
-                {u.icons.map((i) => (
-                  <span key={i} className="grid size-7 place-items-center rounded-full border border-line bg-surface">
-                    <BrandIcon name={i} size={14} />
-                  </span>
-                ))}
-              </span>
+          <li key={u.ask} className="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface shadow-soft">
+            <div className="flex flex-1 flex-col gap-5 p-6" style={{ background: u.tone.bg }}>
+              <div className="flex items-center justify-between">
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full bg-white/85 px-2.5 py-1 text-[12px] font-semibold"
+                  style={{ color: u.tone.fg }}
+                >
+                  <span aria-hidden className="size-1.5 rounded-full" style={{ background: u.tone.fg }} />
+                  {u.tag}
+                </span>
+                <span className="flex -space-x-2">
+                  {u.icons.map((i) => (
+                    <span key={i} className="grid size-8 place-items-center rounded-full bg-white shadow-soft ring-2" style={{ ["--tw-ring-color" as string]: u.tone.bg }}>
+                      <BrandIcon name={i} size={15} />
+                    </span>
+                  ))}
+                </span>
+              </div>
+              <p className="ml-auto max-w-[92%] rounded-2xl rounded-br-md bg-white px-4 py-2.5 text-[15px] leading-snug text-fg shadow-soft">
+                {u.ask}
+              </p>
             </div>
-            <p className="mt-4 w-fit rounded-2xl rounded-br-md bg-fg px-3.5 py-2 text-[14px] leading-snug text-white">{u.ask}</p>
-            <p className="mt-4 text-[15px] leading-relaxed text-muted">{u.result}</p>
+            <div className="flex gap-3 border-t border-line px-6 py-5">
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent-soft">
+                <AgentFigure who="tex" glyph size={24} label="Tex" />
+              </span>
+              <p className="text-[14.5px] leading-relaxed text-muted">{u.result}</p>
+            </div>
           </li>
         ))}
       </ul>

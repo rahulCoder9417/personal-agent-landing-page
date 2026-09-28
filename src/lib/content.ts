@@ -35,41 +35,47 @@ export const apps = {
   total: "About 25 apps at launch",
 } as const;
 
-export const useCases: { ask: string; result: string; tag: string; icons: ("gmail" | "calendar" | "notion" | "slack" | "whatsapp" | "telegram")[] }[] = [
+export const useCases: { ask: string; result: string; tag: string; tone: { bg: string; fg: string }; icons: ("gmail" | "calendar" | "notion" | "slack" | "whatsapp" | "telegram")[] }[] = [
   {
     ask: "Move my 3pm with Priya to tomorrow and let her know.",
     result: "Moves the event in Google Calendar, drafts the note to Priya, and sends it once you tap Approve.",
     tag: "Calendar",
+    tone: { bg: "#EEF3FE", fg: "#1A56DB" },
     icons: ["calendar", "gmail"],
   },
   {
     ask: "Every Monday at 9am, send me my week.",
     result: "Reads your calendar and inbox and sends a short summary every Monday morning.",
     tag: "Automation",
+    tone: { bg: "#F1EDFF", fg: "#5B34D6" },
     icons: ["calendar", "gmail"],
   },
   {
     ask: "Remind me Friday to chase the invoice.",
     result: "Sets the reminder and pings you in this chat on Friday.",
     tag: "Reminder",
+    tone: { bg: "#E8F7EE", fg: "#13803F" },
     icons: ["whatsapp", "telegram"],
   },
   {
     ask: "Tell me when my boss emails.",
     result: "Watches Gmail and messages you the moment that email lands.",
     tag: "Trigger",
+    tone: { bg: "#FDEDEB", fg: "#B42318" },
     icons: ["gmail"],
   },
   {
     ask: "Turn this voice note into meeting notes in Notion.",
     result: "Transcribes it and files tidy notes on the right Notion page.",
     tag: "Notes",
+    tone: { bg: "#F1F0EC", fg: "#3F3D38" },
     icons: ["notion"],
   },
   {
     ask: "Post today's update in #team on Slack.",
     result: "Writes the update from your notes and posts it after you approve it.",
     tag: "Slack",
+    tone: { bg: "#F6ECF5", fg: "#6B1E68" },
     icons: ["slack"],
   },
 ];
@@ -203,6 +209,8 @@ export const roadmap = [
 export type Plan = {
   name: string;
   price: string;
+  was?: string;
+  waitlist?: string;
   cadence: string;
   blurb: string;
   items: string[];
@@ -226,6 +234,8 @@ export const plans: Plan[] = [
   {
     name: "Pro",
     price: "$12",
+    was: "$30",
+    waitlist: "$6",
     cadence: "per month",
     blurb: "For your everyday assistant.",
     featured: true,
@@ -240,7 +250,9 @@ export const plans: Plan[] = [
   },
   {
     name: "Max",
-    price: "$29",
+    price: "$30",
+    was: "$50",
+    waitlist: "$15",
     cadence: "per month",
     blurb: "For heavy, multi-step work.",
     items: [
@@ -253,6 +265,8 @@ export const plans: Plan[] = [
     ],
   },
 ];
+
+export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
 
 export const creditNotes = [
   { label: "1 credit ≈ 1 cent", body: "A simple task uses a few credits. A big multi-step task on a premium model uses more." },
@@ -267,7 +281,11 @@ export const faqs = [
   },
   {
     q: "How does the beta work?",
-    a: "Everyone starts on the Free plan with 100 credits. Beta invites can come with a code that adds extra free credits, so you can put Tex on real work before paying anything.",
+    a: "Everyone starts on the Free plan with 100 credits. Waitlist members get 50% off their first month of Pro or Max, and beta invites can come with a code that adds extra free credits, so you can put Tex on real work before paying anything.",
+  },
+  {
+    q: "What will it cost?",
+    a: "Free is $0. Pro is $12 a month instead of $30, and Max is $30 a month instead of $50. If you join the waitlist, your first month of Pro or Max is half price: $6 or $15.",
   },
   {
     q: "Which chat apps does it work with?",

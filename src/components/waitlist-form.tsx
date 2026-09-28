@@ -49,7 +49,8 @@ export function WaitlistForm({ showChannels = false, className = "" }: { showCha
       <div role="status" className={`mx-auto w-full max-w-md rounded-2xl border border-line bg-surface px-5 py-4 text-center shadow-soft ${className}`}>
         <p className="font-semibold">You&apos;re on the list.</p>
         <p className="mt-1 text-sm text-muted">
-          We&apos;ll email <span className="font-medium text-fg">{email}</span> when your invite is ready.
+          We&apos;ll email <span className="font-medium text-fg">{email}</span> when your invite is ready. Your first month of
+          Pro or Max is 50% off.
         </p>
       </div>
     );
@@ -119,7 +120,7 @@ export function WaitlistForm({ showChannels = false, className = "" }: { showCha
         </p>
       ) : (
         <p className="mt-3 text-center text-xs text-muted">
-          One email when your invite is ready. No spam.{" "}
+          50% off your first month for waitlist members · No spam ·{" "}
           <Link href="/privacy#waitlist" className="underline underline-offset-2 hover:text-fg">
             What we store
           </Link>
