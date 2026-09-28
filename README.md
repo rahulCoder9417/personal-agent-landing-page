@@ -2,27 +2,41 @@
 
 Marketing site for Textcrew, the personal AI agent you text from WhatsApp, Telegram or iMessage. It is in **private beta, launching soon**, so the page's job is to explain the product and collect beta waitlist signups.
 
-Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, three.js (3D hero), motion (scroll reveals) and simple-icons (app logos).
+Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, three.js (3D hero), motion (scroll reveals) and simple-icons (app logos). Waitlist signups are stored in Neon Postgres through Drizzle ORM. Package manager: pnpm.
 
 ## Run it
 
 ```bash
-npm install
-cp .env.example .env.local   # optional in development
-npm run dev                  # http://localhost:3000
+pnpm install
+cp .env.example .env.local   # then paste your Neon DATABASE_URL
+pnpm db:migrate              # creates the waitlist_signups table
+pnpm dev                     # http://localhost:3000
 ```
 
-Other scripts: `npm run build`, `npm run start`, `npm run lint`.
+Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`, `pnpm db:generate` (new migration after a schema change), `pnpm db:studio` (browse signups).
 
 ## Environment
 
 | Variable | Needed | What it does |
 |---|---|---|
+| `DATABASE_URL` | Yes, for the waitlist | Neon Postgres connection string (use the pooled one). Without it the waitlist API answers `503` and nothing is stored. |
 | `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL for metadata, sitemap and social cards. Defaults to `https://textcrew.ai`. |
-| `WAITLIST_WEBHOOK_URL` | Production | Where signups are sent as a JSON `POST` (`{ email, channel, source, joinedAt }`). Zapier/Make webhooks, Loops or your own backend all work. |
-| `WAITLIST_WEBHOOK_SECRET` | Optional | Sent as `Authorization: Bearer <secret>` so the receiving endpoint can reject other callers. |
 
-Without `WAITLIST_WEBHOOK_URL`, signups are only logged to the terminal in development, and the API answers `503` in production so no signup is silently dropped.
+On Vercel, add `DATABASE_URL` in the project's environment variables (or connect the Neon integration, which sets it for you).
+
+## Beta waitlist
+
+`POST /api/waitlist` validates the email, ignores bots that fill the hidden honeypot field, allows at most 5 new signups per IP every 10 minutes (checked in the database, so it holds across serverless instances), then upserts one row per email into `waitlist_signups`.
+
+Each row stores:
+
+- email and preferred chat app (optional)
+- IP address, user agent, `Accept-Language`, browser language, time zone and screen size
+- approximate location from Vercel's IP headers: country, region, city, latitude and longitude (Cloudflare's country header works too)
+- referrer, landing page and UTM tags (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`)
+- `created_at`, `last_seen_at` and `signup_count`; repeat signups only bump the last two and keep the first-touch details
+
+New and existing emails get the same response, so nobody can check who is on the list. The `/privacy#waitlist` section tells visitors what is stored; keep it in sync with the schema in `src/db/schema.ts`. The SQL lives in `drizzle/` if you'd rather run it in the Neon console.
 
 ## What's on the page
 
@@ -37,7 +51,7 @@ All copy lives in `src/lib/content.ts` and `src/lib/site.ts`, taken from the pla
 ```
 src/
 ├── app/
-│   ├── api/waitlist/route.ts   waitlist signup: validation, honeypot, rate limit, webhook forward
+│   ├── api/waitlist/route.ts   waitlist signup: validation, honeypot, rate limit, Neon upsert
 │   ├── privacy/page.tsx        plain-language privacy summary (draft until the full policy)
 │   ├── layout.tsx              fonts (Geist, Geist Mono), metadata, theme colour
 │   ├── page.tsx                the landing page
@@ -51,9 +65,14 @@ src/
 │   ├── brand-icon.tsx          app logos from simple-icons (Slack is a neutral tile)
 │   ├── waitlist-form.tsx       email + preferred chat app
 │   └── …                       one file per section
+├── db/
+│   ├── schema.ts               waitlist_signups table (Drizzle)
+│   └── index.ts                Neon connection, created on first use
 └── lib/
     ├── content.ts              all section copy
     └── site.ts                 name, URL, tagline, status
+drizzle/                        generated SQL migrations
+drizzle.config.ts               drizzle-kit config (reads .env.local)
 ```
 
 ## Notes
@@ -62,5 +81,4 @@ src/
 - **3D fallback.** The hero shows the 2D Tex until three.js has loaded, and keeps it if WebGL isn't available. Rendering pauses when the stage is off-screen or the tab is hidden.
 - **Motion.** All animation respects `prefers-reduced-motion`.
 - **Theme.** Light only, on purpose, to match the category.
-- **Rate limiting.** The waitlist rate limit is in memory per server instance. Put the real limit on the receiving endpoint if abuse becomes a problem.
 - **No analytics or cookies** yet, so no cookie banner is needed. Add one if you add analytics.
