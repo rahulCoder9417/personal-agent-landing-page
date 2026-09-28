@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* Light only: the landing page commits to one look, like the products it sits next to. */
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface-2: #f3f1ec;
+  --fg: #151515;
+  --muted: #6a6862;
+  --line: #e8e5de;
+  --accent: #3355f5;
+  --accent-soft: #eef1ff;
+  --accent-fg: #ffffff;
+  --screen: #16151a;
+  --shadow: #151515;
+  --scout: #11a39b;
+  --byte: #7b4dff;
+  --patch: #f5a623;
+  --echo: #e93d82;
+  --pitch: #22a45d;
+  --tock: #ff6b2c;
+  --danger: #b42318;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-screen: var(--screen);
+  --color-scout: var(--scout);
+  --color-byte: var(--byte);
+  --color-patch: var(--patch);
+  --color-echo: var(--echo);
+  --color-pitch: var(--pitch);
+  --color-tock: var(--tock);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-brand-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-brand-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --shadow-soft: 0 1px 2px rgb(21 21 21 / 0.04), 0 8px 24px -12px rgb(21 21 21 / 0.12);
+  --shadow-window: 0 1px 2px rgb(21 21 21 / 0.05), 0 30px 60px -30px rgb(21 21 21 / 0.25);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* A faint dot grid behind the hero */
+.dot-grid {
+  background-image: radial-gradient(rgb(21 21 21 / 0.09) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, black 20%, transparent 85%);
+}
+
+/* Floating app logos around the hero */
+.float-a { animation: float 7s ease-in-out infinite; }
+.float-b { animation: float 8.5s ease-in-out -2s infinite; }
+.float-c { animation: float 6.5s ease-in-out -4s infinite; }
+@keyframes float { 50% { transform: translateY(-10px) rotate(-2deg); } }
+
+/* Agent figure (2D) motion */
+.agent-breathe { animation: agent-breathe 3.4s ease-in-out infinite; }
+.agent-breathe-slow { animation: agent-breathe-slow 5s ease-in-out infinite; }
+.agent-blink { transform-box: fill-box; transform-origin: center; animation: agent-blink 4.2s infinite; }
+.agent-dot { animation: agent-dot 0.9s ease-in-out infinite; }
+.agent-caret { animation: agent-caret 1.06s steps(1, end) infinite; }
+.agent-caret-fast { animation: agent-caret 0.5s steps(1, end) infinite; }
+.brand-caret { animation: agent-caret 1.06s steps(1, end) infinite; }
+
+@keyframes agent-breathe { 50% { transform: translateY(-3px); } }
+@keyframes agent-breathe-slow { 50% { transform: translateY(2px); } }
+@keyframes agent-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.12); } }
+@keyframes agent-dot { 0%, 50%, 100% { transform: translateY(0); } 25% { transform: translateY(-7px); } }
+@keyframes agent-caret { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .float-a,
+  .float-b,
+  .float-c,
+  .agent-breathe,
+  .agent-breathe-slow,
+  .agent-blink,
+  .agent-dot,
+  .agent-caret,
+  .agent-caret-fast,
+  .brand-caret { animation: none; }
+}
