@@ -1,4 +1,5 @@
 import { BrandIcon, type BrandName } from "./brand-icon";
+import { FaceStack } from "./face-stack";
 import { ProductShowcase } from "./product-showcase";
 import { Container } from "./section";
 import { WaitlistForm } from "./waitlist-form";
@@ -51,11 +52,15 @@ export function Hero() {
           anything risky, and keeps going on a schedule.
         </p>
         <WaitlistForm className="mt-9" />
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-sm text-muted">
-          <span>Text it from</span>
-          {channels.map((c) => (
-            <BrandIcon key={c} name={c} size={20} />
-          ))}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-5">
+          <div className="flex items-center gap-4 text-sm text-muted">
+            <span>Text it from</span>
+            {channels.map((c) => (
+              <BrandIcon key={c} name={c} size={20} />
+            ))}
+          </div>
+          <span aria-hidden className="hidden h-8 w-px bg-line sm:block" />
+          <FaceStack size={34} />
         </div>
       </Container>
 
