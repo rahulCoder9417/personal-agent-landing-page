@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Textcrew: message it like a person, it gets the work done. Private beta, launching soon.";
+export const alt = "Textcrew: got a lot of work? Just text your crew. Private beta, launching soon.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -25,7 +25,7 @@ export default async function Image() {
             <div style={{ width: 14, height: 30, background: "#3355F5", marginLeft: 6 }} />
           </div>
           <div style={{ marginTop: 40, fontSize: 76, fontWeight: 800, lineHeight: 1, letterSpacing: -3 }}>
-            Message it like a person. It gets the work done.
+            Got a lot of work? Just text your crew.
           </div>
           <div
             style={{
