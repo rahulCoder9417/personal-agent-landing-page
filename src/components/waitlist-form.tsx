@@ -111,7 +111,7 @@ export function WaitlistForm({ showChannels = false, className = "" }: { showCha
 
   return (
     <form onSubmit={onSubmit} className={`mx-auto w-full max-w-md ${className}`}>
-      <div className="flex items-center gap-1.5 rounded-full border border-line bg-surface p-1.5 shadow-soft focus-within:border-fg/40">
+      <div className="flex items-center gap-1.5 rounded-full border border-line bg-surface p-1.5 shadow-soft transition-shadow focus-within:border-accent/50 focus-within:ring-4 focus-within:ring-accent/10">
         <label htmlFor={`${uid}-email`} className="sr-only">
           Email address
         </label>
