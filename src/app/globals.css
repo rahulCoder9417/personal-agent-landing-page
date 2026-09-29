@@ -59,14 +59,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2,
-h3 {
-  text-wrap: balance;
-}
+/* In the base layer and via text-wrap-style, so utilities like `truncate` still win */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    text-wrap-style: balance;
+  }
 
-p {
-  text-wrap: pretty;
+  p {
+    text-wrap-style: pretty;
+  }
 }
 
 :focus-visible {
