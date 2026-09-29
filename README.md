@@ -40,11 +40,11 @@ New and existing emails get the same response, so nobody can check who is on the
 
 ## What's on the page
 
-Sections, in order: a centred hero with the waitlist form and floating app logos, a product window (chat + activity feed) with the 3D Tex perched on top, how it works, integrations, use cases, automations, the crew and roadmap (what's coming next), privacy and security, features, pricing, FAQ, and a final waitlist call to action. There is also a `/privacy` summary page.
+Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (a flow diagram from chat apps to finished work); integrations (one voice note fanning out into work across apps); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; pricing; FAQ; and a final waitlist call to action. There is also a `/privacy` summary page.
 
 The visual language follows the products it sits next to (Notis, Multiply, Strawberry): light background, centred sections, real app logos, product mockups and pill buttons.
 
-All copy lives in `src/lib/content.ts` and `src/lib/site.ts`, taken from the platform overview and the backend HLD (plans, credits, security, roadmap). Change wording there, not in the components.
+Section copy lives in `src/lib/content.ts` and `src/lib/site.ts`, taken from the platform overview and the backend HLD (plans, credits, security, roadmap). Change wording there, not in the components. The scripted demos (product window, how it works, integrations, automations builder, crew story) keep their lines next to the animation in their own component.
 
 ## Project layout
 
