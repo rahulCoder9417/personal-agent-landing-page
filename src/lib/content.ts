@@ -117,7 +117,7 @@ export const trust = [
   },
   {
     title: "Not used to train AI",
-    body: "We use AI providers' APIs, which don't train on API data. With your own key, your provider's terms apply.",
+    body: "Tex calls the AI through your own key and your provider's API, so your provider's terms apply. We don't use your data to train AI models.",
   },
   {
     title: "Delete anytime",
@@ -147,8 +147,8 @@ export const features = [
     body: "About 25 apps at launch. On Max you can plug in your own MCP servers too.",
   },
   {
-    title: "Bring your own AI key",
-    body: "Every plan can use your own Anthropic, OpenAI or OpenRouter key. The AI itself then isn't charged in credits.",
+    title: "Runs on your own AI key",
+    body: "At launch you connect your own Anthropic, OpenAI or OpenRouter key, so your provider bills the AI and it isn't charged in credits. Built-in models come later.",
   },
   {
     title: "A web app for the details",
@@ -227,7 +227,7 @@ export const plans: Plan[] = [
       "100 credits at sign-up, plus coupon codes",
       "10 apps",
       "1 automation",
-      "Bring your own AI key",
+      "Runs on your own AI key",
     ],
   },
   {
@@ -243,7 +243,7 @@ export const plans: Plan[] = [
       "All 25 apps",
       "5 automations",
       "Top-ups: $10 for 800 credits",
-      "Bring your own AI key",
+      "Runs on your own AI key",
     ],
   },
   {
@@ -259,7 +259,7 @@ export const plans: Plan[] = [
       "All 25 apps plus your own MCP servers",
       "50 automations",
       "Top-ups: $10 for 800 credits",
-      "Bring your own AI key",
+      "Runs on your own AI key",
     ],
   },
 ];
@@ -267,7 +267,7 @@ export const plans: Plan[] = [
 export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
 
 export const creditNotes = [
-  { label: "1 credit ≈ 1 cent", body: "A simple task uses a few credits. A big multi-step task uses more, and the activity log shows exactly how many." },
+  { label: "1 credit ≈ 1 cent", body: "Credits cover the time Tex spends working and paid tools; the AI runs on your own key. A simple task uses a few, and the activity log shows exactly how many." },
   { label: "Credits last 90 days", body: "Every credit is good for 90 days from the day you get it, whether it came from your plan, a top-up or a code. The oldest credits are used first." },
   { label: "No surprise bills", body: "At zero, Tex pauses and tells you in chat. Upgrade, buy a top-up or redeem a code to carry on." },
 ];
@@ -303,19 +303,19 @@ export const faqs = [
   },
   {
     q: "What is a credit?",
-    a: "One credit is about one cent. Credits pay for the AI, the time your agent spends working and some paid tools. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
+    a: "One credit is about one cent. Credits pay for the time your agent spends working and some paid tools. At launch the AI runs on your own key, so your provider bills that part directly. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
   },
   {
     q: "What happens when I run out of credits?",
     a: "Tex pauses and tells you in chat, and automations pause too. Upgrade, buy a top-up or redeem a code and it picks up where it left off.",
   },
   {
-    q: "Can I use my own AI key?",
-    a: "Yes, on every plan. Add an Anthropic, OpenAI or OpenRouter key and the AI itself isn't charged in credits. Your key is encrypted and only the last four characters are ever shown.",
+    q: "Do I need my own AI key?",
+    a: "Yes, at launch. Add an Anthropic, OpenAI or OpenRouter key once and Tex uses it for every task, so your provider bills the AI and it isn't charged in credits. Your key is encrypted and only the last four characters are ever shown. Built-in models are coming later.",
   },
   {
     q: "Is my data used to train AI models?",
-    a: "No. We use AI providers' APIs, which don't train on API data. If you bring your own key, your provider's terms apply.",
+    a: "No. Tex calls the AI through your own key and your provider's API, so your provider's terms apply. We don't use your data to train AI models.",
   },
   {
     q: "How do I delete my data?",
