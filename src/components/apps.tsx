@@ -1,7 +1,7 @@
 import { apps, useCases } from "@/lib/content";
 import { AgentFigure } from "./agent";
 import { BrandIcon } from "./brand-icon";
-import { IntegrationFlow } from "./integration-flow";
+import { JobReceipt } from "./job-receipt";
 import { Section } from "./section";
 
 export function Apps() {
@@ -10,9 +10,9 @@ export function Apps() {
       id="apps"
       eyebrow="Integrations"
       title="Run your apps from your chats."
-      lede="One message fans out into finished work across your apps. Connect each app once through its own sign-in screen, and Tex handles the rest."
+      lede="One text can touch several apps. Tex does the work in each one and hands you a receipt: what it did, where, and what it cost."
     >
-      <IntegrationFlow />
+      <JobReceipt />
 
       <div className="mx-auto mt-14 flex max-w-5xl flex-col gap-6 rounded-2xl border border-line bg-surface-2/60 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
         <div>

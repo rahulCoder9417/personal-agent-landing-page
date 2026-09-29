@@ -49,7 +49,7 @@ New, pending and confirmed emails all get the same response, so nobody can check
 
 ## What's on the page
 
-Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (a flow diagram from chat apps to finished work); integrations (one voice note fanning out into work across apps); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; pricing; FAQ; and a final waitlist call to action. There is also a `/privacy` summary page.
+Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; pricing; FAQ; and a final waitlist call to action. There is also a `/privacy` summary page.
 
 The visual language follows the products it sits next to (Notis, Multiply, Strawberry): light background, centred sections, real app logos, product mockups and pill buttons.
 

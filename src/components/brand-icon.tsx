@@ -1,10 +1,18 @@
 import {
+  siAirtable,
+  siAsana,
   siGithub,
   siGmail,
   siGooglecalendar,
+  siGoogledrive,
+  siGooglesheets,
+  siHubspot,
   siImessage,
+  siLinear,
   siNotion,
   siTelegram,
+  siTodoist,
+  siTrello,
   siWhatsapp,
 } from "simple-icons";
 
@@ -17,6 +25,14 @@ const ICONS = {
   telegram: siTelegram,
   imessage: siImessage,
   github: siGithub,
+  drive: siGoogledrive,
+  sheets: siGooglesheets,
+  linear: siLinear,
+  hubspot: siHubspot,
+  trello: siTrello,
+  asana: siAsana,
+  todoist: siTodoist,
+  airtable: siAirtable,
 } as const;
 
 export type BrandName = keyof typeof ICONS | "slack" | "web";
