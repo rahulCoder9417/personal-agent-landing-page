@@ -76,7 +76,7 @@ export async function sendWaitlistEmail(to: string, message: { kind: "confirm"; 
       method: "POST",
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
       body: JSON.stringify({
-        from: process.env.WAITLIST_FROM_EMAIL ?? "Textcrew <hello@textcrew.ai>",
+        from: process.env.WAITLIST_FROM_EMAIL ?? "Textcrew <hello@textcrew.in>",
         to: [to],
         subject: email.subject,
         text: email.text,

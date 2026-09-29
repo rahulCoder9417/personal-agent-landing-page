@@ -21,7 +21,7 @@ Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`, `pnpm db:generate` (new 
 |---|---|---|
 | `DATABASE_URL` | Yes, for the waitlist | Neon Postgres connection string (use the pooled one). Without it the waitlist API answers `503` and nothing is stored. |
 | `RESEND_API_KEY` | Production | Sends the waitlist confirmation emails through [Resend](https://resend.com). In development without it, the confirmation link is printed in the server log. In production without it, signups get an error and no email is sent. |
-| `WAITLIST_FROM_EMAIL` | Production | Sender for those emails, on a domain verified in Resend. Defaults to `Textcrew <hello@textcrew.ai>`. |
+| `WAITLIST_FROM_EMAIL` | Production | Sender for those emails, on a domain verified in Resend. Defaults to `Textcrew <hello@textcrew.in>`. |
 | `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL for metadata, sitemap and social cards, and the base of the confirmation link. Defaults to `https://textcrew.ai`. |
 
 On Vercel, add these in the project's environment variables (the Neon integration can set `DATABASE_URL` for you).
