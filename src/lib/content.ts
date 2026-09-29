@@ -147,8 +147,8 @@ export const features = [
     body: "About 25 apps at launch. On Max you can plug in your own MCP servers too.",
   },
   {
-    title: "Premium models, or your own key",
-    body: "Pro and Max unlock premium models. Every plan can bring an Anthropic, OpenAI or OpenRouter key.",
+    title: "Bring your own AI key",
+    body: "Every plan can use your own Anthropic, OpenAI or OpenRouter key. The AI itself then isn't charged in credits.",
   },
   {
     title: "A web app for the details",
@@ -225,9 +225,8 @@ export const plans: Plan[] = [
     blurb: "Try it on real work.",
     items: [
       "100 credits at sign-up, plus coupon codes",
-      "Standard models (fast, low cost)",
       "10 apps",
-      "3 automations",
+      "1 automation",
       "Bring your own AI key",
     ],
   },
@@ -241,9 +240,8 @@ export const plans: Plan[] = [
     featured: true,
     items: [
       "1,500 credits every month",
-      "All models, including premium",
       "All 25 apps",
-      "20 automations",
+      "5 automations",
       "Top-ups: $10 for 800 credits",
       "Bring your own AI key",
     ],
@@ -257,7 +255,7 @@ export const plans: Plan[] = [
     blurb: "For heavy, multi-step work.",
     items: [
       "4,500 credits every month",
-      "All models, with priority",
+      "Priority when things get busy",
       "All 25 apps plus your own MCP servers",
       "50 automations",
       "Top-ups: $10 for 800 credits",
@@ -269,8 +267,8 @@ export const plans: Plan[] = [
 export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
 
 export const creditNotes = [
-  { label: "1 credit ≈ 1 cent", body: "A simple task uses a few credits. A big multi-step task on a premium model uses more." },
-  { label: "Credits expire", body: "Monthly credits at the end of the month, coupon credits 30 days after you redeem, top-ups after 12 months. The oldest-expiring credits are used first." },
+  { label: "1 credit ≈ 1 cent", body: "A simple task uses a few credits. A big multi-step task uses more, and the activity log shows exactly how many." },
+  { label: "Credits last 90 days", body: "Every credit is good for 90 days from the day you get it, whether it came from your plan, a top-up or a code. The oldest credits are used first." },
   { label: "No surprise bills", body: "At zero, Tex pauses and tells you in chat. Upgrade, buy a top-up or redeem a code to carry on." },
 ];
 
@@ -292,6 +290,10 @@ export const faqs = [
     a: "WhatsApp, Telegram and iMessage, plus the web app. Slack, email and Discord are on the roadmap.",
   },
   {
+    q: "How many automations can I run?",
+    a: "One on Free, five on Pro and 50 on Max. Set one up by texting Tex, like \"every Monday at 9am, send me my week\". Automations pause on their own if you run out of credits.",
+  },
+  {
     q: "Will it do things without asking me?",
     a: "Not the risky ones. Sending to other people, deleting things or spending money always waits for your Approve. Everything else is logged so you can see exactly what happened.",
   },
@@ -301,7 +303,7 @@ export const faqs = [
   },
   {
     q: "What is a credit?",
-    a: "One credit is about one cent. Credits pay for the AI, the time your agent spends working and some paid tools. The activity log shows the credits used by every task.",
+    a: "One credit is about one cent. Credits pay for the AI, the time your agent spends working and some paid tools. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
   },
   {
     q: "What happens when I run out of credits?",
