@@ -37,8 +37,8 @@ export const apps = {
 
 export const useCases: { ask: string; result: string; tag: string; tone: { bg: string; fg: string }; icons: ("gmail" | "calendar" | "notion" | "slack" | "whatsapp" | "telegram")[] }[] = [
   {
-    ask: "Move my 3pm with Priya to tomorrow and let her know.",
-    result: "Moves the event in Google Calendar, drafts the note to Priya, and sends it once you tap Approve.",
+    ask: "Move my 3pm with Maya to tomorrow and let her know.",
+    result: "Moves the event in Google Calendar, drafts the note to Maya, and sends it once you tap Approve.",
     tag: "Calendar",
     tone: { bg: "#EEF3FE", fg: "#1A56DB" },
     icons: ["calendar", "gmail"],
