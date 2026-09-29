@@ -4,9 +4,14 @@ import { Footer } from "@/components/footer";
 import { Logo } from "@/components/logo";
 import { Container } from "@/components/section";
 
+const description = "How Textcrew handles your data: a private agent workspace, no passwords, approvals before acting, and deletion anytime.";
+
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "How Textcrew handles your data: a private agent workspace, no passwords, approvals before acting, and deletion anytime.",
+  description,
+  alternates: { canonical: "/privacy" },
+  // Setting openGraph here replaces the root one, so the shared social image is listed again.
+  openGraph: { type: "article", title: "Privacy at Textcrew", description, url: "/privacy", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
 };
 
 const promises = [
@@ -100,6 +105,14 @@ export default function PrivacyPage() {
                 <li key={d}>{d}</li>
               ))}
             </ul>
+          </section>
+
+          <section id="analytics" className="mt-14 scroll-mt-24">
+            <h2 className="text-2xl font-extrabold tracking-[-0.03em]">When you visit the site</h2>
+            <p className="mt-2 leading-relaxed text-muted">
+              We use Vercel Web Analytics to count visits: which pages are viewed, the site that sent you here, and your country
+              and device type. It sets no cookies and doesn&apos;t build a profile of you or follow you to other sites.
+            </p>
           </section>
 
           <section className="mt-14">

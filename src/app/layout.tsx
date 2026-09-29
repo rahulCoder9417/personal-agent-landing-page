@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { site } from "@/lib/site";
@@ -16,11 +17,22 @@ const mono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: site.title,
+    default: site.seoTitle,
     template: `%s · ${site.name}`,
   },
   description: site.description,
   applicationName: site.name,
+  keywords: [...site.keywords],
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  category: "productivity",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  formatDetection: { telephone: false, email: false, address: false },
   // The page is designed light-only; tell the Dark Reader extension not to repaint it.
   other: { "darkreader-lock": "true" },
   openGraph: {
@@ -29,11 +41,13 @@ export const metadata: Metadata = {
     title: site.title,
     description: site.description,
     url: "/",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: site.title,
     description: site.description,
+    images: ["/opengraph-image"],
   },
 };
 
@@ -47,7 +61,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning: browser extensions add attributes to <html> before React loads.
     <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        {/* Vercel Web Analytics: page views and referrers, no cookies */}
+        <Analytics />
+      </body>
     </html>
   );
 }

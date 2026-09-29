@@ -1,9 +1,28 @@
 export const site = {
   name: "Textcrew",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://textcrew.in",
+  // Search results: says what it is. Social cards use the tagline instead.
+  seoTitle: "Textcrew: your AI crew on WhatsApp, Telegram & iMessage",
   title: "Textcrew · Got a lot of work? Just text your crew.",
   tagline: "Got a lot of work? Just text your crew.",
+  // Kept under ~160 characters so search results show it whole.
   description:
-    "Got a lot of work? Text your crew on WhatsApp, Telegram or iMessage. Tex, your AI captain, splits the job, gets it done in Gmail, Calendar, Notion, Slack and more, and asks before anything risky. Private beta, launching soon.",
+    "Text your AI crew on WhatsApp, Telegram or iMessage. Tex splits the job, gets it done in Gmail, Calendar, Notion and Slack, and asks before anything risky.",
+  keywords: [
+    "AI agent",
+    "AI assistant",
+    "personal AI agent",
+    "AI agent on WhatsApp",
+    "AI assistant on Telegram",
+    "iMessage AI assistant",
+    "AI executive assistant",
+    "AI automation",
+    "Gmail automation",
+    "Google Calendar assistant",
+    "Notion AI agent",
+    "Slack AI agent",
+    "multi-agent AI",
+    "Textcrew",
+  ],
   status: "Private beta · Launching soon",
 } as const;
