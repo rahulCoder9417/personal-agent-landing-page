@@ -1,24 +1,29 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { AgentId } from "@/lib/content";
 import { AgentFigure } from "./agent";
 import { Agent3D } from "./agent-3d";
 import { Tex3D, type StageMode } from "./tex-3d";
 
 // One tap plays a short hand-off: Tex takes the job, two crew members pop up at their own laptops and
-// work on their piece, then Tex reports back. The crew stays on screen until the demo resets.
-// step: 0 idle · 1 Tex thinking · 2 Tock spawned · 3 Echo spawned · 4 Tock done · 5 Echo done · 6 Tex done
+// work on their piece, each leaves once its job is done, then Tex reports back.
+// step: 0 idle · 1 Tex thinking · 2 Tock arrives · 3 Echo arrives · 4 Tock done · 5 Echo done
+//       6 Tock leaves · 7 Echo leaves · 8 Tex done
 const TIMELINE: [number, number][] = [
   [0, 1],
-  [1000, 2],
-  [1700, 3],
-  [3600, 4],
-  [4500, 5],
-  [5200, 6],
-  [13000, 0],
+  [1600, 2],
+  [2900, 3],
+  [6400, 4],
+  [7800, 5],
+  [8800, 6],
+  [10200, 7],
+  [11000, 8],
+  [22000, 0],
 ];
+const DONE_STEP = 8;
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 const STEP_AT = Object.fromEntries(TIMELINE.map(([at, s]) => [s, at]));
 
 const CREW_TASKS: {
@@ -29,10 +34,29 @@ const CREW_TASKS: {
   done: string;
   calledAt: number;
   doneAt: number;
+  leaveAt: number;
 }[] = [
-  { who: "tock", name: "Tock", color: "#D9521A", doing: "Moving your 3pm…", done: "Moved to tomorrow, 3pm", calledAt: 2, doneAt: 4 },
-  { who: "echo", name: "Echo", color: "#C22866", doing: "Drafting the note to Maya…", done: "Note ready for your OK", calledAt: 3, doneAt: 5 },
+  { who: "tock", name: "Tock", color: "#D9521A", doing: "Moving your 3pm…", done: "Moved to tomorrow, 3pm", calledAt: 2, doneAt: 4, leaveAt: 6 },
+  { who: "echo", name: "Echo", color: "#C22866", doing: "Drafting the note to Maya…", done: "Note ready for your OK", calledAt: 3, doneAt: 5, leaveAt: 7 },
 ];
+
+// Swaps text with a short fade instead of a hard cut.
+function FadeText({ id, className, children }: { id: string; className?: string; children: ReactNode }) {
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.span
+        key={id}
+        className={className}
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -4 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+      >
+        {children}
+      </motion.span>
+    </AnimatePresence>
+  );
+}
 
 const WORK_FRAMES = ["work-a", "work-b"] as const;
 
@@ -73,7 +97,7 @@ function AtLaptop({ who, size, busy, reduce }: { who: AgentId; size: number; bus
 
   useEffect(() => {
     if (!busy || reduce || !frames) return;
-    const id = window.setInterval(() => setFrame((f) => 1 - f), 480);
+    const id = window.setInterval(() => setFrame((f) => 1 - f), 560);
     return () => window.clearInterval(id);
   }, [busy, reduce, frames]);
 
@@ -105,11 +129,10 @@ function CrewMember({ task, step, reduce }: { task: (typeof CREW_TASKS)[number];
     <motion.div
       className="relative flex flex-col items-center"
       style={{ marginBottom: -21, marginInline: 6 }}
-      // Pops up in its own spot, ready to work
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.8 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={reduce ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.9 }}
-      transition={{ type: "spring", stiffness: 220, damping: 18 }}
+      // Rises into its own spot, and sinks away once its job is done
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 26, scale: 0.86 }}
+      animate={{ opacity: 1, y: 0, scale: 1, transition: { duration: 0.9, ease: EASE_OUT } }}
+      exit={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.88, transition: { duration: 0.7, ease: "easeIn" } }}
     >
       {/* Status chip with a progress bar that fills while the agent works */}
       <div className="relative z-10 mb-1 w-[9.5rem] overflow-hidden rounded-xl border bg-surface px-2.5 pb-2 pt-1.5 shadow-soft" style={{ borderColor: `${task.color}33` }}>
@@ -117,14 +140,16 @@ function CrewMember({ task, step, reduce }: { task: (typeof CREW_TASKS)[number];
           {done ? <Check color={task.color} /> : <Spinner color={task.color} />}
           {task.name}
         </p>
-        <p className="mt-0.5 truncate text-[11px] text-muted">{done ? task.done : task.doing}</p>
+        <p className="mt-0.5 truncate text-[11px] text-muted">
+          <FadeText id={done ? "done" : "doing"}>{done ? task.done : task.doing}</FadeText>
+        </p>
         <div className="mt-1.5 h-1 overflow-hidden rounded-full" style={{ background: `${task.color}1f` }}>
           <motion.div
             className="h-full rounded-full"
             style={{ background: task.color }}
             initial={{ width: "0%" }}
             animate={{ width: done ? "100%" : "92%" }}
-            transition={{ duration: done ? 0.3 : workSeconds, ease: "easeInOut" }}
+            transition={{ duration: done ? 0.4 : workSeconds, ease: "easeInOut" }}
           />
         </div>
       </div>
@@ -137,14 +162,14 @@ function CrewMember({ task, step, reduce }: { task: (typeof CREW_TASKS)[number];
           style={{ borderColor: task.color }}
           initial={{ opacity: 0.7, scale: 0.3 }}
           animate={{ opacity: 0, scale: 1.6 }}
-          transition={{ duration: 0.9, delay: 0.15 }}
+          transition={{ duration: 1.2, delay: 0.3 }}
         />
       )}
 
       {/* A quick typing jiggle while working, one hop when done */}
       <motion.div
         animate={reduce ? undefined : done ? { y: [0, -12, 0] } : { y: [0, -2, 0] }}
-        transition={done ? { duration: 0.5, ease: "easeOut" } : { duration: 0.32, repeat: Infinity, ease: "easeInOut" }}
+        transition={done ? { duration: 0.6, ease: "easeOut" } : { duration: 0.36, repeat: Infinity, ease: "easeInOut" }}
       >
         <AtLaptop who={task.who} size={150} busy={!done} reduce={reduce} />
       </motion.div>
@@ -182,36 +207,45 @@ export function PerchedTex() {
     setRun((r) => r + 1);
   }
 
-  const mode: StageMode = step === 0 ? "idle" : step === 6 ? "done" : "typing";
-  const working = step >= 2 && step < 6;
+  const mode: StageMode = step === 0 ? "idle" : step === DONE_STEP ? "done" : "typing";
+  const working = step >= 2 && step < DONE_STEP;
+  const phase = step === 0 ? "idle" : step === 1 ? "thinking" : working ? "working" : "done";
 
   return (
     <div className="absolute -top-[250px] right-2 z-10 h-[300px] w-[270px] sm:-top-[284px] sm:right-[38%] sm:h-[340px] sm:w-[310px]">
       {/* Crew members at their own laptops, standing on the window edge well to Tex's left */}
       <div aria-hidden className="pointer-events-none absolute bottom-[13%] right-[92%] hidden items-end sm:flex">
         <AnimatePresence>
-          {[...CREW_TASKS].reverse().map((t) => (step >= t.calledAt ? <CrewMember key={t.who} task={t} step={step} reduce={reduce} /> : null))}
+          {[...CREW_TASKS].reverse().map((t) =>
+            step >= t.calledAt && step < t.leaveAt ? <CrewMember key={t.who} task={t} step={step} reduce={reduce} /> : null,
+          )}
         </AnimatePresence>
       </div>
 
       <Tex3D mode={mode} onActivate={start} />
 
       {/* Tex's speech bubble, to its right with room to breathe */}
-      <div className="absolute left-[84%] top-[12%] hidden w-[20rem] sm:block">
+      <div className="absolute left-[94%] top-[12%] hidden w-[20rem] sm:block">
         <div className="relative rounded-2xl border border-line bg-surface px-5 py-4 text-left shadow-soft">
           <span aria-hidden className="absolute -left-[8px] top-10 size-4 rotate-45 rounded-[3px] border-b border-l border-line bg-surface" />
           <p className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.06em] text-muted">
             <span aria-hidden className="brand-caret h-3 w-1 bg-accent" />
             TEX
-            {step >= 1 && step < 6 && <span className="text-accent">· {working ? "crew at work" : "thinking"}</span>}
+            {(phase === "thinking" || phase === "working") && (
+              <FadeText id={phase} className="text-accent">
+                · {phase === "working" ? "crew at work" : "thinking"}
+              </FadeText>
+            )}
           </p>
 
-          <div aria-live="polite" className="mt-2 text-[15px] leading-relaxed">
-            {step === 0 && <p>Hi, I&apos;m Tex. Got a lot on? Text me the job.</p>}
-            {step === 1 && <p>On it: move your 3pm with Maya and let her know. Calling the crew…</p>}
-            {working && <p>I&apos;ve split the job between two crewmates.</p>}
-            {step === 6 && <p>Done. Moved to tomorrow at 3pm, and Maya gets the note once you approve.</p>}
-          </div>
+          <p aria-live="polite" className="mt-2 text-[15px] leading-relaxed">
+            <FadeText id={phase} className="block">
+              {phase === "idle" && <>Hi, I&apos;m Tex. Got a lot on? Text me the job.</>}
+              {phase === "thinking" && <>On it: move your 3pm with Maya and let her know. Calling the crew…</>}
+              {phase === "working" && <>I&apos;ve split the job between two crewmates.</>}
+              {phase === "done" && <>Done. Moved to tomorrow at 3pm, and Maya gets the note once you approve.</>}
+            </FadeText>
+          </p>
 
           {working && (
             <ul className="mt-3.5 flex flex-col gap-2">
@@ -221,6 +255,7 @@ export function PerchedTex() {
                     key={t.who}
                     initial={reduce ? false : { opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, ease: EASE_OUT }}
                     className="flex items-center gap-2.5 rounded-xl bg-surface-2/70 px-3 py-2"
                   >
                     <span className="grid size-7 shrink-0 place-items-center rounded-full bg-surface">
@@ -228,7 +263,9 @@ export function PerchedTex() {
                     </span>
                     <span className="min-w-0 flex-1 text-[13px] leading-tight">
                       <span className="font-semibold">{t.name}</span>
-                      <span className="block truncate text-muted">{step >= t.doneAt ? t.done : t.doing}</span>
+                      <FadeText id={step >= t.doneAt ? "done" : "doing"} className="block truncate text-muted">
+                        {step >= t.doneAt ? t.done : t.doing}
+                      </FadeText>
                     </span>
                     {step >= t.doneAt ? <Check color={t.color} /> : <Spinner color={t.color} />}
                   </motion.li>
@@ -237,12 +274,12 @@ export function PerchedTex() {
             </ul>
           )}
 
-          {step === 6 && <p className="mt-2.5 text-[12px] leading-relaxed text-muted">A preview of the crew. At launch, Tex handles this on its own.</p>}
+          {phase === "done" && <p className="mt-2.5 text-[12px] leading-relaxed text-muted">A preview of the crew. At launch, Tex handles this on its own.</p>}
 
-          {(step === 0 || step === 6) && (
+          {(phase === "idle" || phase === "done") && (
             <button
               type="button"
-              onClick={step === 6 ? replay : start}
+              onClick={phase === "done" ? replay : start}
               className="mt-4 inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-accent px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
             >
               {step === 0 ? "Send Tex a task" : "Run it again"}

@@ -39,8 +39,8 @@ async function createStudio(): Promise<Studio> {
       const working = pose === "work-a" || pose === "work-b";
       const rig = buildAgent(THREE, who, working ? { laptop: true, glance: pose === "work-a" ? -1 : 1 } : {});
       if (working) {
-        // Three-quarter view so the laptop reads as a laptop; head bowed to the screen
-        rig.root.rotation.y = 0.3;
+        // Straight-on view, head bowed to the screen
+        rig.root.rotation.y = 0;
         rig.headPivot.rotation.y = pose === "work-a" ? 0.04 : -0.04;
         rig.headPivot.rotation.x = 0.16;
       } else {
