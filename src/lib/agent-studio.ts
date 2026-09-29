@@ -4,7 +4,8 @@
 
 import type { AgentId } from "./content";
 
-export type Pose = "front" | "left" | "right";
+// "work-a" and "work-b" are two frames of an agent typing at a laptop, looking along the screen.
+export type Pose = "front" | "left" | "right" | "work-a" | "work-b";
 
 type Studio = { render: (who: AgentId, pose: Pose) => string; dispose: () => void };
 
@@ -35,10 +36,18 @@ async function createStudio(): Promise<Studio> {
 
   return {
     render(who, pose) {
-      const rig = buildAgent(THREE, who);
-      rig.root.rotation.y = pose === "left" ? 0.38 : pose === "right" ? -0.38 : -0.14;
-      rig.headPivot.rotation.y = pose === "left" ? 0.12 : pose === "right" ? -0.12 : 0.08;
-      rig.headPivot.rotation.x = 0.04;
+      const working = pose === "work-a" || pose === "work-b";
+      const rig = buildAgent(THREE, who, working ? { laptop: true, glance: pose === "work-a" ? -1 : 1 } : {});
+      if (working) {
+        // Three-quarter view so the laptop reads as a laptop; head bowed to the screen
+        rig.root.rotation.y = 0.3;
+        rig.headPivot.rotation.y = pose === "work-a" ? 0.04 : -0.04;
+        rig.headPivot.rotation.x = 0.16;
+      } else {
+        rig.root.rotation.y = pose === "left" ? 0.38 : pose === "right" ? -0.38 : -0.14;
+        rig.headPivot.rotation.y = pose === "left" ? 0.12 : pose === "right" ? -0.12 : 0.08;
+        rig.headPivot.rotation.x = 0.04;
+      }
       scene.add(rig.root);
       renderer.render(scene, camera);
       const url = canvas.toDataURL("image/png");

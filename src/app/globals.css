@@ -90,10 +90,6 @@ body {
 .float-c { animation: float 6.5s ease-in-out -4s infinite; }
 @keyframes float { 50% { transform: translateY(-10px) rotate(-2deg); } }
 
-/* Dashed lines that look like work flowing along them */
-.dash-flow { stroke-dasharray: 5 7; animation: dash-flow 0.9s linear infinite; }
-@keyframes dash-flow { to { stroke-dashoffset: -24; } }
-
 /* Agent figure (2D) motion */
 .agent-breathe { animation: agent-breathe 3.4s ease-in-out infinite; }
 .agent-breathe-slow { animation: agent-breathe-slow 5s ease-in-out infinite; }
@@ -111,7 +107,6 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .dash-flow,
   .float-a,
   .float-b,
   .float-c,

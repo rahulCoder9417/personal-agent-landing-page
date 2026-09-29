@@ -85,7 +85,15 @@ function pixelTexture(THREE: Three, draw: (ctx: CanvasRenderingContext2D, size: 
   return tex;
 }
 
-export function buildAgent(THREE: Three, who: AgentId): AgentRig {
+export type BuildOptions = {
+  // Working at a laptop: arms reach forward to the keyboard, eyes drop to the screen and hand props are put away.
+  laptop?: boolean;
+  // Where the eyes look along the screen (-1 left, 0 middle, 1 right); used for the typing flipbook.
+  glance?: -1 | 0 | 1;
+};
+
+export function buildAgent(THREE: Three, who: AgentId, opts: BuildOptions = {}): AgentRig {
+  const atLaptop = !!opts.laptop;
   const look = LOOKS[who];
   const trash: { dispose: () => void }[] = [];
   const keep = <T extends { dispose: () => void }>(x: T) => {
@@ -130,8 +138,19 @@ export function buildAgent(THREE: Three, who: AgentId): AgentRig {
   }
   part(blob(0.64, 0.86, 0.46, 0.62, 64), suitMat, 0, 1.0, 0);
   const armGeo = blob(0.15, 0.64, 0.15, 0.85, 40);
-  part(armGeo, armMat, -0.42, 0.98, 0).rotation.z = -0.12;
-  part(armGeo, armMat, 0.42, 0.98, 0).rotation.z = 0.12;
+  if (atLaptop) {
+    // Pivot at the shoulder, swing forward and a little inward so the hands land on the keyboard
+    for (const side of [-1, 1]) {
+      const shoulder = new THREE.Group();
+      shoulder.position.set(side * 0.41, 1.28, 0.02);
+      shoulder.rotation.set(-0.66, 0, -side * 0.16);
+      body.add(shoulder);
+      part(armGeo, armMat, 0, -0.3, 0, shoulder);
+    }
+  } else {
+    part(armGeo, armMat, -0.42, 0.98, 0).rotation.z = -0.12;
+    part(armGeo, armMat, 0.42, 0.98, 0).rotation.z = 0.12;
+  }
 
   // Chest badge with the agent's pixel icon
   const badgeTex = keep(
@@ -175,10 +194,17 @@ export function buildAgent(THREE: Three, who: AgentId): AgentRig {
 
   const zFront = 0.466;
   const eyeGeo = keep(new THREE.PlaneGeometry(0.12, 0.12));
+  const eyeY = atLaptop ? 0.48 : 0.52;
+  const eyeX = (opts.glance ?? 0) * 0.03;
   const eyeL = new THREE.Mesh(eyeGeo, faceMat);
-  eyeL.position.set(-0.16, 0.52, zFront);
+  eyeL.position.set(-0.16 + eyeX, eyeY, zFront);
   const eyeR = new THREE.Mesh(eyeGeo, faceMat);
-  eyeR.position.set(0.16, 0.52, zFront);
+  eyeR.position.set(0.16 + eyeX, eyeY, zFront);
+  if (atLaptop) {
+    // Focused: a slightly flatter look down at the screen
+    eyeL.scale.y = 0.78;
+    eyeR.scale.y = 0.78;
+  }
   const mouth = new THREE.Mesh(keep(new THREE.PlaneGeometry(0.09, 0.02)), faceMat);
   mouth.position.set(0.01, 0.33, zFront);
   headNod.add(eyeL, eyeR, mouth);
@@ -196,7 +222,7 @@ export function buildAgent(THREE: Three, who: AgentId): AgentRig {
   hand.position.set(0.46, 0.67, 0.02);
   body.add(hand);
 
-  if (who === "scout") {
+  if (who === "scout" && !atLaptop) {
     const handle = part(keep(new THREE.CylinderGeometry(0.02, 0.02, 0.24, 12)), darkMat, 0.06, 0.1, 0.04, hand);
     handle.rotation.z = -0.55;
     part(keep(new THREE.TorusGeometry(0.095, 0.024, 12, 40)), darkMat, 0.16, 0.26, 0.05, hand);
@@ -208,6 +234,8 @@ export function buildAgent(THREE: Three, who: AgentId): AgentRig {
     part(ring, glassMat, -0.16, 0.52, zFront + 0.012, headNod);
     part(ring, glassMat, 0.16, 0.52, zFront + 0.012, headNod);
     part(keep(new THREE.BoxGeometry(0.1, 0.018, 0.018)), glassMat, 0, 0.53, zFront + 0.012, headNod);
+  }
+  if (who === "patch" && !atLaptop) {
     const boardTex = keep(
       pixelTexture(THREE, (ctx) => {
         ctx.fillStyle = "#F6F5F1";
@@ -233,15 +261,17 @@ export function buildAgent(THREE: Three, who: AgentId): AgentRig {
     part(keep(new THREE.PlaneGeometry(0.19, 0.23)), keep(new THREE.MeshBasicMaterial({ map: boardTex })), 0, -0.01, 0.0135, board);
     part(keep(new THREE.BoxGeometry(0.08, 0.035, 0.035)), darkMat, 0, 0.13, 0.01, board);
   }
-  if (who === "echo") {
+  if (who === "echo" && !atLaptop) {
     const cone = part(keep(new THREE.ConeGeometry(0.12, 0.28, 32, 1, true)), std(0xf6f5f1, 0.5, { side: THREE.DoubleSide }), 0.2, 0.1, 0.07, hand);
     cone.rotation.z = Math.PI / 2 + 0.35;
     const piece = part(keep(new THREE.CylinderGeometry(0.03, 0.03, 0.08, 12)), darkMat, 0.05, 0.05, 0.07, hand);
     piece.rotation.z = Math.PI / 2 + 0.35;
   }
-  if (who === "pitch") {
+  if (who === "pitch" && !atLaptop) {
     part(keep(new THREE.BoxGeometry(0.3, 0.21, 0.09)), std(0x3b2a1f, 0.6), 0.02, -0.14, 0.05, hand);
     part(keep(new THREE.TorusGeometry(0.05, 0.012, 8, 16, Math.PI)), darkMat, 0.02, -0.035, 0.05, hand);
+  }
+  if (who === "pitch") {
     const tie = new THREE.Shape();
     tie.moveTo(-0.03, 0);
     tie.lineTo(0.03, 0);
@@ -261,7 +291,7 @@ export function buildAgent(THREE: Three, who: AgentId): AgentRig {
     collarMesh.position.set(0, 1.41, 0.232);
     body.add(collarMesh);
   }
-  if (who === "tock") {
+  if (who === "tock" && !atLaptop) {
     const calTex = keep(
       pixelTexture(THREE, (ctx) => {
         ctx.fillStyle = "#F6F5F1";
@@ -287,6 +317,40 @@ export function buildAgent(THREE: Three, who: AgentId): AgentRig {
     const stringGeo = keep(new THREE.CylinderGeometry(0.008, 0.008, 0.2, 8));
     part(stringGeo, paperMat, -0.05, 1.22, 0.232);
     part(stringGeo, paperMat, 0.05, 1.22, 0.232);
+  }
+
+  // A light laptop held at the waist, lid towards the viewer with the agent's icon on the back
+  if (atLaptop) {
+    const laptop = new THREE.Group();
+    laptop.position.set(0, 0.76, 0.52);
+    body.add(laptop);
+    const shell = std(0xf3f2ee, 0.3, { metalness: 0.1 });
+    part(blob(0.92, 0.045, 0.5, 0.22, 48), shell, 0, 0, 0, laptop);
+    part(keep(new THREE.PlaneGeometry(0.8, 0.3)), std(0x2b2a26, 0.6), 0, 0.024, -0.05, laptop).rotation.x = -Math.PI / 2;
+    const lid = new THREE.Group();
+    lid.position.set(0, 0.022, 0.24);
+    lid.rotation.x = 0.2;
+    laptop.add(lid);
+    part(blob(0.92, 0.5, 0.028, 0.22, 48), shell, 0, 0.25, 0, lid);
+    // Inner screen, facing the agent, lit so a little glow shows at the edges
+    const glow = keep(new THREE.MeshBasicMaterial({ color: 0xbfd0ff, toneMapped: false }));
+    const screen = new THREE.Mesh(keep(new THREE.PlaneGeometry(0.82, 0.42)), glow);
+    screen.position.set(0, 0.26, -0.0155);
+    screen.rotation.y = Math.PI;
+    lid.add(screen);
+    const hex = `#${look.base.toString(16).padStart(6, "0")}`;
+    const logoTex = keep(
+      pixelTexture(THREE, (ctx) => {
+        ctx.clearRect(0, 0, 64, 64);
+        ctx.fillStyle = hex;
+        AGENT_ICONS[who].forEach((row, j) => {
+          for (let i = 0; i < 5; i++) if (row.charAt(i) === "X") ctx.fillRect(12 + i * 8, 12 + j * 8, 8, 8);
+        });
+      }),
+    );
+    const logo = new THREE.Mesh(keep(new THREE.PlaneGeometry(0.14, 0.14)), keep(new THREE.MeshBasicMaterial({ map: logoTex, transparent: true, toneMapped: false })));
+    logo.position.set(0, 0.26, 0.0155);
+    lid.add(logo);
   }
 
   let caret: Mesh | undefined;

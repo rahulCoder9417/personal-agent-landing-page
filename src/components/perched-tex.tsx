@@ -7,8 +7,8 @@ import { AgentFigure } from "./agent";
 import { Agent3D } from "./agent-3d";
 import { Tex3D, type StageMode } from "./tex-3d";
 
-// One tap plays a short hand-off: Tex takes the job, spawns two crew members who work on their piece,
-// and reports back. The crew stays on screen until the demo resets.
+// One tap plays a short hand-off: Tex takes the job, two crew members pop up at their own laptops and
+// work on their piece, then Tex reports back. The crew stays on screen until the demo resets.
 // step: 0 idle · 1 Tex thinking · 2 Tock spawned · 3 Echo spawned · 4 Tock done · 5 Echo done · 6 Tex done
 const TIMELINE: [number, number][] = [
   [0, 1],
@@ -29,11 +29,12 @@ const CREW_TASKS: {
   done: string;
   calledAt: number;
   doneAt: number;
-  beam: number; // px from this agent to Tex
 }[] = [
-  { who: "tock", name: "Tock", color: "#D9521A", doing: "Moving your 3pm…", done: "Moved to tomorrow, 3pm", calledAt: 2, doneAt: 4, beam: 84 },
-  { who: "echo", name: "Echo", color: "#C22866", doing: "Drafting the note to Maya…", done: "Note ready for your OK", calledAt: 3, doneAt: 5, beam: 240 },
+  { who: "tock", name: "Tock", color: "#D9521A", doing: "Moving your 3pm…", done: "Moved to tomorrow, 3pm", calledAt: 2, doneAt: 4 },
+  { who: "echo", name: "Echo", color: "#C22866", doing: "Drafting the note to Maya…", done: "Note ready for your OK", calledAt: 3, doneAt: 5 },
 ];
+
+const WORK_FRAMES = ["work-a", "work-b"] as const;
 
 function Spinner({ color }: { color: string }) {
   return (
@@ -52,6 +53,50 @@ function Check({ color }: { color: string }) {
   );
 }
 
+// An agent typing at its laptop: two still renders swapped back and forth while it's busy.
+function AtLaptop({ who, size, busy, reduce }: { who: AgentId; size: number; busy: boolean; reduce: boolean }) {
+  const [frames, setFrames] = useState<string[] | null>(null);
+  const [frame, setFrame] = useState(0);
+
+  useEffect(() => {
+    let alive = true;
+    import("@/lib/agent-studio")
+      .then(({ renderAgent }) => Promise.all(WORK_FRAMES.map((f) => renderAgent(who, f))))
+      .then((urls) => {
+        if (alive) setFrames(urls);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [who]);
+
+  useEffect(() => {
+    if (!busy || reduce || !frames) return;
+    const id = window.setInterval(() => setFrame((f) => 1 - f), 480);
+    return () => window.clearInterval(id);
+  }, [busy, reduce, frames]);
+
+  if (!frames) return <Agent3D who={who} size={size} pose="left" />;
+  const shown = busy ? frame : 0;
+  return (
+    <span className="relative inline-block" style={{ width: size, height: size }}>
+      {frames.map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element -- generated in the browser as a data URL
+        <img
+          key={i}
+          src={src}
+          alt={i === 0 ? `${who} working at a laptop` : ""}
+          width={size}
+          height={size}
+          draggable={false}
+          className={`absolute inset-0 h-full w-full select-none ${i === shown ? "opacity-100" : "opacity-0"}`}
+        />
+      ))}
+    </span>
+  );
+}
+
 function CrewMember({ task, step, reduce }: { task: (typeof CREW_TASKS)[number]; step: number; reduce: boolean }) {
   const done = step >= task.doneAt;
   const workSeconds = (STEP_AT[task.doneAt] - STEP_AT[task.calledAt]) / 1000;
@@ -59,12 +104,12 @@ function CrewMember({ task, step, reduce }: { task: (typeof CREW_TASKS)[number];
   return (
     <motion.div
       className="relative flex flex-col items-center"
-      style={{ marginBottom: -21, marginInline: 4 }}
-      // Spawn out of Tex: start small near Tex, then fly into place
-      initial={reduce ? { opacity: 0 } : { opacity: 0, x: task.beam + 40, y: -70, scale: 0.25 }}
-      animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      exit={reduce ? { opacity: 0 } : { opacity: 0, x: task.beam, y: -40, scale: 0.3 }}
-      transition={{ type: "spring", stiffness: 180, damping: 18 }}
+      style={{ marginBottom: -21, marginInline: 6 }}
+      // Pops up in its own spot, ready to work
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.8 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={reduce ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.9 }}
+      transition={{ type: "spring", stiffness: 220, damping: 18 }}
     >
       {/* Status chip with a progress bar that fills while the agent works */}
       <div className="relative z-10 mb-1 w-[9.5rem] overflow-hidden rounded-xl border bg-surface px-2.5 pb-2 pt-1.5 shadow-soft" style={{ borderColor: `${task.color}33` }}>
@@ -84,14 +129,7 @@ function CrewMember({ task, step, reduce }: { task: (typeof CREW_TASKS)[number];
         </div>
       </div>
 
-      {/* Work flowing from Tex to this agent */}
-      {!done && (
-        <svg aria-hidden className="pointer-events-none absolute left-1/2 top-[46%] overflow-visible" width={task.beam + 60} height="4">
-          <line x1="40" y1="2" x2={task.beam + 60} y2="2" stroke={task.color} strokeOpacity="0.55" strokeWidth="2" strokeLinecap="round" className="dash-flow" />
-        </svg>
-      )}
-
-      {/* Landing burst */}
+      {/* Landing ring where it appears */}
       {!reduce && (
         <motion.span
           aria-hidden
@@ -99,18 +137,16 @@ function CrewMember({ task, step, reduce }: { task: (typeof CREW_TASKS)[number];
           style={{ borderColor: task.color }}
           initial={{ opacity: 0.7, scale: 0.3 }}
           animate={{ opacity: 0, scale: 1.6 }}
-          transition={{ duration: 0.9, delay: 0.25 }}
+          transition={{ duration: 0.9, delay: 0.15 }}
         />
       )}
 
-      {/* Bob while working, hop once when done */}
+      {/* A quick typing jiggle while working, one hop when done */}
       <motion.div
-        animate={
-          reduce ? undefined : done ? { y: [0, -14, 0] } : { y: [0, -5, 0], rotate: [0, -1.5, 0, 1.5, 0] }
-        }
-        transition={done ? { duration: 0.5, ease: "easeOut" } : { duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+        animate={reduce ? undefined : done ? { y: [0, -12, 0] } : { y: [0, -2, 0] }}
+        transition={done ? { duration: 0.5, ease: "easeOut" } : { duration: 0.32, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Agent3D who={task.who} size={140} pose="left" />
+        <AtLaptop who={task.who} size={150} busy={!done} reduce={reduce} />
       </motion.div>
     </motion.div>
   );
@@ -131,7 +167,7 @@ export function PerchedTex() {
   useEffect(() => {
     const id = window.setTimeout(() => {
       import("@/lib/agent-studio")
-        .then(({ renderAgent }) => Promise.all(CREW_TASKS.map((t) => renderAgent(t.who, "left"))))
+        .then(({ renderAgent }) => Promise.all(CREW_TASKS.flatMap((t) => WORK_FRAMES.map((f) => renderAgent(t.who, f)))))
         .catch(() => {});
     }, 1500);
     return () => window.clearTimeout(id);
@@ -151,8 +187,8 @@ export function PerchedTex() {
 
   return (
     <div className="absolute -top-[250px] right-2 z-10 h-[300px] w-[270px] sm:-top-[284px] sm:right-[38%] sm:h-[340px] sm:w-[310px]">
-      {/* Crew members Tex calls in, standing on the window edge to its left */}
-      <div aria-hidden className="pointer-events-none absolute bottom-[13%] right-[80%] hidden items-end sm:flex">
+      {/* Crew members at their own laptops, standing on the window edge well to Tex's left */}
+      <div aria-hidden className="pointer-events-none absolute bottom-[13%] right-[92%] hidden items-end sm:flex">
         <AnimatePresence>
           {[...CREW_TASKS].reverse().map((t) => (step >= t.calledAt ? <CrewMember key={t.who} task={t} step={step} reduce={reduce} /> : null))}
         </AnimatePresence>
