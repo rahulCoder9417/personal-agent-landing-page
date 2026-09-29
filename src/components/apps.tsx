@@ -1,6 +1,7 @@
 import { apps, useCases } from "@/lib/content";
 import { AgentFigure } from "./agent";
 import { BrandIcon } from "./brand-icon";
+import { IntegrationFlow } from "./integration-flow";
 import { Section } from "./section";
 
 export function Apps() {
@@ -9,28 +10,11 @@ export function Apps() {
       id="apps"
       eyebrow="Integrations"
       title="Run your apps from your chats."
-      lede="Connect each app once through its own sign-in screen. Tex takes action in them, no app switching, no copy and paste."
+      lede="One message fans out into finished work across your apps. Connect each app once through its own sign-in screen, and Tex handles the rest."
     >
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {apps.cards.map((a) => (
-          <li key={a.name} className="rounded-2xl border border-line bg-surface p-5 shadow-soft">
-            <div className="flex items-center gap-3">
-              <BrandIcon name={a.icon} tile size={16} />
-              <span className="font-semibold">{a.name}</span>
-            </div>
-            <ul className="mt-4 flex flex-col gap-2 text-[14px] text-muted">
-              {a.actions.map((x) => (
-                <li key={x} className="flex items-center gap-2">
-                  <span aria-hidden className="size-1 rounded-full bg-muted/60" />
-                  {x}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+      <IntegrationFlow />
 
-      <div className="mt-4 flex flex-col gap-6 rounded-2xl border border-line bg-surface-2/60 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mx-auto mt-14 flex max-w-5xl flex-col gap-6 rounded-2xl border border-line bg-surface-2/60 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xl font-semibold tracking-[-0.02em]">{apps.total}.</p>
           <p className="mt-1 max-w-md text-[15px] text-muted">
