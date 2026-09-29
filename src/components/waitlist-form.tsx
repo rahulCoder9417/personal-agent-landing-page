@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
 
 const CHANNELS = ["WhatsApp", "Telegram", "iMessage"] as const;
 const FALLBACK_ERROR = "We couldn't save your spot. Try again in a minute.";
-const RESEND_AFTER_SECONDS = 60;
 
 type State = { status: "idle" | "sending" | "done" | "error"; message?: string };
 
@@ -26,46 +25,21 @@ export function WaitlistForm({ showChannels = false, className = "" }: { showCha
   const [channel, setChannel] = useState<string | null>(null);
   const [state, setState] = useState<State>({ status: "idle" });
   const [company, setCompany] = useState("");
-  const [wait, setWait] = useState(0);
-  const [resend, setResend] = useState<"idle" | "sending" | "sent" | "error">("idle");
-
-  // Counts down until the confirmation email can be sent again.
-  useEffect(() => {
-    if (wait <= 0) return;
-    const id = window.setTimeout(() => setWait((w) => w - 1), 1000);
-    return () => window.clearTimeout(id);
-  }, [wait]);
-
-  async function submit() {
-    const res = await fetch("/api/waitlist", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email, channel, company, meta: browserDetails() }),
-    });
-    const data: { error?: string } = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error ?? FALLBACK_ERROR);
-  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState({ status: "sending" });
     try {
-      await submit();
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, channel, company, meta: browserDetails() }),
+      });
+      const data: { error?: string } = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error ?? FALLBACK_ERROR);
       setState({ status: "done" });
-      setWait(RESEND_AFTER_SECONDS);
     } catch (err) {
       setState({ status: "error", message: err instanceof Error ? err.message : FALLBACK_ERROR });
-    }
-  }
-
-  async function onResend() {
-    setResend("sending");
-    try {
-      await submit();
-      setResend("sent");
-      setWait(RESEND_AFTER_SECONDS);
-    } catch {
-      setResend("error");
     }
   }
 
@@ -74,34 +48,19 @@ export function WaitlistForm({ showChannels = false, className = "" }: { showCha
       <div role="status" className={`mx-auto w-full max-w-md rounded-2xl border border-line bg-surface px-5 py-4 text-center shadow-soft ${className}`}>
         <p className="font-semibold">Check your inbox.</p>
         <p className="mt-1 text-sm text-muted">
-          We sent a link to <span className="font-medium text-fg">{email}</span>. Tap it to confirm your email and join the
-          waitlist. Your first month of Pro or Max is 50% off.
+          We&apos;ve sent a confirmation link to <span className="font-medium text-fg">{email}</span>. Tap it to join the
+          waitlist and get 50% off your first month of Pro or Max.
         </p>
-        <p className="mt-3 text-xs text-muted">
-          {resend === "sent" ? "Sent again. " : resend === "error" ? "Couldn't send it. " : "Nothing there? Check spam, or "}
-          {wait > 0 ? (
-            <span>send again in {wait}s</span>
-          ) : (
-            <button
-              type="button"
-              onClick={onResend}
-              disabled={resend === "sending"}
-              className="cursor-pointer font-medium text-accent underline-offset-2 hover:underline disabled:cursor-wait disabled:opacity-60"
-            >
-              {resend === "sending" ? "sending…" : "send it again"}
-            </button>
-          )}
-          {" · "}
+        <p className="mt-3 text-xs leading-relaxed text-muted">
+          Already on the waitlist? Then you won&apos;t get another email. Otherwise, check spam if it&apos;s not there, or{" "}
           <button
             type="button"
-            onClick={() => {
-              setState({ status: "idle" });
-              setResend("idle");
-            }}
+            onClick={() => setState({ status: "idle" })}
             className="cursor-pointer font-medium text-accent underline-offset-2 hover:underline"
           >
             use a different email
           </button>
+          .
         </p>
       </div>
     );

@@ -24,11 +24,11 @@ function layout(title: string, body: string, button?: { href: string; label: str
     : "";
   return `<!doctype html><html><body style="margin:0;background:#fbfaf7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#151515">
 <div style="max-width:480px;margin:0 auto;padding:40px 24px">
-<p style="margin:0 0 24px;font-weight:700;font-size:16px">textcrew<span style="color:#3355f5">▌</span></p>
+<p style="margin:0 0 24px;font-weight:700;font-size:16px;line-height:32px"><img src="${site.url}/email/tex.png" width="32" height="32" alt="" style="vertical-align:middle;border-radius:8px;margin-right:8px">textcrew<span style="color:#3355f5">▌</span></p>
 <h1 style="margin:0 0 12px;font-size:22px;line-height:1.25">${title}</h1>
 ${body}
 ${cta}
-<p style="margin:32px 0 0;font-size:12px;color:#6a6862">You're getting this because someone entered this address on ${site.url.replace(/^https?:\/\//, "")}. If it wasn't you, ignore this email and nothing happens.</p>
+<p style="margin:32px 0 0;font-size:12px;color:#6a6862">You're getting this because someone entered this address on ${site.url.replace(/^https?:\/\//, "")}. If it wasn't you, ignore this email and nothing happens. This address doesn't receive replies.</p>
 </div></body></html>`;
 }
 
@@ -46,25 +46,14 @@ function confirmEmail(link: string): Email {
   };
 }
 
-function alreadyEmail(): Email {
-  return {
-    subject: "You're already on the Textcrew waitlist",
-    text: "Good news: this email is already confirmed on the Textcrew beta waitlist. We'll email you when your invite is ready.",
-    html: layout(
-      "You're already on the list",
-      `<p style="margin:0 0 12px;font-size:15px;line-height:1.6;color:#3d3c38">This email is already confirmed on the Textcrew beta waitlist. We'll email you when your invite is ready.</p>`,
-    ),
-  };
-}
-
 // Returns false when the email couldn't be sent, so the caller can say so.
-export async function sendWaitlistEmail(to: string, message: { kind: "confirm"; link: string } | { kind: "already" }) {
-  const email = message.kind === "confirm" ? confirmEmail(message.link) : alreadyEmail();
+export async function sendConfirmEmail(to: string, link: string) {
+  const email = confirmEmail(link);
   const key = process.env.RESEND_API_KEY;
 
   if (!key) {
     if (process.env.NODE_ENV !== "production") {
-      console.info(`[waitlist] RESEND_API_KEY not set; would email ${to}: ${email.subject}${message.kind === "confirm" ? `\n  ${message.link}` : ""}`);
+      console.info(`[waitlist] RESEND_API_KEY not set; would email ${to}: ${email.subject}\n  ${link}`);
       return true;
     }
     console.error("[waitlist] RESEND_API_KEY is not set; confirmation email not sent");
@@ -76,7 +65,7 @@ export async function sendWaitlistEmail(to: string, message: { kind: "confirm"; 
       method: "POST",
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
       body: JSON.stringify({
-        from: process.env.WAITLIST_FROM_EMAIL ?? "Textcrew <hello@textcrew.in>",
+        from: process.env.WAITLIST_FROM_EMAIL ?? "Textcrew <no-reply@textcrew.in>",
         to: [to],
         subject: email.subject,
         text: email.text,

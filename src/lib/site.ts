@@ -1,6 +1,6 @@
 export const site = {
   name: "Textcrew",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://textcrew.ai",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://textcrew.in",
   title: "Textcrew · Got a lot of work? Just text your crew.",
   tagline: "Got a lot of work? Just text your crew.",
   description:

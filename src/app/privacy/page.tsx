@@ -93,7 +93,7 @@ export default function PrivacyPage() {
             <p className="mt-2 leading-relaxed text-muted">
               We store the following so we can send beta invites, stop spam and fake signups, and understand where interest
               comes from. You&apos;re only on the list once you confirm your email from the link we send. We don&apos;t sell
-              any of it. To be removed, reply to any email from us.
+              any of it, and we&apos;ll delete it whenever you ask.
             </p>
             <ul className="mt-5 flex list-disc flex-col gap-2 pl-5 leading-relaxed text-muted">
               {waitlistData.map((d) => (

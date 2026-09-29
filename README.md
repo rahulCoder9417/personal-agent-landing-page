@@ -21,8 +21,8 @@ Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`, `pnpm db:generate` (new 
 |---|---|---|
 | `DATABASE_URL` | Yes, for the waitlist | Neon Postgres connection string (use the pooled one). Without it the waitlist API answers `503` and nothing is stored. |
 | `RESEND_API_KEY` | Production | Sends the waitlist confirmation emails through [Resend](https://resend.com). In development without it, the confirmation link is printed in the server log. In production without it, signups get an error and no email is sent. |
-| `WAITLIST_FROM_EMAIL` | Production | Sender for those emails, on a domain verified in Resend. Defaults to `Textcrew <hello@textcrew.in>`. |
-| `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL for metadata, sitemap and social cards, and the base of the confirmation link. Defaults to `https://textcrew.ai`. |
+| `WAITLIST_FROM_EMAIL` | Production | Sender for those emails, on a domain verified in Resend. Defaults to `Textcrew <no-reply@textcrew.in>`. |
+| `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL for metadata, sitemap and social cards, and the base of the confirmation link. Defaults to `https://textcrew.in`. |
 
 On Vercel, add these in the project's environment variables (the Neon integration can set `DATABASE_URL` for you).
 
@@ -41,9 +41,9 @@ Each row stores:
 
 **Email confirmation (double opt-in).** A signup only counts once the email is confirmed (`verified_at` is set), so count and export only confirmed rows.
 
-1. After saving the row, the route emails a confirmation link, `/waitlist/confirm?token=…`, valid for 48 hours. Only a SHA-256 hash of the token is stored, and a new email replaces the previous link. An already-confirmed address gets a short "you're already on the list" email instead.
+1. After saving the row, the route emails a confirmation link, `/waitlist/confirm?token=…`, valid for 48 hours, from `no-reply@textcrew.in`. Only a SHA-256 hash of the token is stored, and a new email replaces the previous link. An already-confirmed address gets no email at all.
 2. The confirm page checks the token only when the visitor presses **Confirm** (a server action), so mail-app link scanners can't confirm an address by opening the link. It records `verified_at` and `verified_ip`.
-3. Each address gets at most one email a minute and five a day; the form offers "send it again" after a minute.
+3. Signing up again sends a new link at most every 30 minutes, and three a day. The form tells people that if they're already on the waitlist, no email comes.
 
 New, pending and confirmed emails all get the same response, so nobody can check who is on the list. The `/privacy#waitlist` section tells visitors what is stored; keep it in sync with the schema in `src/db/schema.ts`. The SQL lives in `drizzle/` if you'd rather run it in the Neon console.
 
