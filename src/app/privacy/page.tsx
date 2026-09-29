@@ -50,6 +50,7 @@ const waitlistData = [
   "Browser details: user agent, language, time zone and screen size",
   "How you found us: the referring page, the page you signed up on and any campaign tags in its link",
   "When you joined, and how many times you've signed up",
+  "Whether and when you confirmed your email, and the IP address you confirmed from",
 ];
 
 const retention = [
@@ -91,7 +92,8 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-extrabold tracking-[-0.03em]">When you join the beta waitlist</h2>
             <p className="mt-2 leading-relaxed text-muted">
               We store the following so we can send beta invites, stop spam and fake signups, and understand where interest
-              comes from. We don&apos;t sell it. To be removed, reply to any email from us.
+              comes from. You&apos;re only on the list once you confirm your email from the link we send. We don&apos;t sell
+              any of it. To be removed, reply to any email from us.
             </p>
             <ul className="mt-5 flex list-disc flex-col gap-2 pl-5 leading-relaxed text-muted">
               {waitlistData.map((d) => (

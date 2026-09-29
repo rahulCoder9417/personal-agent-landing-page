@@ -1,15 +1,22 @@
 // Beta waitlist signup, stored in Neon Postgres (table: waitlist_signups).
 // Validates the email, drops bots (honeypot field), rate limits per IP in the database, and records
 // the visitor's network, device, location and attribution details alongside the signup.
+// The signup only counts once the email is confirmed: this route emails a confirmation link
+// (see /waitlist/confirm), or a short "already on the list" note if the email is confirmed.
 
 import { and, eq, gt, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { waitlistSignups, type NewWaitlistSignup } from "@/db/schema";
+import { site } from "@/lib/site";
+import { CONFIRM_LINK_HOURS, newConfirmToken, sendWaitlistEmail } from "@/lib/waitlist-email";
 
 const CHANNELS = new Set(["WhatsApp", "Telegram", "iMessage"]);
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const RATE_WINDOW_MINUTES = 10;
 const MAX_EMAILS_PER_IP = 5;
+const EMAIL_COOLDOWN_SECONDS = 60; // at most one email per address per minute
+const MAX_EMAILS_PER_DAY = 5; // and five per address per day
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 function error(message: string, status: number) {
   return Response.json({ error: message }, { status });
@@ -125,7 +132,7 @@ export async function POST(request: Request) {
       }
     }
 
-    await db
+    const [saved] = await db
       .insert(waitlistSignups)
       .values(row)
       .onConflictDoUpdate({
@@ -135,12 +142,50 @@ export async function POST(request: Request) {
           signupCount: sql`${waitlistSignups.signupCount} + 1`,
           lastSeenAt: sql`now()`,
         },
+      })
+      .returning({
+        id: waitlistSignups.id,
+        verifiedAt: waitlistSignups.verifiedAt,
+        verifySentAt: waitlistSignups.verifySentAt,
+        verifyEmailsSent: waitlistSignups.verifyEmailsSent,
       });
+
+    // Don't flood an inbox: skip quietly if we just emailed this address or hit today's limit.
+    const now = Date.now();
+    const lastSent = saved.verifySentAt?.getTime() ?? 0;
+    const sentToday = now - lastSent < DAY_MS ? saved.verifyEmailsSent : 0;
+    if (now - lastSent < EMAIL_COOLDOWN_SECONDS * 1000 || sentToday >= MAX_EMAILS_PER_DAY) {
+      return Response.json({ ok: true });
+    }
+
+    const where = eq(waitlistSignups.id, saved.id);
+    const counted = { verifySentAt: new Date(now), verifyEmailsSent: sentToday + 1 };
+    let sent: boolean;
+    if (saved.verifiedAt) {
+      await db.update(waitlistSignups).set(counted).where(where);
+      sent = await sendWaitlistEmail(email, { kind: "already" });
+    } else {
+      // A new link replaces any earlier one, so only the latest email works.
+      const { token, hash } = newConfirmToken();
+      await db
+        .update(waitlistSignups)
+        .set({ ...counted, verifyTokenHash: hash, verifyExpiresAt: new Date(now + CONFIRM_LINK_HOURS * 60 * 60 * 1000) })
+        .where(where);
+      // In production the link always points at the real site, never at whatever Host the request claimed.
+      const base = process.env.NODE_ENV === "production" ? site.url : new URL(request.url).origin;
+      sent = await sendWaitlistEmail(email, { kind: "confirm", link: `${base}/waitlist/confirm?token=${token}` });
+    }
+
+    if (!sent) {
+      // Let them retry straight away instead of waiting out the cooldown.
+      await db.update(waitlistSignups).set({ verifySentAt: saved.verifySentAt, verifyEmailsSent: saved.verifyEmailsSent }).where(where);
+      return error("We couldn't send the confirmation email. Try again in a minute.", 502);
+    }
   } catch (err) {
     console.error("[waitlist] database write failed", err);
     return error("We couldn't save your spot. Try again in a minute.", 500);
   }
 
-  // Same answer for new and existing emails, so nobody can check who's on the list.
+  // Same answer for new, pending and confirmed emails, so nobody can check who's on the list.
   return Response.json({ ok: true });
 }

@@ -9,7 +9,7 @@ Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, three.j
 ```bash
 pnpm install
 cp .env.example .env.local   # then paste your Neon DATABASE_URL
-pnpm db:migrate              # creates the waitlist_signups table
+pnpm db:migrate              # creates or updates the waitlist_signups table
 pnpm dev                     # http://localhost:3000
 ```
 
@@ -20,9 +20,11 @@ Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`, `pnpm db:generate` (new 
 | Variable | Needed | What it does |
 |---|---|---|
 | `DATABASE_URL` | Yes, for the waitlist | Neon Postgres connection string (use the pooled one). Without it the waitlist API answers `503` and nothing is stored. |
-| `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL for metadata, sitemap and social cards. Defaults to `https://textcrew.ai`. |
+| `RESEND_API_KEY` | Production | Sends the waitlist confirmation emails through [Resend](https://resend.com). In development without it, the confirmation link is printed in the server log. In production without it, signups get an error and no email is sent. |
+| `WAITLIST_FROM_EMAIL` | Production | Sender for those emails, on a domain verified in Resend. Defaults to `Textcrew <hello@textcrew.ai>`. |
+| `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL for metadata, sitemap and social cards, and the base of the confirmation link. Defaults to `https://textcrew.ai`. |
 
-On Vercel, add `DATABASE_URL` in the project's environment variables (or connect the Neon integration, which sets it for you).
+On Vercel, add these in the project's environment variables (the Neon integration can set `DATABASE_URL` for you).
 
 ## Beta waitlist
 
@@ -35,8 +37,15 @@ Each row stores:
 - approximate location from Vercel's IP headers: country, region, city, latitude and longitude (Cloudflare's country header works too)
 - referrer, landing page and UTM tags (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`)
 - `created_at`, `last_seen_at` and `signup_count`; repeat signups only bump the last two and keep the first-touch details
+- confirmation: `verified_at`, `verified_ip`, and the pending link's token hash, expiry and send count
 
-New and existing emails get the same response, so nobody can check who is on the list. The `/privacy#waitlist` section tells visitors what is stored; keep it in sync with the schema in `src/db/schema.ts`. The SQL lives in `drizzle/` if you'd rather run it in the Neon console.
+**Email confirmation (double opt-in).** A signup only counts once the email is confirmed (`verified_at` is set), so count and export only confirmed rows.
+
+1. After saving the row, the route emails a confirmation link, `/waitlist/confirm?token=…`, valid for 48 hours. Only a SHA-256 hash of the token is stored, and a new email replaces the previous link. An already-confirmed address gets a short "you're already on the list" email instead.
+2. The confirm page checks the token only when the visitor presses **Confirm** (a server action), so mail-app link scanners can't confirm an address by opening the link. It records `verified_at` and `verified_ip`.
+3. Each address gets at most one email a minute and five a day; the form offers "send it again" after a minute.
+
+New, pending and confirmed emails all get the same response, so nobody can check who is on the list. The `/privacy#waitlist` section tells visitors what is stored; keep it in sync with the schema in `src/db/schema.ts`. The SQL lives in `drizzle/` if you'd rather run it in the Neon console.
 
 ## What's on the page
 
@@ -52,6 +61,7 @@ Section copy lives in `src/lib/content.ts` and `src/lib/site.ts`, taken from the
 src/
 ├── app/
 │   ├── api/waitlist/route.ts   waitlist signup: validation, honeypot, rate limit, Neon upsert
+│   ├── waitlist/confirm/       confirm page for the emailed link (server action)
 │   ├── privacy/page.tsx        plain-language privacy summary (draft until the full policy)
 │   ├── layout.tsx              fonts (Geist, Geist Mono), metadata, theme colour
 │   ├── page.tsx                the landing page
@@ -70,6 +80,7 @@ src/
 │   └── index.ts                Neon connection, created on first use
 └── lib/
     ├── content.ts              all section copy
+    ├── waitlist-email.ts       confirmation tokens and emails (Resend)
     └── site.ts                 name, URL, tagline, status
 drizzle/                        generated SQL migrations
 drizzle.config.ts               drizzle-kit config (reads .env.local)
