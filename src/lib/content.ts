@@ -1,5 +1,5 @@
 // All landing-page copy lives here, so wording can change without touching layout.
-// Facts come from the platform overview and the backend HLD (plans, credits, security, roadmap).
+// Facts come from the backend HLD and the launch plan (channels, crew, AI options, plans, credits, security, roadmap).
 
 export type AgentId = "tex" | "byte" | "patch" | "scout";
 
@@ -276,7 +276,7 @@ export const plans: Plan[] = [
 export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
 
 export const creditNotes = [
-  { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions in your apps (1 credit when one changes something, like sending an email; reading and searching are free) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
+  { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions that change something in your apps (1 credit each; reading and searching are free) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
   { label: "Credits last 90 days", body: "Every credit is good for 90 days from the day you get it, whether it came from your plan, a top-up or a code. The oldest credits are used first." },
   { label: "No surprise bills", body: "At zero, Tex pauses and tells you in chat. Upgrade, buy a top-up or redeem a code to carry on." },
 ];

@@ -233,7 +233,7 @@ function PatchReview() {
           <Appear show={checks >= 1}>
             <p className="font-mono text-[11px] text-muted">Patch commented on src/app/pricing/page.tsx</p>
             <p className="mt-1.5 rounded-xl bg-[#FDF3E1] px-3 py-2 text-[12.5px] leading-snug">
-              The Max plan is missing its monthly price. Add it before merging.
+              Good to merge. One small note: the plan names are hard-coded in this file.
             </p>
           </Appear>
           <Appear show={checks >= 3}>
