@@ -9,7 +9,7 @@ import { Section } from "./section";
 
 // The story told the way you'd actually live it: on your phone's lock screen, one notification at a time.
 const BEATS = [
-  { title: "Text the job", body: "In WhatsApp, Telegram or iMessage. Type it, or send a voice note.", ms: 3800 },
+  { title: "Text the job", body: "In Telegram or the web app. Type it, or send a voice note.", ms: 3800 },
   { title: "Tex splits it up", body: "Each piece goes to the right crewmate, and the work starts.", ms: 3600 },
   { title: "You OK the risky part", body: "Anything that sends, deletes or spends waits for your tap.", ms: 4400 },
   { title: "Done, and logged", body: "One reply when it's finished. Every step lands in your activity log.", ms: 4800 },
@@ -38,7 +38,7 @@ function Notification({ title, tone = "light", children }: { title: ReactNode; t
       <div className="flex items-center gap-2">
         {dark ? (
           <span className="grid size-5 place-items-center rounded-md bg-white">
-            <BrandIcon name="whatsapp" size={12} />
+            <BrandIcon name="telegram" size={12} />
           </span>
         ) : (
           <span className="grid size-5 place-items-center rounded-md bg-accent-soft">

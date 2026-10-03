@@ -21,7 +21,7 @@ const AUTOMATIONS: { id: string; icon: BrandName; title: string; when: string; n
   { id: "week", icon: "telegram", title: "Send me my week", when: "Every Monday · 9:00", next: "Next run Monday 9:00" },
   { id: "boss", icon: "gmail", title: "Tell me when my boss emails", when: "When it happens · Gmail", next: "Watching your inbox" },
   { id: "meetings", icon: "calendar", title: "Today's meetings", when: "Weekdays · 8:00", next: "Next run tomorrow 8:00" },
-  { id: "invoice", icon: "whatsapp", title: "Chase the Acme invoice", when: "Once · Friday 10:00", next: "Runs Friday 10:00" },
+  { id: "invoice", icon: "telegram", title: "Chase the Acme invoice", when: "Once · Friday 10:00", next: "Runs Friday 10:00" },
 ];
 
 function Bubble({ from, children }: { from: "you" | "tex"; children: ReactNode }) {
@@ -93,7 +93,7 @@ export function ProductShowcase() {
                   online
                 </p>
               </div>
-              <BrandIcon name="whatsapp" size={18} className="ml-auto" />
+              <BrandIcon name="telegram" size={18} className="ml-auto" />
             </div>
             <div className="flex flex-1 flex-col gap-3 px-7 py-7">
               <Bubble from="you">Move my 3pm with Maya to tomorrow and let her know</Bubble>

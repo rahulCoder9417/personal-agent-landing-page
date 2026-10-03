@@ -45,7 +45,7 @@ const promises = [
   },
   {
     title: "Where your messages go",
-    body: "A message you send passes through the chat app you use (for example WhatsApp or Telegram), our servers, and the AI model provider that processes it. Voice notes and files are processed only to handle your request.",
+    body: "A message you send passes through the chat app you use (for example Telegram), our servers, and the AI model provider that processes it. Voice notes and files are processed only to handle your request.",
   },
 ];
 

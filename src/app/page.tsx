@@ -42,7 +42,7 @@ const jsonLd = {
       url: site.url,
       description: site.description,
       applicationCategory: "BusinessApplication",
-      operatingSystem: "Web, WhatsApp, Telegram, iMessage",
+      operatingSystem: "Web, Telegram",
       publisher: { "@id": `${site.url}/#organization` },
       offers: plans.map((p) => ({
         "@type": "Offer",

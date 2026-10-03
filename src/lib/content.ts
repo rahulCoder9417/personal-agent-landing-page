@@ -3,7 +3,7 @@
 
 export type AgentId = "tex" | "scout" | "byte" | "patch" | "echo" | "pitch" | "tock";
 
-export const channels = ["WhatsApp", "Telegram", "iMessage", "Web app"] as const;
+export const channels = ["Telegram", "Web app"] as const;
 
 export const steps = [
   {
@@ -11,8 +11,8 @@ export const steps = [
     body: "Create your account on the web app. You start with 100 free credits.",
   },
   {
-    title: "Link your chat app",
-    body: "The web app shows a one-time code. Send it to our WhatsApp number or Telegram bot, and that chat becomes your agent.",
+    title: "Link Telegram",
+    body: "The web app shows a one-time code. Send it to our Telegram bot, and that chat becomes your agent. Or just chat in the web app.",
   },
   {
     title: "Connect your apps",
@@ -35,7 +35,7 @@ export const apps = {
   total: "About 25 apps at launch",
 } as const;
 
-export const useCases: { ask: string; result: string; tag: string; tone: { bg: string; fg: string }; icons: ("gmail" | "calendar" | "notion" | "slack" | "whatsapp" | "telegram")[] }[] = [
+export const useCases: { ask: string; result: string; tag: string; tone: { bg: string; fg: string }; icons: ("gmail" | "calendar" | "notion" | "slack" | "telegram")[] }[] = [
   {
     ask: "Move my 3pm with Maya to tomorrow and let her know.",
     result: "Moves the event in Google Calendar, drafts the note to Maya, and sends it once you tap Approve.",
@@ -55,7 +55,7 @@ export const useCases: { ask: string; result: string; tag: string; tone: { bg: s
     result: "Sets the reminder and pings you in this chat on Friday.",
     tag: "Reminder",
     tone: { bg: "#E8F7EE", fg: "#13803F" },
-    icons: ["whatsapp", "telegram"],
+    icons: ["telegram"],
   },
   {
     ask: "Tell me when my boss emails.",
@@ -287,7 +287,7 @@ export const faqs = [
   },
   {
     q: "Which chat apps does it work with?",
-    a: "WhatsApp, Telegram and iMessage, plus the web app. Slack, email and Discord are on the roadmap.",
+    a: "Telegram and the web app at launch. More channels are planned where the platforms allow it: iMessage as a beta, WhatsApp in regions where it is permitted, and Slack, email and Discord.",
   },
   {
     q: "How many automations can I run?",

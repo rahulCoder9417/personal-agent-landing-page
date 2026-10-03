@@ -7,13 +7,11 @@ import {
   siGoogledrive,
   siGooglesheets,
   siHubspot,
-  siImessage,
   siLinear,
   siNotion,
   siTelegram,
   siTodoist,
   siTrello,
-  siWhatsapp,
 } from "simple-icons";
 
 // Brand marks from simple-icons (CC0). Slack is not in simple-icons, so it gets a neutral "#" tile.
@@ -21,9 +19,7 @@ const ICONS = {
   gmail: siGmail,
   calendar: siGooglecalendar,
   notion: siNotion,
-  whatsapp: siWhatsapp,
   telegram: siTelegram,
-  imessage: siImessage,
   github: siGithub,
   drive: siGoogledrive,
   sheets: siGooglesheets,

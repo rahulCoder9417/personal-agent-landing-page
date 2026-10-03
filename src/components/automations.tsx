@@ -48,7 +48,7 @@ const KINDS: { id: KindId; label: string; hint: string; icon: string; triggers: 
 
 const ACTIONS: Action[] = [
   { id: "summary", icon: "telegram", label: "Message me a summary", say: "message me a one-line summary on Telegram", tex: "I'll message you a one-line summary on Telegram" },
-  { id: "week", icon: "whatsapp", label: "Send me my week", say: "send me my week on WhatsApp", tex: "I'll send you your week on WhatsApp" },
+  { id: "week", icon: "calendar", label: "Send me my week", say: "send me my week", tex: "I'll send you your week" },
   { id: "chase", icon: "gmail", label: "Chase the invoice", say: "remind me to chase the Acme invoice", tex: "I'll remind you to chase the Acme invoice" },
   { id: "slack", icon: "slack", label: "Post in #team", say: "draft a status update for #team", tex: "I'll draft the #team update and ask before posting" },
 ];
@@ -84,7 +84,7 @@ export function Automations() {
   const [kind, setKind] = useState<KindId>("event");
   const [triggerId, setTriggerId] = useState("boss");
   const [actionId, setActionId] = useState("summary");
-  const [saved, setSaved] = useState<Saved[]>([{ id: "seed-week", icon: "whatsapp", title: "Send me my week", when: "Every Monday at 9am", on: true }]);
+  const [saved, setSaved] = useState<Saved[]>([{ id: "seed-week", icon: "calendar", title: "Send me my week", when: "Every Monday at 9am", on: true }]);
   const [confirmation, setConfirmation] = useState<{ key: number; text: string } | null>(null);
   const nextKey = useRef(0);
 
