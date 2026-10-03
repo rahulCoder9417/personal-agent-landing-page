@@ -1,6 +1,6 @@
 # Textcrew landing page
 
-Marketing site for Textcrew, the personal AI agent you text from WhatsApp, Telegram or iMessage. It is in **private beta, launching soon**, so the page's job is to explain the product and collect beta waitlist signups.
+Marketing site for Textcrew, the personal AI agent you text from Telegram or the web app. It is in **private beta, launching soon**, so the page's job is to explain the product and collect beta waitlist signups.
 
 Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, three.js (3D hero), motion (scroll reveals) and simple-icons (app logos). Waitlist signups are stored in Neon Postgres through Drizzle ORM. Package manager: pnpm.
 
@@ -96,7 +96,7 @@ drizzle.config.ts               drizzle-kit config (reads .env.local)
 
 ## Notes
 
-- **Mascots.** Tex is the captain; Scout (research), Byte (coder), Patch (code review), Echo (marketing), Pitch (sales) and Tock (ops) are shown as "coming soon". 3D is used only in the hero; everything else is 2D.
+- **Mascots.** Tex is the captain, available at launch; Byte (coding), Patch (code review) and Scout (research) are shown as "soon": they arrive with or soon after launch. 3D is used only in the hero; everything else is 2D.
 - **3D fallback.** The hero shows the 2D Tex until three.js has loaded, and keeps it if WebGL isn't available. Rendering pauses when the stage is off-screen or the tab is hidden.
 - **Motion.** All animation respects `prefers-reduced-motion`.
 - **Theme.** Light only, on purpose, to match the category.
