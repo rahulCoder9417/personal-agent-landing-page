@@ -1,7 +1,7 @@
 // All landing-page copy lives here, so wording can change without touching layout.
 // Facts come from the platform overview and the backend HLD (plans, credits, security, roadmap).
 
-export type AgentId = "tex" | "scout" | "byte" | "patch" | "echo" | "pitch" | "tock";
+export type AgentId = "tex" | "byte" | "patch" | "scout";
 
 export const channels = ["Telegram", "Web app"] as const;
 
@@ -170,17 +170,15 @@ export type CrewMember = {
 export const captain: CrewMember = {
   id: "tex",
   name: "Tex",
-  role: "Captain · available at launch",
+  role: "Captain",
   body: "The one you text. Tex handles the job itself or, as the crew arrives, hands each piece to the right specialist and puts the results together.",
 };
 
+// The three specialists arrive with or soon after launch.
 export const crew: CrewMember[] = [
-  { id: "scout", name: "Scout", role: "Research", body: "Deep research reports, competitor tracking and market scans." },
-  { id: "byte", name: "Byte", role: "Coder", body: "Writes and fixes code, and can hand work to your own Claude Code or Codex." },
-  { id: "patch", name: "Patch", role: "Code review", body: "Reviews pull requests on GitHub, leaves comments and flags risky changes." },
-  { id: "echo", name: "Echo", role: "Marketing", body: "Drafts LinkedIn and X posts, blogs and newsletters in your voice, and tracks what works." },
-  { id: "pitch", name: "Pitch", role: "Sales", body: "Finds leads and writes outreach in your voice. Every send goes through your approval queue." },
-  { id: "tock", name: "Tock", role: "Ops", body: "Meetings, follow-ups, CRM updates and invoices, handled on time." },
+  { id: "byte", name: "Byte", role: "Coding", body: "Writes and fixes code on a branch and opens a pull request for you to merge. It can also hand work to your own Claude Code." },
+  { id: "patch", name: "Patch", role: "Code review", body: "Runs several reviewers on a pull request, comments on the PR and sends a short verdict to your chat." },
+  { id: "scout", name: "Scout", role: "Research", body: "Searches the web, reads the pages it finds and sends you what it learned." },
 ];
 
 export const roadmap = [

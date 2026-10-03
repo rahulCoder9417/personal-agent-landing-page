@@ -10,12 +10,17 @@ import { Section } from "./section";
 // The story told the way you'd actually live it: on your phone's lock screen, one notification at a time.
 const BEATS = [
   { title: "Text the job", body: "In Telegram or the web app. Type it, or send a voice note.", ms: 3800 },
-  { title: "Tex splits it up", body: "Each piece goes to the right crewmate, and the work starts.", ms: 3600 },
+  { title: "Tex splits it up", body: "It breaks the job into steps and starts on each one.", ms: 3600 },
   { title: "You OK the risky part", body: "Anything that sends, deletes or spends waits for your tap.", ms: 4400 },
   { title: "Done, and logged", body: "One reply when it's finished. Every step lands in your activity log.", ms: 4800 },
 ];
 
 const ASK = "Move my 3pm with Maya to tomorrow and let her know";
+// The two pieces Tex splits this job into, one per app.
+const SPLIT = [
+  { app: "calendar", label: "Move the 3pm" },
+  { app: "gmail", label: "Note to Maya" },
+] as const;
 const TYPE_MS = 2200;
 const AUTO_TAP_MS = 2300;
 
@@ -75,13 +80,13 @@ function LockScreen({ beat, typed, tapping, approved, onApprove }: { beat: numbe
       id: "split",
       node: (
         <Notification title="Tex">
-          On it. Tock is moving your 3pm, and Echo is drafting the note to Maya.
+          On it. Moving your 3pm in Calendar and drafting the note to Maya in Gmail.
           {beat < 3 && (
             <span className="mt-2 flex gap-1.5">
-              {(["tock", "echo"] as const).map((who) => (
-                <span key={who} className="flex items-center gap-1.5 rounded-full bg-surface-2 py-0.5 pl-0.5 pr-2 text-[11px] font-medium capitalize">
-                  <AgentFigure who={who} glyph size={16} />
-                  {who}
+              {SPLIT.map((s) => (
+                <span key={s.app} className="flex items-center gap-1.5 rounded-full bg-surface-2 py-0.5 pl-1.5 pr-2 text-[11px] font-medium">
+                  <BrandIcon name={s.app} size={12} />
+                  {s.label}
                   {beat > 1 ? <Check className="size-3 text-[#22A45D]" /> : <span className="size-1.5 rounded-full bg-accent motion-safe:animate-pulse" />}
                 </span>
               ))}
@@ -281,7 +286,7 @@ export function HowItWorks() {
       id="how"
       eyebrow="How it works"
       title="Text it. Tex handles the rest."
-      lede="No new app to learn. You send a text, Tex splits the job across the crew, and anything risky waits for your tap."
+      lede="No new app to learn. You send a text, Tex splits the job into steps, and anything risky waits for your tap."
     >
       <div
         ref={ref}

@@ -7,12 +7,9 @@ import { AgentFigure } from "./agent";
 
 const LABELS: Record<AgentId, string> = {
   tex: "Tex, the captain",
-  scout: "Scout, research",
-  byte: "Byte, coder",
+  byte: "Byte, coding",
   patch: "Patch, code review",
-  echo: "Echo, marketing",
-  pitch: "Pitch, sales",
-  tock: "Tock, ops",
+  scout: "Scout, research",
 };
 
 // A 3D-rendered agent as a still image. Shows the 2D figure until the render is ready, or if WebGL isn't available.

@@ -9,8 +9,8 @@ import { Tex3D, type StageMode } from "./tex-3d";
 
 // One tap plays a short hand-off: Tex takes the job, two crew members pop up at their own laptops and
 // work on their piece, each leaves once its job is done, then Tex reports back.
-// step: 0 idle · 1 Tex thinking · 2 Tock arrives · 3 Echo arrives · 4 Tock done · 5 Echo done
-//       6 Tock leaves · 7 Echo leaves · 8 Tex done
+// step: 0 idle · 1 Tex thinking · 2 Patch arrives · 3 Byte arrives · 4 Patch done · 5 Byte done
+//       6 Patch leaves · 7 Byte leaves · 8 Tex done
 const TIMELINE: [number, number][] = [
   [0, 1],
   [1600, 2],
@@ -36,8 +36,8 @@ const CREW_TASKS: {
   doneAt: number;
   leaveAt: number;
 }[] = [
-  { who: "tock", name: "Tock", color: "#D9521A", doing: "Moving your 3pm…", done: "Moved to tomorrow, 3pm", calledAt: 2, doneAt: 4, leaveAt: 6 },
-  { who: "echo", name: "Echo", color: "#C22866", doing: "Drafting the note to Maya…", done: "Note ready for your OK", calledAt: 3, doneAt: 5, leaveAt: 7 },
+  { who: "patch", name: "Patch", color: "#B06F0A", doing: "Reviewing PR #127…", done: "2 comments on the PR", calledAt: 2, doneAt: 4, leaveAt: 6 },
+  { who: "byte", name: "Byte", color: "#5F35D6", doing: "Fixing the typo…", done: "PR #128 opened", calledAt: 3, doneAt: 5, leaveAt: 7 },
 ];
 
 // Swaps text with a short fade instead of a hard cut.
@@ -241,9 +241,9 @@ export function PerchedTex() {
           <p aria-live="polite" className="mt-2 text-[15px] leading-relaxed">
             <FadeText id={phase} className="block">
               {phase === "idle" && <>Hi, I&apos;m Tex. Got a lot on? Text me the job.</>}
-              {phase === "thinking" && <>On it: move your 3pm with Maya and let her know. Calling the crew…</>}
+              {phase === "thinking" && <>On it: review the open PR and fix the pricing page typo. Calling the crew…</>}
               {phase === "working" && <>I&apos;ve split the job between two crewmates.</>}
-              {phase === "done" && <>Done. Moved to tomorrow at 3pm, and Maya gets the note once you approve.</>}
+              {phase === "done" && <>Done. Patch left 2 comments on PR #127, and Byte&apos;s fix is in PR #128 for you to merge.</>}
             </FadeText>
           </p>
 
@@ -274,7 +274,7 @@ export function PerchedTex() {
             </ul>
           )}
 
-          {phase === "done" && <p className="mt-2.5 text-[12px] leading-relaxed text-muted">A preview of the crew. At launch, Tex handles this on its own.</p>}
+          {phase === "done" && <p className="mt-2.5 text-[12px] leading-relaxed text-muted">A preview of the crew. Byte and Patch arrive with or soon after launch.</p>}
 
           {(phase === "idle" || phase === "done") && (
             <button

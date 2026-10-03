@@ -11,30 +11,23 @@ type Step = { who: AgentId; chip: string; title: string; line: string; ms: numbe
 const STEPS: Step[] = [
   { who: "tex", chip: "Gets the job", title: "Tex takes the job", line: "Reads your message and splits it into pieces for the crew.", ms: 4800 },
   { who: "scout", chip: "Research", title: "Scout opens its brain", line: "Searches the web and reads competitor pricing pages.", ms: 6000 },
-  { who: "pitch", chip: "Leads", title: "Pitch works the computer", line: "Pulls 50 leads that fit your customer profile.", ms: 5600 },
-  { who: "echo", chip: "Calls", title: "Echo gets on the phone", line: "Calls the warm leads and books demos.", ms: 6400 },
-  { who: "byte", chip: "Code", title: "Byte opens a terminal", line: "Builds the pricing page and opens a pull request.", ms: 6800 },
+  { who: "byte", chip: "Code", title: "Byte opens a terminal", line: "Builds the pricing page on a branch and opens a pull request.", ms: 6800 },
+  { who: "patch", chip: "Review", title: "Patch checks the work", line: "Runs several reviewers on the pull request and comments on it.", ms: 6400 },
   { who: "tex", chip: "Wrap-up", title: "Tex puts it together", line: "Sends you one summary, with anything that needs your OK.", ms: 5400 },
 ];
 
 const TINT: Record<AgentId, string> = {
   tex: "#EEF1FF",
-  scout: "#E4F4F2",
   byte: "#EFEAFF",
   patch: "#FDF3E1",
-  echo: "#FCE8F0",
-  pitch: "#E5F4EB",
-  tock: "#FFEDE4",
+  scout: "#E4F4F2",
 };
 
 const COLOR: Record<AgentId, string> = {
   tex: "#3355F5",
-  scout: "#11A39B",
   byte: "#7B4DFF",
   patch: "#F5A623",
-  echo: "#E93D82",
-  pitch: "#22A45D",
-  tock: "#FF6B2C",
+  scout: "#11A39B",
 };
 
 // Counts up from 0 to `total`, one step every `every` ms, starting when the scene mounts.
@@ -81,17 +74,16 @@ function Tick({ color = "#22A45D" }: { color?: string }) {
 /* ---------- Scenes (the work panel on the right) ---------- */
 
 function TexJob() {
-  const n = useTicker(6, 520, 200);
+  const n = useTicker(5, 520, 200);
   const jobs: { who: AgentId; task: string }[] = [
     { who: "scout", task: "Research competitor pricing" },
-    { who: "pitch", task: "Find 50 leads that fit" },
-    { who: "echo", task: "Call the warm ones" },
     { who: "byte", task: "Build the new pricing page" },
+    { who: "patch", task: "Review the pull request" },
   ];
   return (
     <div className="flex h-full flex-col justify-center gap-3 p-6">
       <Appear show={n >= 1} className="ml-auto max-w-[88%] rounded-2xl rounded-br-md bg-fg px-4 py-2.5 text-[14px] leading-snug text-white">
-        We launch the new pricing page Friday. Research competitors, get 50 leads, call the warm ones and build the page.
+        We launch the new pricing page Friday. Research what competitors charge, build the page and review it before I merge.
       </Appear>
       <Appear show={n >= 2} className="max-w-[80%] rounded-2xl rounded-bl-md border border-line bg-surface px-4 py-2.5 text-[14px]">
         On it. Splitting this across the crew:
@@ -157,106 +149,6 @@ function ScoutSearch() {
   );
 }
 
-function PitchLeads() {
-  const rows = useTicker(6, 480, 400);
-  const count = useTicker(50, 60, 400);
-  const leads = [
-    ["Jordan Lee", "Acme Corp", "Head of Ops", 94],
-    ["Sam Rivera", "Northwind", "Founder", 91],
-    ["Priti Nair", "Brightlane", "COO", 88],
-    ["Alex Chen", "Tidewater", "VP Sales", 86],
-    ["Noor Haddad", "Fieldhouse", "Founder", 84],
-    ["Chris Park", "Lumen Labs", "Ops Lead", 81],
-  ] as const;
-  return (
-    <div className="flex h-full items-center justify-center p-6">
-      {/* Laptop */}
-      <div className="w-full max-w-md">
-        <div className="rounded-t-2xl border-[6px] border-b-0 border-[#1d1c21] bg-[#1d1c21]">
-          <div className="overflow-hidden rounded-t-lg bg-surface">
-            <div className="flex items-center justify-between border-b border-line px-3 py-2">
-              <span className="text-[12px] font-semibold">Leads</span>
-              <span className="rounded-full bg-[#E5F4EB] px-2 py-0.5 font-mono text-[10px] text-[#178247]">{count} found</span>
-            </div>
-            <div className="min-h-[13.5rem] divide-y divide-line">
-              {leads.map(([name, company, role, fit], i) => (
-                <Appear key={name} show={rows > i}>
-                  <div className="flex items-center gap-2 px-3 py-1.5 text-[11.5px]">
-                    <span className="grid size-5 place-items-center rounded-full bg-surface-2 text-[9px] font-semibold">
-                      {name.split(" ").map((p) => p[0]).join("")}
-                    </span>
-                    <span className="w-24 truncate font-medium">{name}</span>
-                    <span className="flex-1 truncate text-muted">
-                      {company} · {role}
-                    </span>
-                    <span className="rounded bg-[#E5F4EB] px-1.5 font-mono text-[10px] text-[#178247]">{fit}</span>
-                  </div>
-                </Appear>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto h-3 w-[108%] -translate-x-[3.7%] rounded-b-xl bg-gradient-to-b from-[#d9d7d0] to-[#c3c0b8]" />
-        <p className="mt-3 text-center font-mono text-[11px] text-muted">{count >= 50 ? "Added 50 leads to your CRM" : "Scanning company sites and profiles…"}</p>
-      </div>
-    </div>
-  );
-}
-
-function EchoCall() {
-  const secs = useTicker(40, 110, 900);
-  const lines = useTicker(3, 1100, 900);
-  const connected = secs > 0;
-  const transcript = [
-    { who: "Echo", text: "Hi Jordan, I'm calling about the new pricing you asked about last week." },
-    { who: "Jordan", text: "Yes, perfect timing. Can we see a demo?" },
-    { who: "Echo", text: "Of course. Thursday at 2pm works for the team?" },
-  ];
-  return (
-    <div className="flex h-full items-center justify-center p-6">
-      <div className="w-full max-w-sm rounded-[28px] border border-line bg-surface p-5 shadow-soft">
-        <div className="flex items-center gap-3">
-          <span className="relative grid size-11 place-items-center rounded-full bg-[#FCE8F0] font-semibold text-[#C22866]">
-            JL
-            {!connected && <span aria-hidden className="absolute inset-0 animate-ping rounded-full bg-[#E93D82]/25" />}
-          </span>
-          <div className="leading-tight">
-            <p className="text-[14px] font-semibold">Jordan Lee · Acme Corp</p>
-            <p className="font-mono text-[11px] text-muted">
-              {connected ? `Connected · 00:${String(secs).padStart(2, "0")}` : "Calling…"}
-            </p>
-          </div>
-        </div>
-        <div className="mt-4 flex h-8 items-center justify-center gap-[3px]">
-          {Array.from({ length: 28 }).map((_, i) => (
-            <motion.span
-              key={i}
-              className="w-[3px] rounded-full bg-[#E93D82]"
-              animate={connected ? { height: [4, 6 + ((i * 7) % 22), 4] } : { height: 4 }}
-              transition={{ duration: 0.6 + (i % 5) * 0.08, repeat: Infinity, ease: "easeInOut" }}
-            />
-          ))}
-        </div>
-        <div className="mt-4 flex min-h-[9.5rem] flex-col gap-2">
-          {transcript.map((t, i) => (
-            <Appear key={i} show={lines > i}>
-              <p className={`w-fit max-w-[92%] rounded-2xl px-3 py-2 text-[12.5px] leading-snug ${t.who === "Echo" ? "bg-[#FCE8F0] text-fg" : "ml-auto bg-surface-2"}`}>
-                <span className="font-semibold">{t.who}: </span>
-                {t.text}
-              </p>
-            </Appear>
-          ))}
-        </div>
-        <Appear show={lines >= 3}>
-          <p className="mt-2 flex items-center justify-center gap-1.5 rounded-full bg-[#E7F6EC] py-1.5 text-[12.5px] font-medium text-[#14713D]">
-            <Tick /> Demo booked · Thu 2:00 PM
-          </p>
-        </Appear>
-      </div>
-    </div>
-  );
-}
-
 function ByteTerminal() {
   const script: { t: "cmd" | "out" | "code" | "ok"; s: string }[] = [
     { t: "cmd", s: "git checkout -b pricing-page" },
@@ -301,13 +193,66 @@ function ByteTerminal() {
   );
 }
 
+function PatchReview() {
+  const checks = useTicker(3, 800, 500);
+  const reviewers = [
+    { name: "Bugs", note: "1 comment" },
+    { name: "Security", note: "No issues" },
+    { name: "Tests", note: "24 passing" },
+  ];
+  return (
+    <div className="flex h-full items-center justify-center p-6">
+      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
+        <div className="flex items-center gap-2.5 border-b border-line px-4 py-3">
+          <svg aria-hidden viewBox="0 0 16 16" className="size-4 shrink-0 text-[#B06F0A]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+            <circle cx="4" cy="3.5" r="1.75" />
+            <circle cx="4" cy="12.5" r="1.75" />
+            <circle cx="12" cy="12.5" r="1.75" />
+            <path d="M4 5.25v5.5M12 10.75V7.5a2.5 2.5 0 0 0-2.5-2.5H8" />
+          </svg>
+          <span className="min-w-0 flex-1 truncate text-[13.5px] font-semibold">New pricing page</span>
+          <span className="shrink-0 font-mono text-[11px] text-muted">PR #128</span>
+        </div>
+        <ul className="divide-y divide-line">
+          {reviewers.map((r, i) => (
+            <li key={r.name} className="flex items-center gap-3 px-4 py-2.5 text-[13.5px]">
+              <span className="grid size-6 place-items-center rounded-lg bg-[#FDF3E1] font-mono text-[11px] font-bold text-[#B06F0A]">{i + 1}</span>
+              <span className="flex-1 font-medium">{r.name}</span>
+              {checks > i ? (
+                <span className="flex items-center gap-1.5 text-[12.5px] text-muted">
+                  {r.note}
+                  <Tick color="#D08612" />
+                </span>
+              ) : (
+                <span className="text-[12.5px] text-muted/70">{checks === i ? "Reviewing…" : "Waiting"}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <div className="min-h-[8.5rem] border-t border-line bg-bg px-4 py-3">
+          <Appear show={checks >= 1}>
+            <p className="font-mono text-[11px] text-muted">Patch commented on src/app/pricing/page.tsx</p>
+            <p className="mt-1.5 rounded-xl bg-[#FDF3E1] px-3 py-2 text-[12.5px] leading-snug">
+              The Max plan is missing its monthly price. Add it before merging.
+            </p>
+          </Appear>
+          <Appear show={checks >= 3}>
+            <p className="mt-2.5 flex items-center justify-center gap-1.5 rounded-full bg-[#E7F6EC] py-1.5 text-[12.5px] font-medium text-[#14713D]">
+              <Tick /> Verdict sent to your chat
+            </p>
+          </Appear>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TexWrap() {
   const n = useTicker(5, 450, 200);
   const done: { who: AgentId; text: string }[] = [
     { who: "scout", text: "Compared 3 competitor pricing pages" },
-    { who: "pitch", text: "Found 50 leads and added them to your CRM" },
-    { who: "echo", text: "Called 6 warm leads, booked 2 demos" },
-    { who: "byte", text: "Built the pricing page, PR #128 is ready" },
+    { who: "byte", text: "Built the pricing page and opened PR #128" },
+    { who: "patch", text: "Reviewed PR #128 and left 1 comment" },
   ];
   return (
     <div className="flex h-full flex-col justify-center gap-3 p-6">
@@ -328,13 +273,13 @@ function TexWrap() {
         </ul>
       </Appear>
       <Appear show={n >= 5} className="flex items-center gap-2 self-start rounded-full bg-accent-soft px-3 py-1.5 text-[12.5px] font-medium text-accent">
-        One thing needs your OK: merge PR #128
+        One thing left for you: merge PR #128
       </Appear>
     </div>
   );
 }
 
-const SCENES = [TexJob, ScoutSearch, PitchLeads, EchoCall, ByteTerminal, TexWrap];
+const SCENES = [TexJob, ScoutSearch, ByteTerminal, PatchReview, TexWrap];
 
 /* ---------- Stage decorations (left side) ---------- */
 
@@ -385,31 +330,15 @@ function Brain() {
   );
 }
 
-function Ripples() {
-  return (
-    <div aria-hidden className="absolute left-1/2 top-[22%] -translate-x-1/2">
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="absolute left-1/2 top-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#E93D82]"
-          initial={{ scale: 0.4, opacity: 0.6 }}
-          animate={{ scale: 1.6, opacity: 0 }}
-          transition={{ duration: 2, repeat: Infinity, delay: i * 0.65, ease: "easeOut" }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function CodeGlyphs() {
-  const glyphs = ["</>", "{ }", "$_", "=>"];
+// Small glyphs drifting above the agent: code for Byte, diff and check marks for Patch.
+function Glyphs({ glyphs, color }: { glyphs: string[]; color: string }) {
   return (
     <div aria-hidden className="absolute inset-0">
       {glyphs.map((g, i) => (
         <motion.span
           key={g}
-          className="absolute font-mono text-[15px] font-bold text-[#7B4DFF]"
-          style={{ left: `${18 + i * 20}%`, top: `${12 + (i % 2) * 14}%` }}
+          className="absolute font-mono text-[15px] font-bold"
+          style={{ color, left: `${18 + i * 20}%`, top: `${12 + (i % 2) * 14}%` }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: [0, 1, 0.6], y: [10, -6, 0] }}
           transition={{ duration: 1.6, delay: 0.2 + i * 0.25, repeat: Infinity, repeatType: "reverse" }}
@@ -422,9 +351,10 @@ function CodeGlyphs() {
 }
 
 function StageDecor({ step }: { step: number }) {
-  if (step === 1) return <Brain />;
-  if (step === 3) return <Ripples />;
-  if (step === 4) return <CodeGlyphs />;
+  const who = STEPS[step].who;
+  if (who === "scout") return <Brain />;
+  if (who === "byte") return <Glyphs glyphs={["</>", "{ }", "$_", "=>"]} color="#7B4DFF" />;
+  if (who === "patch") return <Glyphs glyphs={["+12", "−3", "✓", "#128"]} color="#D08612" />;
   return null;
 }
 
@@ -515,7 +445,7 @@ export function CrewStory() {
               transition={{ duration: 0.35 }}
             >
               <StageDecor step={index} />
-              {index > 0 && index < 5 && (
+              {step.who !== "tex" && (
                 <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-surface/90 px-2.5 py-1 text-[11.5px] text-muted shadow-soft">
                   <AgentFigure who="tex" glyph size={16} />
                   Handed off by Tex

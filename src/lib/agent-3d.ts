@@ -12,9 +12,6 @@ const LOOKS: Record<AgentId, { base: number; shade: number; deep: number }> = {
   scout: { base: 0x11a39b, shade: 0x0c7f79, deep: 0x0a6b66 },
   byte: { base: 0x7b4dff, shade: 0x5f35d6, deep: 0x4a27b3 },
   patch: { base: 0xf5a623, shade: 0xd08612, deep: 0xb06f0a },
-  echo: { base: 0xe93d82, shade: 0xc22866, deep: 0xa11f54 },
-  pitch: { base: 0x22a45d, shade: 0x178247, deep: 0x116a39 },
-  tock: { base: 0xff6b2c, shade: 0xd9521a, deep: 0xb84313 },
 };
 
 export const AGENT_ICONS: Record<AgentId, string[]> = {
@@ -22,12 +19,10 @@ export const AGENT_ICONS: Record<AgentId, string[]> = {
   scout: ["XXX..", "X.X..", "XXX..", "...X.", "....X"],
   byte: ["X....", ".X...", "X....", ".....", "..XXX"],
   patch: [".....", "....X", "...X.", "X.X..", ".X..."],
-  echo: ["...X.", "X.X.X", "XXX.X", "X.X.X", "...X."],
-  pitch: [".XXXX", "...XX", "..X.X", ".X...", "X...."],
-  tock: [".XXX.", "X.X.X", "X.XXX", "X...X", ".XXX."],
 };
 
-const CREW_COLORS = [0x11a39b, 0x7b4dff, 0xf5a623, 0xe93d82, 0x22a45d, 0xff6b2c];
+// Tex wears one belt light per specialist: Byte, Patch, Scout.
+const CREW_COLORS = [0x7b4dff, 0xf5a623, 0x11a39b];
 
 export type AgentRig = {
   root: Group;
@@ -172,7 +167,7 @@ export function buildAgent(THREE: Three, who: AgentId, opts: BuildOptions = {}):
     const pixelGeo = keep(new THREE.BoxGeometry(0.042, 0.042, 0.02));
     CREW_COLORS.forEach((hex, i) => {
       const px = new THREE.Mesh(pixelGeo, std(hex, 0.5, { emissive: hex, emissiveIntensity: 0.25 }));
-      px.position.set(-0.15 + i * 0.06, 0.66, 0.25);
+      px.position.set((i - (CREW_COLORS.length - 1) / 2) * 0.1, 0.66, 0.25);
       body.add(px);
     });
   }
@@ -260,58 +255,6 @@ export function buildAgent(THREE: Three, who: AgentId, opts: BuildOptions = {}):
     part(keep(new THREE.BoxGeometry(0.21, 0.27, 0.025)), paperMat, 0, 0, 0, board);
     part(keep(new THREE.PlaneGeometry(0.19, 0.23)), keep(new THREE.MeshBasicMaterial({ map: boardTex })), 0, -0.01, 0.0135, board);
     part(keep(new THREE.BoxGeometry(0.08, 0.035, 0.035)), darkMat, 0, 0.13, 0.01, board);
-  }
-  if (who === "echo" && !atLaptop) {
-    const cone = part(keep(new THREE.ConeGeometry(0.12, 0.28, 32, 1, true)), std(0xf6f5f1, 0.5, { side: THREE.DoubleSide }), 0.2, 0.1, 0.07, hand);
-    cone.rotation.z = Math.PI / 2 + 0.35;
-    const piece = part(keep(new THREE.CylinderGeometry(0.03, 0.03, 0.08, 12)), darkMat, 0.05, 0.05, 0.07, hand);
-    piece.rotation.z = Math.PI / 2 + 0.35;
-  }
-  if (who === "pitch" && !atLaptop) {
-    part(keep(new THREE.BoxGeometry(0.3, 0.21, 0.09)), std(0x3b2a1f, 0.6), 0.02, -0.14, 0.05, hand);
-    part(keep(new THREE.TorusGeometry(0.05, 0.012, 8, 16, Math.PI)), darkMat, 0.02, -0.035, 0.05, hand);
-  }
-  if (who === "pitch") {
-    const tie = new THREE.Shape();
-    tie.moveTo(-0.03, 0);
-    tie.lineTo(0.03, 0);
-    tie.lineTo(0.05, -0.28);
-    tie.lineTo(0, -0.34);
-    tie.lineTo(-0.05, -0.28);
-    tie.closePath();
-    const tieMesh = new THREE.Mesh(keep(new THREE.ExtrudeGeometry(tie, { depth: 0.012, bevelEnabled: false })), darkMat);
-    tieMesh.position.set(0, 1.36, 0.226);
-    body.add(tieMesh);
-    const collar = new THREE.Shape();
-    collar.moveTo(-0.1, 0);
-    collar.lineTo(0.1, 0);
-    collar.lineTo(0, -0.08);
-    collar.closePath();
-    const collarMesh = new THREE.Mesh(keep(new THREE.ShapeGeometry(collar)), paperMat);
-    collarMesh.position.set(0, 1.41, 0.232);
-    body.add(collarMesh);
-  }
-  if (who === "tock" && !atLaptop) {
-    const calTex = keep(
-      pixelTexture(THREE, (ctx) => {
-        ctx.fillStyle = "#F6F5F1";
-        ctx.fillRect(0, 0, 64, 64);
-        ctx.fillStyle = "#FF6B2C";
-        ctx.fillRect(0, 0, 64, 16);
-        for (let r = 0; r < 3; r++) {
-          for (let col = 0; col < 4; col++) {
-            ctx.fillStyle = r === 1 && col === 2 ? "#FF6B2C" : "#D8D4C8";
-            ctx.fillRect(8 + col * 13, 24 + r * 12, 9, 8);
-          }
-        }
-      }),
-    );
-    const cal = new THREE.Group();
-    cal.position.set(0.12, 0.13, 0.09);
-    cal.rotation.z = -0.1;
-    hand.add(cal);
-    part(keep(new THREE.BoxGeometry(0.22, 0.24, 0.025)), paperMat, 0, 0, 0, cal);
-    part(keep(new THREE.PlaneGeometry(0.22, 0.24)), keep(new THREE.MeshBasicMaterial({ map: calTex })), 0, 0, 0.0135, cal);
   }
   if (who === "byte") {
     const stringGeo = keep(new THREE.CylinderGeometry(0.008, 0.008, 0.2, 8));

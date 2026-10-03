@@ -7,11 +7,10 @@ import { WaitlistForm } from "./waitlist-form";
 
 // Feet sit 85% down each still render, so a -15% bottom margin stands every agent on the card's top edge.
 const perched: { who: AgentId; size: number; pose: "left" | "front" | "right"; hideSm?: boolean }[] = [
-  { who: "tock", size: 130, pose: "left", hideSm: true },
-  { who: "scout", size: 150, pose: "left" },
+  { who: "scout", size: 140, pose: "left", hideSm: true },
+  { who: "byte", size: 150, pose: "left" },
   { who: "tex", size: 210, pose: "front" },
-  { who: "echo", size: 150, pose: "right" },
-  { who: "patch", size: 130, pose: "right", hideSm: true },
+  { who: "patch", size: 150, pose: "right" },
 ];
 
 export function FinalCta() {

@@ -1,4 +1,4 @@
-import { crew, roadmap, type AgentId } from "@/lib/content";
+import { captain, crew, roadmap, type AgentId } from "@/lib/content";
 import { Agent3D } from "./agent-3d";
 import { CrewStory } from "./crew-story";
 import { FaceStack } from "./face-stack";
@@ -7,12 +7,9 @@ import { Container, Eyebrow } from "./section";
 
 const TINT: Record<AgentId, string> = {
   tex: "bg-accent-soft",
-  scout: "bg-[#E4F4F2]",
   byte: "bg-[#EFEAFF]",
   patch: "bg-[#FDF3E1]",
-  echo: "bg-[#FCE8F0]",
-  pitch: "bg-[#E5F4EB]",
-  tock: "bg-[#FFEDE4]",
+  scout: "bg-[#E4F4F2]",
 };
 
 export function Crew() {
@@ -26,8 +23,9 @@ export function Crew() {
               Meet your crew.
             </h2>
             <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-              Tex is the captain you text, and it&apos;s there from day one. Next come specialists Tex can hand work to, then
-              combine the results for you. Every send still waits for your OK.
+              Tex is the captain you text, and it&apos;s there from day one. Three specialists arrive with or soon after
+              launch: Byte for coding, Patch for code review and Scout for research. Tex hands them work and puts the
+              results together. Every send still waits for your OK.
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-4">
@@ -40,12 +38,12 @@ export function Crew() {
 
         <Reveal className="mt-10" delay={0.05}>
           <CrewStory />
-          <p className="mt-3 text-center text-[12.5px] text-muted">A preview of how the crew will work together. Specialists arrive after launch.</p>
+          <p className="mt-3 text-center text-[12.5px] text-muted">A preview of how the crew will work together. The specialists arrive with or soon after launch.</p>
         </Reveal>
 
         <Reveal className="mt-16" delay={0.05}>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {crew.map((m) => (
+          <ul className="grid gap-4 md:grid-cols-2">
+            {[captain, ...crew].map((m) => (
               <li key={m.id} className="flex gap-5 rounded-3xl border border-line bg-surface p-4 shadow-soft">
                 <span className={`flex size-28 shrink-0 items-end justify-center overflow-hidden rounded-2xl ${TINT[m.id]}`}>
                   <span className="-mb-3">
@@ -55,7 +53,11 @@ export function Crew() {
                 <div className="min-w-0 py-1.5">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-semibold tracking-[-0.02em]">{m.name}</h3>
-                    <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-medium text-muted">Soon</span>
+                    {m.id === "tex" ? (
+                      <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-medium text-accent">At launch</span>
+                    ) : (
+                      <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-medium text-muted">Soon</span>
+                    )}
                   </div>
                   <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">{m.role}</p>
                   <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{m.body}</p>

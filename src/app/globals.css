@@ -16,9 +16,6 @@
   --scout: #11a39b;
   --byte: #7b4dff;
   --patch: #f5a623;
-  --echo: #e93d82;
-  --pitch: #22a45d;
-  --tock: #ff6b2c;
   --danger: #b42318;
   color-scheme: only light;
 }
@@ -37,9 +34,6 @@
   --color-scout: var(--scout);
   --color-byte: var(--byte);
   --color-patch: var(--patch);
-  --color-echo: var(--echo);
-  --color-pitch: var(--pitch);
-  --color-tock: var(--tock);
   --color-danger: var(--danger);
   --font-sans: var(--font-brand-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-brand-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
