@@ -69,7 +69,7 @@ export function Crew() {
 
         <Reveal className="mt-20" delay={0.05}>
           <h3 className="text-center text-2xl font-bold tracking-[-0.03em]">Also on the way</h3>
-          <ul className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
+          <ul className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {roadmap.map((r) => (
               <li key={r.title} className="bg-surface p-6">
                 <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-accent">Next</p>

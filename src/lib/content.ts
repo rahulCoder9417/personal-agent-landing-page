@@ -189,17 +189,13 @@ export const captain: CrewMember = {
 export const crew: CrewMember[] = [
   { id: "byte", name: "Byte", role: "Coding", body: "Writes and fixes code on a branch and opens a pull request for you to merge. It can also hand work to your own Claude Code." },
   { id: "patch", name: "Patch", role: "Code review", body: "Runs several reviewers on a pull request, comments on the PR and sends a short verdict to your chat." },
-  { id: "scout", name: "Scout", role: "Research", body: "Searches the web, reads the pages it finds and sends you what it learned." },
+  { id: "scout", name: "Scout", role: "Research", body: "Searches the web and reads pages. On the Max plan it also drives a real browser, for sites that need a login, clicks or forms, or that have no API." },
 ];
 
 export const roadmap = [
   {
     title: "More channels",
     body: "Where the platforms allow it: iMessage as a beta, WhatsApp in regions where it is permitted, and Slack, email and Discord.",
-  },
-  {
-    title: "Browser use",
-    body: "On the Max plan, Tex works in a browser on sites that don't have an API.",
   },
   {
     title: "Desktop app",
@@ -266,6 +262,7 @@ export const plans: Plan[] = [
       "4,500 credits every month",
       "Priority when things get busy",
       "All apps, plus your own MCP servers",
+      "Browser use for sites without an API, at 2 credits per minute",
       "50 automations",
       "Top-ups: $10 for 800 credits",
       "Your own AI key, your Claude plan (beta) or Textcrew AI",
@@ -276,7 +273,7 @@ export const plans: Plan[] = [
 export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
 
 export const creditNotes = [
-  { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions that change something in your apps (1 credit each; reading and searching are free) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
+  { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions that change something in your apps (1 credit each; reading and searching are free), browser time on Max (2 credits per minute) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
   { label: "Credits last 90 days", body: "Every credit is good for 90 days from the day you get it, whether it came from your plan, a top-up or a code. The oldest credits are used first." },
   { label: "No surprise bills", body: "At zero, Tex pauses and tells you in chat. Upgrade, buy a top-up or redeem a code to carry on." },
 ];
@@ -308,11 +305,11 @@ export const faqs = [
   },
   {
     q: "What can it connect to?",
-    a: "Gmail, Google Calendar, Notion, Slack and GitHub, and more apps are being added. Free connects 10 apps; Pro and Max connect all of them. On Max you can add your own MCP servers.",
+    a: "Gmail, Google Calendar, Notion, Slack and GitHub, and more apps are being added. Free connects 10 apps; Pro and Max connect all of them. On Max you can add your own MCP servers, and your agent can use a real browser for sites without an API.",
   },
   {
     q: "What is a credit?",
-    a: "One credit is about one cent. Credits pay for three things: Textcrew AI if you use it, your agent's running time (1 credit per 10 minutes), and actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free). If you bring your own AI, the AI part isn't charged in credits. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
+    a: "One credit is about one cent. Credits pay for Textcrew AI if you use it, your agent's running time (1 credit per 10 minutes), actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free) and, on the Max plan, browser time (2 credits per minute). If you bring your own AI, the AI part isn't charged in credits. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
   },
   {
     q: "What happens when I run out of credits?",
