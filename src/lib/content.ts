@@ -129,7 +129,7 @@ export const trust = [
   },
   {
     title: "Secrets stay secret",
-    body: "Your own API keys are encrypted and never shown again. Payments go through Dodo Payments, so we never see card details.",
+    body: "Your own API keys are encrypted and never shown again. Payments go through Polar, so we never see card details.",
   },
 ];
 
