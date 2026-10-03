@@ -5,10 +5,10 @@ import { useEffect, useId, useRef, useState } from "react";
 import { BrandIcon, type BrandName } from "./brand-icon";
 
 // One text, one receipt: every app action Tex took for the job, printed line by line with what it cost.
-// The app shelf lights up as each app gets used.
+// The app shelf lights up as each app gets used. Reading and searching are free; an action that changes something is 1 credit.
 const LINES: { app: BrandName; action: string; detail: string; credits: number }[] = [
-  { app: "gmail", action: "Found the Acme invoice", detail: "Gmail · from 3 weeks ago", credits: 1 },
-  { app: "gmail", action: "Sent a payment reminder", detail: "Gmail · after your OK", credits: 2 },
+  { app: "gmail", action: "Found the Acme invoice", detail: "Gmail · from 3 weeks ago", credits: 0 },
+  { app: "gmail", action: "Sent a payment reminder", detail: "Gmail · after your OK", credits: 1 },
   { app: "calendar", action: "Booked a Friday follow-up", detail: "Google Calendar", credits: 1 },
   { app: "notion", action: "Marked it chased", detail: "Notion · invoice tracker", credits: 1 },
   { app: "slack", action: "Let the team know", detail: "Slack · #finance", credits: 1 },
@@ -121,7 +121,7 @@ export function JobReceipt() {
                       <span className="block font-sans text-[13.5px] font-medium text-fg">{l.action}</span>
                       <span className="block text-[11px] text-muted">{l.detail}</span>
                     </span>
-                    <span className="shrink-0 pt-0.5 text-[12px]">{l.credits} cr</span>
+                    <span className="shrink-0 pt-0.5 text-[12px]">{l.credits === 0 ? "free" : `${l.credits} cr`}</span>
                   </motion.li>
                 ))}
               </AnimatePresence>

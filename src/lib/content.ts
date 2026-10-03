@@ -117,7 +117,7 @@ export const trust = [
   },
   {
     title: "Not used to train AI",
-    body: "Tex calls the AI through your own key and your provider's API, so your provider's terms apply. We don't use your data to train AI models.",
+    body: "We don't use your data to train AI models, and that includes Textcrew AI. With your own API key or Claude plan, the AI runs on your own account with that provider.",
   },
   {
     title: "Delete anytime",
@@ -147,8 +147,8 @@ export const features = [
     body: "About 25 apps at launch. On Max you can plug in your own MCP servers too.",
   },
   {
-    title: "Runs on your own AI key",
-    body: "At launch you connect your own Anthropic, OpenAI or OpenRouter key, so your provider bills the AI and it isn't charged in credits. Built-in models come later.",
+    title: "Three ways to run the AI",
+    body: "Your own API key (Anthropic, OpenAI or OpenRouter), your Claude plan (beta), or Textcrew AI, paid in credits. Bring your own AI and that part isn't charged in credits.",
   },
   {
     title: "A web app for the details",
@@ -225,7 +225,7 @@ export const plans: Plan[] = [
       "100 credits at sign-up, plus coupon codes",
       "10 apps",
       "1 automation",
-      "Runs on your own AI key",
+      "Your own AI key, your Claude plan (beta) or Textcrew AI",
     ],
   },
   {
@@ -241,7 +241,7 @@ export const plans: Plan[] = [
       "All 25 apps",
       "5 automations",
       "Top-ups: $10 for 800 credits",
-      "Runs on your own AI key",
+      "Your own AI key, your Claude plan (beta) or Textcrew AI",
     ],
   },
   {
@@ -257,7 +257,7 @@ export const plans: Plan[] = [
       "All 25 apps plus your own MCP servers",
       "50 automations",
       "Top-ups: $10 for 800 credits",
-      "Runs on your own AI key",
+      "Your own AI key, your Claude plan (beta) or Textcrew AI",
     ],
   },
 ];
@@ -265,7 +265,7 @@ export const plans: Plan[] = [
 export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
 
 export const creditNotes = [
-  { label: "1 credit ≈ 1 cent", body: "Credits cover the time Tex spends working and paid tools; the AI runs on your own key. A simple task uses a few, and the activity log shows exactly how many." },
+  { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions in your apps (1 credit when one changes something, like sending an email; reading and searching are free) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
   { label: "Credits last 90 days", body: "Every credit is good for 90 days from the day you get it, whether it came from your plan, a top-up or a code. The oldest credits are used first." },
   { label: "No surprise bills", body: "At zero, Tex pauses and tells you in chat. Upgrade, buy a top-up or redeem a code to carry on." },
 ];
@@ -301,7 +301,7 @@ export const faqs = [
   },
   {
     q: "What is a credit?",
-    a: "One credit is about one cent. Credits pay for the time your agent spends working and some paid tools. At launch the AI runs on your own key, so your provider bills that part directly. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
+    a: "One credit is about one cent. Credits pay for three things: Textcrew AI if you use it, your agent's running time (1 credit per 10 minutes), and actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free). If you bring your own AI, the AI part isn't charged in credits. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
   },
   {
     q: "What happens when I run out of credits?",
@@ -309,11 +309,11 @@ export const faqs = [
   },
   {
     q: "Do I need my own AI key?",
-    a: "Yes, at launch. Add an Anthropic, OpenAI or OpenRouter key once and Tex uses it for every task, so your provider bills the AI and it isn't charged in credits. Your key is encrypted and only the last four characters are ever shown. Built-in models are coming later.",
+    a: "No. There are three ways to run the AI: your own API key (Anthropic, OpenAI or OpenRouter), your Claude plan (beta), which runs Claude Code, or Textcrew AI, paid in credits. If you bring your own AI, the AI part isn't charged in credits. An API key is encrypted, and only its last four characters are ever shown.",
   },
   {
     q: "Is my data used to train AI models?",
-    a: "No. Tex calls the AI through your own key and your provider's API, so your provider's terms apply. We don't use your data to train AI models.",
+    a: "No. We don't use your data to train AI models, and that includes Textcrew AI. With your own API key or Claude plan, the AI runs on your own account with that provider.",
   },
   {
     q: "How do I delete my data?",
