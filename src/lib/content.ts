@@ -36,7 +36,31 @@ export const apps = {
   total: "Gmail, Google Calendar, Notion, Slack, GitHub and more",
 } as const;
 
-export const useCases: { ask: string; result: string; tag: string; tone: { bg: string; fg: string }; icons: ("gmail" | "calendar" | "notion" | "slack" | "telegram")[] }[] = [
+// `who` is the crew member that does the work and answers; it defaults to Tex.
+export const useCases: {
+  ask: string;
+  result: string;
+  tag: string;
+  tone: { bg: string; fg: string };
+  icons: ("gmail" | "calendar" | "notion" | "github" | "telegram")[];
+  who?: AgentId;
+}[] = [
+  {
+    ask: "Review every pull request on my repo and text me the verdict.",
+    result: "Patch reviews it, comments on the PR, and sends a short summary to your chat.",
+    tag: "Code review",
+    tone: { bg: "#FDF3E1", fg: "#8A5708" },
+    icons: ["github", "telegram"],
+    who: "patch",
+  },
+  {
+    ask: "Fix the typo on the pricing page and open a PR.",
+    result: "Byte makes the change on a branch and opens a pull request for you to merge. It never pushes to your main branch.",
+    tag: "Coding",
+    tone: { bg: "#E8F7EE", fg: "#13803F" },
+    icons: ["github"],
+    who: "byte",
+  },
   {
     ask: "Move my 3pm with Maya to tomorrow and let her know.",
     result: "Moves the event in Google Calendar, drafts the note to Maya, and sends it once you tap Approve.",
@@ -52,13 +76,6 @@ export const useCases: { ask: string; result: string; tag: string; tone: { bg: s
     icons: ["calendar", "gmail"],
   },
   {
-    ask: "Remind me Friday to chase the invoice.",
-    result: "Sets the reminder and pings you in this chat on Friday.",
-    tag: "Reminder",
-    tone: { bg: "#E8F7EE", fg: "#13803F" },
-    icons: ["telegram"],
-  },
-  {
     ask: "Tell me when my boss emails.",
     result: "Watches Gmail and messages you the moment that email lands.",
     tag: "Trigger",
@@ -71,13 +88,6 @@ export const useCases: { ask: string; result: string; tag: string; tone: { bg: s
     tag: "Notes",
     tone: { bg: "#F1F0EC", fg: "#3F3D38" },
     icons: ["notion"],
-  },
-  {
-    ask: "Post today's update in #team on Slack.",
-    result: "Writes the update from your notes and posts it after you approve it.",
-    tag: "Slack",
-    tone: { bg: "#F6ECF5", fg: "#6B1E68" },
-    icons: ["slack"],
   },
 ];
 

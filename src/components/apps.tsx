@@ -1,8 +1,16 @@
-import { apps, useCases } from "@/lib/content";
+import { apps, useCases, type AgentId } from "@/lib/content";
 import { AgentFigure } from "./agent";
 import { BrandIcon } from "./brand-icon";
 import { JobReceipt } from "./job-receipt";
 import { Section } from "./section";
+
+// Background behind the face of whoever answers a use case.
+const FACE_TINT: Record<AgentId, string> = {
+  tex: "bg-accent-soft",
+  byte: "bg-[#EFEAFF]",
+  patch: "bg-[#FDF3E1]",
+  scout: "bg-[#E4F4F2]",
+};
 
 export function Apps() {
   return (
@@ -43,7 +51,7 @@ export function UseCases() {
       id="use-cases"
       eyebrow="Popular use cases"
       title="Delegate the busywork."
-      lede="Real requests, the way you'd actually type them. Or send a voice note."
+      lede="Real requests, from your repo to your inbox, the way you'd actually type them. Or send a voice note."
     >
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {useCases.map((u) => (
@@ -70,8 +78,8 @@ export function UseCases() {
               </p>
             </div>
             <div className="flex gap-3 border-t border-line px-6 py-5">
-              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent-soft">
-                <AgentFigure who="tex" glyph size={24} label="Tex" />
+              <span className={`grid size-8 shrink-0 place-items-center rounded-full ${FACE_TINT[u.who ?? "tex"]}`}>
+                <AgentFigure who={u.who ?? "tex"} glyph size={24} />
               </span>
               <p className="text-[14.5px] leading-relaxed text-muted">{u.result}</p>
             </div>

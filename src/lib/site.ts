@@ -14,6 +14,8 @@ export const site = {
     "personal AI agent",
     "AI agent on Telegram",
     "AI assistant on Telegram",
+    "AI code review",
+    "pull request review",
     "AI executive assistant",
     "AI automation",
     "Gmail automation",
