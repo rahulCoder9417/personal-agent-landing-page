@@ -194,20 +194,20 @@ export const crew: CrewMember[] = [
 
 export const roadmap = [
   {
-    title: "A review queue",
-    body: "See every draft your crew prepares before it ships, and approve in bulk.",
+    title: "More channels",
+    body: "Where the platforms allow it: iMessage as a beta, WhatsApp in regions where it is permitted, and Slack, email and Discord.",
+  },
+  {
+    title: "Browser use",
+    body: "On the Max plan, Tex works in a browser on sites that don't have an API.",
   },
   {
     title: "Desktop app",
-    body: "Let Tex work with files and apps on your own computer, and hand tasks to your Claude Code or Codex.",
+    body: "Let Tex work with files and apps on your own computer, and hand tasks to your own Claude Code.",
   },
   {
-    title: "More channels",
-    body: "Message your agent from Slack, email and Discord.",
-  },
-  {
-    title: "Hundreds more apps",
-    body: "Many more integrations, plus browser automation for sites without an API.",
+    title: "More apps",
+    body: "More integrations, beyond Gmail, Google Calendar, Notion, Slack and GitHub.",
   },
   {
     title: "Teams and workspaces",
