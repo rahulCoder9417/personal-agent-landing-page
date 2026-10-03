@@ -18,7 +18,8 @@ export function Apps() {
         <div>
           <p className="text-xl font-semibold tracking-[-0.02em]">{apps.total}.</p>
           <p className="mt-1 max-w-md text-[15px] text-muted">
-            Across email, calendar, notes, tasks, CRM, dev and research. On Max, plug in your own MCP servers too.
+            More apps are being added across email, calendar, notes, tasks, CRM, dev and research. On Max, plug in your
+            own MCP servers too.
           </p>
         </div>
         <ul className="flex flex-wrap gap-2">

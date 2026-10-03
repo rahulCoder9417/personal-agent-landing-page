@@ -30,9 +30,10 @@ export const apps = {
     { icon: "calendar", name: "Google Calendar", actions: ["Create and move events", "Find free time", "Send invites"] },
     { icon: "notion", name: "Notion", actions: ["Create pages", "Add database rows", "File meeting notes"] },
     { icon: "slack", name: "Slack", actions: ["Post to channels", "Search messages", "Set reminders"] },
+    { icon: "github", name: "GitHub", actions: ["Review pull requests", "Open pull requests", "Comment on a PR"] },
   ],
   categories: ["Email", "Calendar", "Notes", "Tasks", "CRM", "Dev", "Research"],
-  total: "About 25 apps at launch",
+  total: "Gmail, Google Calendar, Notion, Slack, GitHub and more",
 } as const;
 
 export const useCases: { ask: string; result: string; tag: string; tone: { bg: string; fg: string }; icons: ("gmail" | "calendar" | "notion" | "slack" | "telegram")[] }[] = [
@@ -144,7 +145,7 @@ export const features = [
   },
   {
     title: "Your apps, plus your own tools",
-    body: "About 25 apps at launch. On Max you can plug in your own MCP servers too.",
+    body: "Gmail, Google Calendar, Notion, Slack and GitHub, with more being added. On Max you can plug in your own MCP servers too.",
   },
   {
     title: "Three ways to run the AI",
@@ -238,7 +239,7 @@ export const plans: Plan[] = [
     featured: true,
     items: [
       "1,500 credits every month",
-      "All 25 apps",
+      "All apps",
       "5 automations",
       "Top-ups: $10 for 800 credits",
       "Your own AI key, your Claude plan (beta) or Textcrew AI",
@@ -254,7 +255,7 @@ export const plans: Plan[] = [
     items: [
       "4,500 credits every month",
       "Priority when things get busy",
-      "All 25 apps plus your own MCP servers",
+      "All apps, plus your own MCP servers",
       "50 automations",
       "Top-ups: $10 for 800 credits",
       "Your own AI key, your Claude plan (beta) or Textcrew AI",
@@ -297,7 +298,7 @@ export const faqs = [
   },
   {
     q: "What can it connect to?",
-    a: "Gmail, Google Calendar, Notion, Slack and about 20 more apps at launch, across email, calendar, notes, tasks, CRM, dev and research. On Max you can add your own MCP servers.",
+    a: "Gmail, Google Calendar, Notion, Slack and GitHub, and more apps are being added. Free connects 10 apps; Pro and Max connect all of them. On Max you can add your own MCP servers.",
   },
   {
     q: "What is a credit?",
