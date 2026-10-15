@@ -42,7 +42,7 @@ export function JobReceipt() {
   const creditsSoFar = shown.reduce((sum, l) => sum + l.credits, 0);
 
   return (
-    <div ref={ref} className="mx-auto grid max-w-5xl items-start gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-14">
+    <div ref={ref} className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-14">
       {/* The ask, and the apps it touches */}
       <div className="flex flex-col gap-5 md:pt-6">
         <div>

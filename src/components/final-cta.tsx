@@ -15,7 +15,8 @@ const perched: { who: AgentId; size: number; pose: "left" | "front" | "right"; h
 
 export function FinalCta() {
   return (
-    <section id="waitlist" aria-labelledby="waitlist-title" className="pb-24 pt-52 sm:pb-32">
+    // overflow-x-clip: on narrow phones the perched crew is wider than the screen; clip it instead of scrolling sideways.
+    <section id="waitlist" aria-labelledby="waitlist-title" className="overflow-x-clip pb-24 pt-52 sm:pb-32">
       <Container>
         <div className="relative mx-auto max-w-4xl">
           <div className="absolute inset-x-0 bottom-full flex items-end justify-center">

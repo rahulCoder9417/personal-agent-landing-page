@@ -18,7 +18,7 @@ export function Nav({ current }: { current?: string }) {
       <Container className="flex h-16 items-center justify-between gap-6">
         <Link href="/#top" aria-label="Textcrew home" className="flex items-center gap-2.5 rounded-lg">
           <Logo />
-          <span className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-[0.08em] text-muted">
+          <span className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-[0.08em] text-muted max-[360px]:hidden">
             BETA
           </span>
         </Link>
