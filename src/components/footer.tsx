@@ -17,6 +17,7 @@ export function Footer() {
           <Link href="/pricing" className="hover:text-fg">Pricing</Link>
           <Link href="/#faq" className="hover:text-fg">FAQ</Link>
           <Link href="/privacy" className="hover:text-fg">Privacy</Link>
+          <Link href="/terms" className="hover:text-fg">Terms</Link>
         </nav>
       </Container>
       <Container className="mt-8">
