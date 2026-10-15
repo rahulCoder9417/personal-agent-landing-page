@@ -57,7 +57,7 @@ New, pending and confirmed emails all get the same response, so nobody can check
 
 ## What's on the page
 
-Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; pricing; FAQ; and a final waitlist call to action. There is also a `/privacy` summary page.
+Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; pricing; FAQ; and a final waitlist call to action. There are also a `/privacy` summary page, with a section on data from Google apps (`/privacy#google-data`, Google's "Limited Use" statement), and a `/terms` page. Both are linked in the footer.
 
 The visual language follows the products it sits next to (Notis, Multiply, Strawberry): light background, centred sections, real app logos, product mockups and pill buttons.
 
@@ -71,6 +71,7 @@ src/
 │   ├── api/waitlist/route.ts   waitlist signup: validation, honeypot, rate limit, Neon upsert
 │   ├── waitlist/confirm/       confirm page for the emailed link (server action)
 │   ├── privacy/page.tsx        plain-language privacy summary (draft until the full policy)
+│   ├── terms/page.tsx          plain-language terms of service; highlighted [PLACEHOLDER: …] text still to fill in
 │   ├── layout.tsx              fonts (Geist, Geist Mono), metadata, theme colour
 │   ├── page.tsx                the landing page
 │   ├── globals.css             brand tokens, dot grid, floating logos, agent animations
