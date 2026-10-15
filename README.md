@@ -57,7 +57,9 @@ New, pending and confirmed emails all get the same response, so nobody can check
 
 ## What's on the page
 
-Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; pricing; FAQ; and a final waitlist call to action. There is also a `/privacy` summary page.
+Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; a short pricing teaser that links to `/pricing`; FAQ; and a final waitlist call to action.
+
+Other pages: `/pricing` (the plans, the waitlist deal, how credits work, the FAQ questions about plans and credits, and the waitlist form) and a `/privacy` summary. The nav and footer link home sections as `/#id`, so they work from every page. The FAQ questions marked `pricing: true` in `content.ts` are the ones `/pricing` repeats.
 
 The visual language follows the products it sits next to (Notis, Multiply, Strawberry): light background, centred sections, real app logos, product mockups and pill buttons.
 
@@ -70,6 +72,7 @@ src/
 ├── app/
 │   ├── api/waitlist/route.ts   waitlist signup: validation, honeypot, rate limit, Neon upsert
 │   ├── waitlist/confirm/       confirm page for the emailed link (server action)
+│   ├── pricing/page.tsx        plans and credits, with its own title and description
 │   ├── privacy/page.tsx        plain-language privacy summary (draft until the full policy)
 │   ├── layout.tsx              fonts (Geist, Geist Mono), metadata, theme colour
 │   ├── page.tsx                the landing page
@@ -82,6 +85,7 @@ src/
 │   ├── perched-tex.tsx         3D Tex on the window edge, with "Send Tex a task"
 │   ├── brand-icon.tsx          app logos from simple-icons (Slack is a neutral tile)
 │   ├── waitlist-form.tsx       email + preferred chat app
+│   ├── pricing.tsx             the /pricing page body, and the short teaser on the home page
 │   └── …                       one file per section
 ├── db/
 │   ├── schema.ts               waitlist_signups table (Drizzle)
