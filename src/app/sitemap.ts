@@ -5,6 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date(); // the build time, since the site is rebuilt on every deploy
   return [
     { url: site.url, lastModified, changeFrequency: "weekly", priority: 1 },
+    { url: `${site.url}/pricing`, lastModified, changeFrequency: "weekly", priority: 0.8 },
     { url: `${site.url}/privacy`, lastModified, changeFrequency: "monthly", priority: 0.3 },
   ];
 }
