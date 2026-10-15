@@ -1,11 +1,20 @@
 import { faqs } from "@/lib/content";
 import { Section } from "./section";
 
-export function Faq() {
+// The home page shows every question; /pricing passes only the ones about plans and credits.
+export function Faq({
+  items = faqs,
+  id = "faq",
+  title = "Questions, answered.",
+}: {
+  items?: readonly { q: string; a: string }[];
+  id?: string;
+  title?: string;
+}) {
   return (
-    <Section id="faq" eyebrow="FAQ" title="Questions, answered.">
+    <Section id={id} eyebrow="FAQ" title={title}>
       <div className="mx-auto max-w-3xl divide-y divide-line rounded-3xl border border-line bg-surface px-6 shadow-soft sm:px-8">
-        {faqs.map((f) => (
+        {items.map((f) => (
           <details key={f.q} className="group py-5">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-semibold tracking-[-0.01em] [&::-webkit-details-marker]:hidden">
               {f.q}
