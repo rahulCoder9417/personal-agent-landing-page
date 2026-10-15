@@ -28,7 +28,7 @@ export function Crew() {
               results together. Every send still waits for your OK.
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-4">
+          <div className="flex shrink-0 flex-wrap items-center gap-4">
             <FaceStack size={40} />
             <a href="#waitlist" className="inline-flex h-10 items-center rounded-full bg-fg px-5 text-sm font-medium text-white hover:bg-black">
               Get early access

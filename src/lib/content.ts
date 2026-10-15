@@ -278,17 +278,20 @@ export const creditNotes = [
   { label: "No surprise bills", body: "At zero, Tex pauses and tells you in chat. Upgrade, buy a top-up or redeem a code to carry on." },
 ];
 
-export const faqs = [
+// `pricing` marks the questions repeated on the /pricing page.
+export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   {
     q: "When does Textcrew launch?",
     a: "We're in private beta now and letting people in in small batches. Join the waitlist and we'll email you when your spot opens.",
   },
   {
     q: "How does the beta work?",
+    pricing: true,
     a: "Everyone starts on the Free plan with 100 credits. Waitlist members get 50% off their first month of Pro or Max, and beta invites can come with a code that adds extra free credits, so you can put Tex on real work before paying anything.",
   },
   {
     q: "What will it cost?",
+    pricing: true,
     a: "Free is $0. Pro is $12 a month instead of $30, and Max is $30 a month instead of $50. If you join the waitlist, your first month of Pro or Max is half price: $6 or $15.",
   },
   {
@@ -297,6 +300,7 @@ export const faqs = [
   },
   {
     q: "How many automations can I run?",
+    pricing: true,
     a: "One on Free, five on Pro and 50 on Max. Set one up by texting Tex, like \"every Monday at 9am, send me my week\". Automations pause on their own if you run out of credits.",
   },
   {
@@ -305,18 +309,22 @@ export const faqs = [
   },
   {
     q: "What can it connect to?",
+    pricing: true,
     a: "Gmail, Google Calendar, Notion, Slack and GitHub, and more apps are being added. Free connects 10 apps; Pro and Max connect all of them. On Max you can add your own MCP servers, and your agent can use a real browser for sites without an API.",
   },
   {
     q: "What is a credit?",
+    pricing: true,
     a: "One credit is about one cent. Credits pay for Textcrew AI if you use it, your agent's running time (1 credit per 10 minutes), actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free) and, on the Max plan, browser time (2 credits per minute). If you bring your own AI, the AI part isn't charged in credits. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
   },
   {
     q: "What happens when I run out of credits?",
+    pricing: true,
     a: "Tex pauses and tells you in chat, and automations pause too. Upgrade, buy a top-up or redeem a code and it picks up where it left off.",
   },
   {
     q: "Do I need my own AI key?",
+    pricing: true,
     a: "No. There are three ways to run the AI: your own API key (Anthropic, OpenAI or OpenRouter), your Claude plan (beta), which runs Claude Code, or Textcrew AI, paid in credits. If you bring your own AI, the AI part isn't charged in credits. An API key is encrypted, and only its last four characters are ever shown.",
   },
   {
@@ -328,3 +336,5 @@ export const faqs = [
     a: "Delete your account from settings. That removes your agent's workspace, memory, messages and connected apps, and clears backups within 30 days.",
   },
 ];
+
+export const pricingFaqs = faqs.filter((f) => f.pricing);
