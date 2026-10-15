@@ -6,13 +6,15 @@ export function Faq({
   items = faqs,
   id = "faq",
   title = "Questions, answered.",
+  className,
 }: {
   items?: readonly { q: string; a: string }[];
   id?: string;
   title?: string;
+  className?: string;
 }) {
   return (
-    <Section id={id} eyebrow="FAQ" title={title}>
+    <Section id={id} eyebrow="FAQ" title={title} className={className}>
       <div className="mx-auto max-w-3xl divide-y divide-line rounded-3xl border border-line bg-surface px-6 shadow-soft sm:px-8">
         {items.map((f) => (
           <details key={f.q} className="group py-5">
