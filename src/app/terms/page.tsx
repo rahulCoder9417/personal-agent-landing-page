@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Footer } from "@/components/footer";
 import { Logo } from "@/components/logo";
 import { Container } from "@/components/section";
+import { site } from "@/lib/site";
 
 const description = "The terms for using Textcrew in its private beta: accounts, acceptable use, your data, credits and payments.";
 
@@ -20,7 +21,11 @@ function Placeholder({ children }: { children: ReactNode }) {
   return <mark className="rounded bg-patch/25 px-1 text-fg">[PLACEHOLDER: {children}]</mark>;
 }
 
-const contactEmail = <Placeholder>contact email</Placeholder>;
+const contactEmail = (
+  <a href={`mailto:${site.contactEmail}`} className="font-medium text-accent hover:underline">
+    {site.contactEmail}
+  </a>
+);
 
 function Clause({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
@@ -151,12 +156,16 @@ export default function TermsPage() {
                   .
                 </li>
                 <li>
-                  Paid plans and top-ups are sold through Polar, our payment provider, so we never see your card details.
-                  Prices are in US dollars. Depending on where you live, tax such as GST or VAT may be added at checkout.
+                  Paid plans and top-ups are sold through Polar, our payment provider and merchant of record: Polar is the
+                  seller on your receipt and its own buyer terms apply to the payment, and we never see your card details.
+                  Prices are in US dollars. Depending on where you live, tax such as GST or VAT is added at checkout or
+                  already included. Invoices, receipts and your card are on Polar&apos;s billing page, which you open from the
+                  web app.
                 </li>
                 <li>
-                  Plans renew every month until you cancel. Cancel in the web app, in Settings, under Plans: you keep your
-                  plan until the end of the period you paid for, then move to Free.
+                  Plans renew every month until you cancel. Cancel in the web app, on Pricing: you keep your plan until the
+                  end of the period you paid for, then move to Free. If a renewal payment fails, Polar tries again over the
+                  next 21 days and you keep your plan meanwhile; if it still fails, the plan ends and you move to Free.
                 </li>
                 <li>
                   Each credit lasts 90 days from the day you get it, whether it came from a plan, a top-up or a code. The
@@ -170,8 +179,10 @@ export default function TermsPage() {
                 <li>If a task fails because of an error on our side, you&apos;re told, and its credits are given back automatically.</li>
                 <li>We can end a promotion or coupon code at any time. Free credits obtained by misusing a code can be taken back.</li>
                 <li>
-                  Refunds: <Placeholder>refund policy; the site doesn&apos;t state one yet</Placeholder>. When a payment is
-                  refunded, the credits it bought are taken back, in proportion for a partial refund.
+                  Refunds: <Placeholder>refund policy; the site doesn&apos;t state one yet</Placeholder>. To ask for one,
+                  write to {contactEmail}. When a payment is refunded, the credits it bought are taken back, in proportion
+                  for a partial refund. Polar may also refund a payment on its own to prevent a chargeback; that ends the
+                  plan it paid for and takes back the credits it bought.
                 </li>
               </List>
             </Clause>
