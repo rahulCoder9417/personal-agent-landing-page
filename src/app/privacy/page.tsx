@@ -37,7 +37,7 @@ const promises = [
   },
   {
     title: "Delete anytime",
-    body: "Deleting your account removes your agent workspace, memory, messages, connected apps and backups. Backups are fully cleared within 30 days.",
+    body: "Deleting your account removes your agent workspace, memory, messages, files, activity log and connected apps, and the backup copies of your workspace files. Database backups are kept for 7 days, so the rest of your data is gone from them within 7 days. We keep only billing records (payments, credits and coupons used) and an account record with your name and email removed.",
   },
   {
     title: "Minimal data",
@@ -98,10 +98,11 @@ const googleRules = [
 
 const retention = [
   ["Beta waitlist signups", "Until you ask us to remove them"],
-  ["Messages, approvals, automations, activity log", "Until you delete them or your account"],
+  ["Messages", "1 year, or until you delete them or your account"],
+  ["Approvals, automations, activity log", "Until you delete them or your account"],
   ["Access to your connected apps (held by Composio)", "Until you disconnect the app or delete your account"],
-  ["Raw incoming events (technical)", "30 days"],
-  ["Backups", "14 days rolling; deleted accounts are cleared within 30 days"],
+  ["Raw incoming events (technical), including ones that failed", "30 days"],
+  ["Backups", "7 days. When you delete your account, the backup copies of your workspace files are deleted at once, and the rest of your data is gone from the database backups within 7 days"],
   ["Billing records", "As long as the law requires"],
 ];
 
@@ -210,7 +211,8 @@ export default function PrivacyPage() {
               <li>
                 <span className="font-semibold text-fg">Delete your account.</span> In Settings, press &ldquo;Delete my
                 account and data&rdquo;. It removes your agent workspace, memory, messages, files and connected apps,
-                including their access tokens at Composio. Backups are fully cleared within 30 days.
+                including their access tokens at Composio, and the backup copies of your workspace files. The rest of your
+                data is gone from our database backups within 7 days.
               </li>
             </ul>
           </section>
