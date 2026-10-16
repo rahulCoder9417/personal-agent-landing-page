@@ -92,7 +92,11 @@ export function Pricing() {
         </section>
 
         <p className="mt-6 text-center text-[14px] leading-relaxed text-muted">
-          {paymentNote} Questions about a payment:{" "}
+          {paymentNote} You can ask for a refund within 14 days of a payment: see the{" "}
+          <Link href="/terms#refunds" className="font-medium text-accent hover:underline">
+            Terms
+          </Link>
+          . Questions about a payment:{" "}
           <a href={`mailto:${site.contactEmail}`} className="font-medium text-accent hover:underline">
             {site.contactEmail}
           </a>

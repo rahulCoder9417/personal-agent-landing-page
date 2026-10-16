@@ -4,9 +4,10 @@ import Link from "next/link";
 import { Footer } from "@/components/footer";
 import { Logo } from "@/components/logo";
 import { Container } from "@/components/section";
+import { plans } from "@/lib/content";
 import { site } from "@/lib/site";
 
-const description = "The terms for using Textcrew in its private beta: accounts, acceptable use, your data, credits and payments.";
+const description = "The terms for using Textcrew in its private beta: who runs it, accounts, acceptable use, your data, credits, payments and refunds.";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -16,10 +17,13 @@ export const metadata: Metadata = {
   openGraph: { type: "article", title: "Textcrew terms of service", description, url: "/terms", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
 };
 
-// Text still to be decided by the founder. It shows highlighted on the page, so a missing one can't go unnoticed.
-function Placeholder({ children }: { children: ReactNode }) {
-  return <mark className="rounded bg-patch/25 px-1 text-fg">[PLACEHOLDER: {children}]</mark>;
-}
+// Prices come from content.ts, like the pricing page, so the terms can't drift from the plans.
+const plan = (name: string) => plans.find((p) => p.name === name);
+const pro = plan("Pro");
+const max = plan("Max");
+
+// How long after a payment a refund can be asked for.
+const REFUND_DAYS = 14;
 
 const contactEmail = (
   <a href={`mailto:${site.contactEmail}`} className="font-medium text-accent hover:underline">
@@ -54,20 +58,20 @@ export default function TermsPage() {
       </header>
       <main className="flex-1 py-16 sm:py-24">
         <Container className="max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Draft · Private beta</p>
+          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Private beta</p>
           <h1 className="mt-3 text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold leading-[1.02] tracking-[-0.045em]">Terms of service</h1>
           <p className="mt-5 text-lg leading-relaxed text-muted">
             These terms are the agreement between you and Textcrew when you use Textcrew: the web app, the Telegram bot and
             this website. They&apos;re short and in plain words. By creating an account or using Textcrew, you agree to them.
           </p>
-          <p className="mt-3 text-sm text-muted">Last updated 15 October 2026.</p>
+          <p className="mt-3 text-sm text-muted">Last updated 16 October 2026.</p>
 
           <div className="mt-12 flex flex-col gap-8">
             <Clause id="who" title="Who we are">
               <p>
-                Textcrew is a personal AI agent you text from Telegram or the web app. It&apos;s run by{" "}
-                <Placeholder>operator&apos;s legal name</Placeholder>, <Placeholder>postal address</Placeholder>
-                {" "}(&ldquo;Textcrew&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;). You can reach us at {contactEmail}.
+                Textcrew is a personal AI agent you text from Telegram or the web app. It&apos;s run by Rahul Kumar, an
+                individual trading as Textcrew, in Chandigarh, India (&ldquo;Textcrew&rdquo;, &ldquo;we&rdquo;,
+                &ldquo;us&rdquo;). Textcrew is not a company. You can reach us at {contactEmail}.
               </p>
             </Clause>
 
@@ -148,10 +152,14 @@ export default function TermsPage() {
               <List>
                 <li>
                   Textcrew runs on credits. One credit is about one cent. Credits pay for your agent&apos;s running time,
-                  actions that change something in your apps, Textcrew AI if you use it, and browser time on Max. The current
-                  plans, prices and credit costs are in the{" "}
-                  <Link href="/#pricing" className={linkClass}>
-                    pricing section
+                  actions that change something in your apps, Textcrew AI if you use it, and browser time on Max.
+                </li>
+                <li>
+                  Free is $0. Pro is {pro?.price} a month and Max is {max?.price} a month. These are launch prices: the
+                  regular prices are {pro?.regular} and {max?.regular} a month. A top-up is $10 for 800 credits. Waitlist
+                  members get 50% off their first month of Pro or Max. The current plans, prices and credit costs are on the{" "}
+                  <Link href="/pricing" className={linkClass}>
+                    Pricing page
                   </Link>
                   .
                 </li>
@@ -163,8 +171,8 @@ export default function TermsPage() {
                   web app.
                 </li>
                 <li>
-                  Plans renew every month until you cancel. Cancel in the web app, on Pricing: you keep your plan until the
-                  end of the period you paid for, then move to Free. If a renewal payment fails, Polar tries again over the
+                  Plans renew every month until you cancel. You can cancel any time in the web app, on Pricing: the plan
+                  doesn&apos;t renew, and you keep it until the end of the month you paid for, then move to Free. If a renewal payment fails, Polar tries again over the
                   next 21 days and you keep your plan meanwhile; if it still fails, the plan ends and you move to Free.
                 </li>
                 <li>
@@ -178,11 +186,26 @@ export default function TermsPage() {
                 </li>
                 <li>If a task fails because of an error on our side, you&apos;re told, and its credits are given back automatically.</li>
                 <li>We can end a promotion or coupon code at any time. Free credits obtained by misusing a code can be taken back.</li>
+              </List>
+            </Clause>
+
+            <Clause id="refunds" title="Refunds">
+              <List>
                 <li>
-                  Refunds: <Placeholder>refund policy; the site doesn&apos;t state one yet</Placeholder>. To ask for one,
-                  write to {contactEmail}. When a payment is refunded, the credits it bought are taken back, in proportion
-                  for a partial refund. Polar may also refund a payment on its own to prevent a chargeback; that ends the
-                  plan it paid for and takes back the credits it bought.
+                  You can ask for a refund within {REFUND_DAYS} days of a payment, for a plan or a top-up. Write to{" "}
+                  {contactEmail}.
+                </li>
+                <li>Polar, our merchant of record, makes the refund.</li>
+                <li>
+                  When a payment is refunded, the credits it added are taken back. If you already spent some of them, what
+                  you spent stays as a balance you owe, and it is taken from your next credits. A partial refund takes back
+                  the same share of the credits.
+                </li>
+                <li>A refund doesn&apos;t cancel your plan. To stop it renewing, cancel it in the web app as well.</li>
+                <li>After {REFUND_DAYS} days, payments aren&apos;t refunded, except where the law requires it.</li>
+                <li>
+                  Polar may also refund a payment on its own, to prevent a chargeback. That ends the plan the payment was for
+                  and takes back the credits it added.
                 </li>
               </List>
             </Clause>
@@ -246,14 +269,14 @@ export default function TermsPage() {
 
             <Clause id="law" title="Governing law">
               <p>
-                These terms are governed by the laws of <Placeholder>country, and state if needed</Placeholder>. Disputes go
-                to the courts of <Placeholder>city</Placeholder>. If you use Textcrew as a consumer, you keep any protections
-                the law where you live gives you.
+                These terms are governed by the laws of India. Disputes go to the courts at Chandigarh, India. If you use
+                Textcrew as a consumer, you keep any protections the law where you live gives you.
               </p>
             </Clause>
 
             <Clause id="contact" title="Contact">
-              <p>Questions about these terms, your account or a payment: {contactEmail}.</p>
+              <p>Questions about these terms, your account, a payment or a refund: {contactEmail}.</p>
+              <p>Textcrew is run by Rahul Kumar, Chandigarh, India.</p>
             </Clause>
           </div>
         </Container>
