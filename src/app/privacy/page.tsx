@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Footer } from "@/components/footer";
 import { Logo } from "@/components/logo";
 import { Container } from "@/components/section";
+import { site } from "@/lib/site";
 
 const description = "How Textcrew handles your data: a private agent workspace, no passwords, approvals before acting, and deletion anytime.";
 
@@ -236,6 +237,34 @@ export default function PrivacyPage() {
             <p className="mt-2 leading-relaxed text-muted">
               We use Vercel Web Analytics to count visits: which pages are viewed, the site that sent you here, and your country
               and device type. It sets no cookies and doesn&apos;t build a profile of you or follow you to other sites.
+            </p>
+          </section>
+
+          <section id="payments" className="mt-14 scroll-mt-24">
+            <h2 className="text-2xl font-extrabold tracking-[-0.03em]">When you pay</h2>
+            <p className="mt-2 leading-relaxed text-muted">
+              Paid plans and top-ups are sold through Polar (polar.sh), our payment provider and merchant of record. You pay on
+              Polar&apos;s checkout page, and Polar handles your card, your billing address, tax and receipts. We never see or
+              store your card number.
+            </p>
+            <ul className="mt-5 flex list-disc flex-col gap-2 pl-5 leading-relaxed text-muted">
+              <li>We send Polar your Textcrew account id, your email and your name, so the payment is linked to your account.</li>
+              <li>
+                Polar tells us what was paid: the plan or top-up, the amount, and the dates of your subscription. We keep that as
+                your billing record, with the credits it added.
+              </li>
+              <li>Invoices, receipts and the card you pay with are on Polar&apos;s billing page, which you open from the web app.</li>
+            </ul>
+          </section>
+
+          <section id="contact" className="mt-14 scroll-mt-24">
+            <h2 className="text-2xl font-extrabold tracking-[-0.03em]">Contact</h2>
+            <p className="mt-2 leading-relaxed text-muted">
+              Questions about your data, or a request to see or delete it: write to{" "}
+              <a href={`mailto:${site.contactEmail}`} className="font-medium text-accent hover:underline">
+                {site.contactEmail}
+              </a>
+              .
             </p>
           </section>
 

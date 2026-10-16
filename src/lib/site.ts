@@ -26,4 +26,7 @@ export const site = {
     "Textcrew",
   ],
   status: "Private beta · Launching soon",
+  // Where people write to us: questions, account and payment help. Shown in the footer, on the
+  // privacy page and the pricing page. Change it here only.
+  contactEmail: "support@textcrew.in",
 } as const;

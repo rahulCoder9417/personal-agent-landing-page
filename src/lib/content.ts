@@ -214,7 +214,8 @@ export const roadmap = [
 export type Plan = {
   name: string;
   price: string;
-  was?: string;
+  /** The regular price, said in plain words beside the launch price. Never struck out: it has never been charged. */
+  regular?: string;
   waitlist?: string;
   cadence: string;
   blurb: string;
@@ -237,9 +238,9 @@ export const plans: Plan[] = [
   },
   {
     name: "Pro",
-    price: "$12",
-    was: "$30",
-    waitlist: "$6",
+    price: "$19",
+    regular: "$30",
+    waitlist: "$9.50",
     cadence: "per month",
     blurb: "For your everyday assistant.",
     featured: true,
@@ -254,7 +255,7 @@ export const plans: Plan[] = [
   {
     name: "Max",
     price: "$30",
-    was: "$50",
+    regular: "$50",
     waitlist: "$15",
     cadence: "per month",
     blurb: "For heavy, multi-step work.",
@@ -271,6 +272,9 @@ export const plans: Plan[] = [
 ];
 
 export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
+
+export const paymentNote =
+  "Prices are in US dollars. Depending on where you live, tax such as GST or VAT is added at checkout or already included. Payments are handled by Polar, our merchant of record. Plans renew every month until you cancel; cancel any time in the web app and you keep your plan until the end of the month you paid for.";
 
 export const creditNotes = [
   { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions that change something in your apps (1 credit each; reading and searching are free), browser time on Max (2 credits per minute) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
@@ -292,7 +296,7 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   {
     q: "What will it cost?",
     pricing: true,
-    a: "Free is $0. Pro is $12 a month instead of $30, and Max is $30 a month instead of $50. If you join the waitlist, your first month of Pro or Max is half price: $6 or $15.",
+    a: "Free is $0. Pro is $19 a month and Max is $30 a month. These are launch prices: the regular prices are $30 and $50 a month. If you join the waitlist, your first month of Pro or Max is half price: $9.50 or $15.",
   },
   {
     q: "Which chat apps does it work with?",
@@ -316,6 +320,11 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
     q: "What is a credit?",
     pricing: true,
     a: "One credit is about one cent. Credits pay for Textcrew AI if you use it, your agent's running time (1 credit per 10 minutes), actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free) and, on the Max plan, browser time (2 credits per minute). If you bring your own AI, the AI part isn't charged in credits. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
+  },
+  {
+    q: "How do I cancel a paid plan?",
+    pricing: true,
+    a: "In the web app, on Pricing, press Cancel plan. Your plan doesn't renew, and you keep it until the end of the month you paid for, then move to Free. Your credits stay until they expire. Invoices, receipts and your card are on Polar's billing page, one click from the same screen.",
   },
   {
     q: "What happens when I run out of credits?",

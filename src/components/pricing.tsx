@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { creditNotes, plans, waitlistDeal } from "@/lib/content";
+import { creditNotes, paymentNote, plans, waitlistDeal } from "@/lib/content";
+import { site } from "@/lib/site";
 import { Reveal } from "./reveal";
 import { Container, Eyebrow } from "./section";
 
@@ -18,7 +19,7 @@ export function Pricing() {
             Everyone starts on Free with 100 credits. Pro and Max add credits every month, all apps and more automations.
             Every plan runs on credits, so you pay for the work Tex actually does.
           </p>
-          <p className="mt-3 text-[15px] text-muted">Launch prices, with the regular price struck out.</p>
+          <p className="mt-3 text-[15px] text-muted">Pro and Max are at launch prices for now.</p>
         </header>
 
         <div className="mb-6 mt-12 flex flex-col items-center justify-between gap-4 rounded-2xl border border-accent/25 bg-accent-soft px-6 py-4 text-center sm:mt-14 sm:flex-row sm:text-left">
@@ -42,14 +43,11 @@ export function Pricing() {
               </div>
               <p className="mt-1 text-[15px] text-muted">{p.blurb}</p>
               <p className="mt-6 flex items-baseline gap-2">
-                {p.was && (
-                  <s className="text-2xl font-semibold tracking-[-0.03em] text-muted/60 decoration-2" aria-label={`Regular price ${p.was}`}>
-                    {p.was}
-                  </s>
-                )}
                 <span className="text-5xl font-bold tracking-[-0.05em]">{p.price}</span>
                 <span className="text-muted">/ {p.cadence}</span>
               </p>
+              {/* Plain words, never a struck-out number: the regular price has never been charged. */}
+              <p className="mt-2 min-h-5 text-[14px] text-muted">{p.regular && `Launch price (regular ${p.regular}/month)`}</p>
               <p className="mt-3 min-h-7">
                 {p.waitlist && (
                   <span className="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-[13px] font-medium text-accent">
@@ -92,6 +90,14 @@ export function Pricing() {
             ))}
           </dl>
         </section>
+
+        <p className="mt-6 text-center text-[14px] leading-relaxed text-muted">
+          {paymentNote} Questions about a payment:{" "}
+          <a href={`mailto:${site.contactEmail}`} className="font-medium text-accent hover:underline">
+            {site.contactEmail}
+          </a>
+          .
+        </p>
       </Container>
     </section>
   );
@@ -115,13 +121,9 @@ export function PricingTeaser() {
               {plans.map((p) => (
                 <li key={p.name} className="inline-flex items-baseline gap-1.5 rounded-full border border-line bg-surface-2 px-3 py-1 text-[13px]">
                   <span className="font-medium">{p.name}</span>
-                  {p.was && (
-                    <s className="text-muted/70" aria-label={`Regular price ${p.was}`}>
-                      {p.was}
-                    </s>
-                  )}
                   <span className="font-semibold">{p.price}</span>
                   <span className="text-muted">{p.cadence === "per month" ? "/ month" : p.cadence}</span>
+                  {p.regular && <span className="text-muted">, launch price (regular {p.regular})</span>}
                 </li>
               ))}
             </ul>
