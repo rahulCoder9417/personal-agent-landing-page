@@ -214,7 +214,8 @@ export const roadmap = [
 export type Plan = {
   name: string;
   price: string;
-  was?: string;
+  /** The regular price, said in plain words beside the launch price. Never struck out: it has never been charged. */
+  regular?: string;
   waitlist?: string;
   cadence: string;
   blurb: string;
@@ -237,9 +238,9 @@ export const plans: Plan[] = [
   },
   {
     name: "Pro",
-    price: "$12",
-    was: "$30",
-    waitlist: "$6",
+    price: "$19",
+    regular: "$30",
+    waitlist: "$9.50",
     cadence: "per month",
     blurb: "For your everyday assistant.",
     featured: true,
@@ -254,7 +255,7 @@ export const plans: Plan[] = [
   {
     name: "Max",
     price: "$30",
-    was: "$50",
+    regular: "$50",
     waitlist: "$15",
     cadence: "per month",
     blurb: "For heavy, multi-step work.",
@@ -295,7 +296,7 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   {
     q: "What will it cost?",
     pricing: true,
-    a: "Free is $0. Pro is $12 a month instead of $30, and Max is $30 a month instead of $50. If you join the waitlist, your first month of Pro or Max is half price: $6 or $15.",
+    a: "Free is $0. Pro is $19 a month and Max is $30 a month. These are launch prices: the regular prices are $30 and $50 a month. If you join the waitlist, your first month of Pro or Max is half price: $9.50 or $15.",
   },
   {
     q: "Which chat apps does it work with?",
