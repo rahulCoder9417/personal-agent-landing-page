@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { creditNotes, plans, waitlistDeal } from "@/lib/content";
+import { creditNotes, paymentNote, plans, waitlistDeal } from "@/lib/content";
+import { site } from "@/lib/site";
 import { Reveal } from "./reveal";
 import { Container, Eyebrow } from "./section";
 
@@ -92,6 +93,14 @@ export function Pricing() {
             ))}
           </dl>
         </section>
+
+        <p className="mt-6 text-center text-[14px] leading-relaxed text-muted">
+          {paymentNote} Questions about a payment:{" "}
+          <a href={`mailto:${site.contactEmail}`} className="font-medium text-accent hover:underline">
+            {site.contactEmail}
+          </a>
+          .
+        </p>
       </Container>
     </section>
   );

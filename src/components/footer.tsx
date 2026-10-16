@@ -20,7 +20,12 @@ export function Footer() {
         </nav>
       </Container>
       <Container className="mt-8">
-        <p className="text-sm text-muted">© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
+        <p className="text-sm text-muted">
+          © {new Date().getFullYear()} {site.name}. All rights reserved. Contact:{" "}
+          <a href={`mailto:${site.contactEmail}`} className="hover:text-fg hover:underline">
+            {site.contactEmail}
+          </a>
+        </p>
       </Container>
     </footer>
   );

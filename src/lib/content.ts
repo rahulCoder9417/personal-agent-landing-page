@@ -272,6 +272,9 @@ export const plans: Plan[] = [
 
 export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
 
+export const paymentNote =
+  "Prices are in US dollars. Depending on where you live, tax such as GST or VAT is added at checkout or already included. Payments are handled by Polar, our merchant of record. Plans renew every month until you cancel; cancel any time in the web app and you keep your plan until the end of the month you paid for.";
+
 export const creditNotes = [
   { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions that change something in your apps (1 credit each; reading and searching are free), browser time on Max (2 credits per minute) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
   { label: "Credits last 90 days", body: "Every credit is good for 90 days from the day you get it, whether it came from your plan, a top-up or a code. The oldest credits are used first." },
@@ -316,6 +319,11 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
     q: "What is a credit?",
     pricing: true,
     a: "One credit is about one cent. Credits pay for Textcrew AI if you use it, your agent's running time (1 credit per 10 minutes), actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free) and, on the Max plan, browser time (2 credits per minute). If you bring your own AI, the AI part isn't charged in credits. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
+  },
+  {
+    q: "How do I cancel a paid plan?",
+    pricing: true,
+    a: "In the web app, on Pricing, press Cancel plan. Your plan doesn't renew, and you keep it until the end of the month you paid for, then move to Free. Your credits stay until they expire. Invoices, receipts and your card are on Polar's billing page, one click from the same screen.",
   },
   {
     q: "What happens when I run out of credits?",
