@@ -59,7 +59,7 @@ New, pending and confirmed emails all get the same response, so nobody can check
 
 Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; a short pricing teaser that links to `/pricing`; FAQ; and a final waitlist call to action.
 
-Other pages: `/pricing` (the plans, the waitlist deal, how credits work, the FAQ questions about plans and credits, and the waitlist form) and a `/privacy` summary. The nav and footer link home sections as `/#id`, so they work from every page. The FAQ questions marked `pricing: true` in `content.ts` are the ones `/pricing` repeats.
+Other pages: `/pricing` (the plans, the waitlist deal, how credits work, the FAQ questions about plans and credits, and the waitlist form) and a `/privacy` summary, with a section on data from Google apps (`/privacy#google-data`, Google's "Limited Use" statement). The nav and footer link home sections as `/#id`, so they work from every page. The FAQ questions marked `pricing: true` in `content.ts` are the ones `/pricing` repeats.
 
 The visual language follows the products it sits next to (Notis, Multiply, Strawberry): light background, centred sections, real app logos, product mockups and pill buttons.
 

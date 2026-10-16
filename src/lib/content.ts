@@ -132,7 +132,7 @@ export const trust = [
   },
   {
     title: "Delete anytime",
-    body: "Deleting your account removes your workspace, memory, messages and connected apps. Backups clear within 30 days.",
+    body: "Deleting your account removes your workspace, memory, messages and connected apps. Backups clear within 7 days.",
   },
   {
     title: "Locked-down sandbox",
@@ -333,7 +333,7 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   },
   {
     q: "How do I delete my data?",
-    a: "Delete your account from settings. That removes your agent's workspace, memory, messages and connected apps, and clears backups within 30 days.",
+    a: "Delete your account from settings. That removes your agent's workspace, memory, messages and connected apps, and clears backups within 7 days.",
   },
 ];
 
