@@ -59,7 +59,7 @@ New, pending and confirmed emails all get the same response, so nobody can check
 
 Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; a short pricing teaser that links to `/pricing`; FAQ; and a final waitlist call to action.
 
-Other pages: `/pricing` (the plans, the waitlist deal, how credits work, a line on dollars, tax, Polar as merchant of record and cancelling, the FAQ questions about plans and credits, and the waitlist form) and a `/privacy` summary, with a section on data from Google apps (`/privacy#google-data`, Google's "Limited Use" statement), one on payments through Polar (`/privacy#payments`) and a contact line (`/privacy#contact`). The contact email is `site.contactEmail` in `src/lib/site.ts`, shown in the footer, on Pricing and on Privacy; change it there only. The nav and footer link home sections as `/#id`, so they work from every page. The FAQ questions marked `pricing: true` in `content.ts` are the ones `/pricing` repeats.
+Other pages: `/pricing` (the plans, the waitlist deal, how credits work, a line on dollars, tax, Polar as merchant of record and cancelling, the FAQ questions about plans and credits, and the waitlist form) and a `/privacy` summary, with a section on data from Google apps (`/privacy#google-data`, Google's "Limited Use" statement), one on payments through Polar (`/privacy#payments`) and a contact line (`/privacy#contact`); and `/terms`, the terms of service (who runs Textcrew, credits and payments, the 14-day refund rule, governing law). Privacy and Terms are linked in the footer. The contact email is `site.contactEmail` in `src/lib/site.ts`, shown in the footer, on Pricing, on Privacy and on Terms; change it there only. The nav and footer link home sections as `/#id`, so they work from every page. The FAQ questions marked `pricing: true` in `content.ts` are the ones `/pricing` repeats.
 
 The visual language follows the products it sits next to (Notis, Multiply, Strawberry): light background, centred sections, real app logos, product mockups and pill buttons.
 
@@ -74,6 +74,7 @@ src/
 │   ├── waitlist/confirm/       confirm page for the emailed link (server action)
 │   ├── pricing/page.tsx        plans and credits, with its own title and description
 │   ├── privacy/page.tsx        plain-language privacy summary (draft until the full policy)
+│   ├── terms/page.tsx          plain-language terms of service
 │   ├── layout.tsx              fonts (Geist, Geist Mono), metadata, theme colour
 │   ├── page.tsx                the landing page
 │   ├── globals.css             brand tokens, dot grid, floating logos, agent animations
