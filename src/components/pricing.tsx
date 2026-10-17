@@ -42,12 +42,19 @@ export function Pricing() {
                 {p.featured && <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-medium text-accent">Recommended</span>}
               </div>
               <p className="mt-1 text-[15px] text-muted">{p.blurb}</p>
-              <p className="mt-6 flex items-baseline gap-2">
+              <p className="mt-6 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                {p.regular && (
+                  <s aria-label={`Regular price ${p.regular}`} className="text-2xl font-normal text-muted decoration-1">
+                    {p.regular}
+                  </s>
+                )}
                 <span className="text-5xl font-bold tracking-[-0.05em]">{p.price}</span>
                 <span className="text-muted">/ {p.cadence}</span>
               </p>
-              {/* Plain words, never a struck-out number: the regular price has never been charged. */}
-              <p className="mt-2 min-h-5 text-[14px] text-muted">{p.regular && `Launch price (regular ${p.regular}/month)`}</p>
+              {/* The regular price is crossed out above; the tag says it has never been charged. */}
+              <p className="mt-2 min-h-6">
+                {p.regular && <span className="inline-flex rounded-full bg-surface-2 px-2.5 py-0.5 text-[12px] font-medium text-muted">Launch price</span>}
+              </p>
               <p className="mt-3 min-h-7">
                 {p.waitlist && (
                   <span className="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-[13px] font-medium text-accent">
@@ -125,9 +132,14 @@ export function PricingTeaser() {
               {plans.map((p) => (
                 <li key={p.name} className="inline-flex items-baseline gap-1.5 rounded-full border border-line bg-surface-2 px-3 py-1 text-[13px]">
                   <span className="font-medium">{p.name}</span>
+                  {p.regular && (
+                    <s aria-label={`Regular price ${p.regular}`} className="text-muted decoration-1">
+                      {p.regular}
+                    </s>
+                  )}
                   <span className="font-semibold">{p.price}</span>
                   <span className="text-muted">{p.cadence === "per month" ? "/ month" : p.cadence}</span>
-                  {p.regular && <span className="text-muted">, launch price (regular {p.regular})</span>}
+                  {p.regular && <span className="text-[11.5px] text-muted">Launch price</span>}
                 </li>
               ))}
             </ul>

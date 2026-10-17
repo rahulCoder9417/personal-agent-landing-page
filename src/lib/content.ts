@@ -214,7 +214,7 @@ export const roadmap = [
 export type Plan = {
   name: string;
   price: string;
-  /** The regular price, said in plain words beside the launch price. Never struck out: it has never been charged. */
+  /** The regular price, shown crossed out beside the launch price with a "Launch price" tag (from 17 Oct 2026). It has never been charged. */
   regular?: string;
   waitlist?: string;
   cadence: string;
