@@ -7,33 +7,30 @@ export const channels = ["Telegram", "Web app"] as const;
 
 export const steps = [
   {
-    title: "Sign up",
-    body: "Create your account on the web app. You start with 100 free credits.",
+    title: "Sign up and pick your AI",
+    body: "Create your account on the web app. You start with 100 free credits. Tex runs on Textcrew AI (paid in credits), your own API key or your own Claude plan.",
   },
   {
     title: "Link Telegram",
-    body: "The web app shows a one-time code. Send it to our Telegram bot, and that chat becomes your agent. Or just chat in the web app.",
+    body: "The web app shows a one-time code. Send it to our Telegram bot, and that chat becomes your agent. Or just chat in the web app. Your Telegram chats show up there too.",
   },
   {
     title: "Connect your apps",
-    body: "Gmail, Calendar, Notion and the rest connect through their own sign-in screens. We never see your passwords.",
+    body: "In Integrations, press Connect on Gmail or GitHub. They sign in on their own screens, so we never see your passwords.",
   },
   {
     title: "Message it",
-    body: "Type or send a voice note. Tex works in the background and replies in the same chat when it's done.",
+    body: "Type, or send a voice note, a photo or a file. Tex and its crew work in the background and reply in the same chat when it's done.",
   },
 ];
 
 export const apps = {
   cards: [
-    { icon: "gmail", name: "Gmail", actions: ["Send and reply to email", "Draft replies for your OK", "Find that one email"] },
-    { icon: "calendar", name: "Google Calendar", actions: ["Create and move events", "Find free time", "Send invites"] },
-    { icon: "notion", name: "Notion", actions: ["Create pages", "Add database rows", "File meeting notes"] },
-    { icon: "slack", name: "Slack", actions: ["Post to channels", "Search messages", "Set reminders"] },
-    { icon: "github", name: "GitHub", actions: ["Review pull requests", "Open pull requests", "Comment on a PR"] },
+    { icon: "gmail", name: "Gmail", actions: ["Read and search your email", "Draft replies for your OK", "Send email once you approve"] },
+    { icon: "github", name: "GitHub", actions: ["Read pull requests and issues", "Review a pull request", "Open a pull request from a branch"] },
   ],
-  categories: ["Email", "Calendar", "Notes", "Tasks", "CRM", "Dev", "Research"],
-  total: "Gmail, Google Calendar, Notion, Slack, GitHub and more",
+  categories: ["Email", "Dev", "Calendar", "Notes", "Tasks", "CRM", "Research"],
+  total: "Gmail and GitHub today. 23 more apps are on the way",
 } as const;
 
 // `who` is the crew member that does the work and answers; it defaults to Tex.
@@ -47,7 +44,7 @@ export const useCases: {
 }[] = [
   {
     ask: "Review every pull request on my repo and text me the verdict.",
-    result: "Patch reviews it, comments on the PR, and sends a short summary to your chat.",
+    result: "Patch reviews each one, posts a review on GitHub and sends a short verdict to your chat. It never merges or approves.",
     tag: "Code review",
     tone: { bg: "#FDF3E1", fg: "#8A5708" },
     icons: ["github", "telegram"],
@@ -55,39 +52,40 @@ export const useCases: {
   },
   {
     ask: "Fix the typo on the pricing page and open a PR.",
-    result: "Byte makes the change on a branch and opens a pull request for you to merge. It never pushes to your main branch.",
+    result: "Byte makes the change on a new branch and opens a pull request for you to merge. It never touches your main branch.",
     tag: "Coding",
     tone: { bg: "#E8F7EE", fg: "#13803F" },
     icons: ["github"],
     who: "byte",
   },
   {
-    ask: "Move my 3pm with Maya to tomorrow and let her know.",
-    result: "Moves the event in Google Calendar, drafts the note to Maya, and sends it once you tap Approve.",
-    tag: "Calendar",
+    ask: "Find out what competitors charge and summarise it.",
+    result: "Scout searches the web, reads the pricing pages and hands Tex the findings. Reading a page is free.",
+    tag: "Research",
+    tone: { bg: "#E4F4F2", fg: "#0F6E66" },
+    icons: ["telegram"],
+    who: "scout",
+  },
+  {
+    ask: "Reply to Maya that Thursday works.",
+    result: "Finds her email, drafts the reply and sends it once you tap Approve. If you choose, it stops asking for that person.",
+    tag: "Email",
     tone: { bg: "#EEF3FE", fg: "#1A56DB" },
-    icons: ["calendar", "gmail"],
-  },
-  {
-    ask: "Every Monday at 9am, send me my week.",
-    result: "Reads your calendar and inbox and sends a short summary every Monday morning.",
-    tag: "Automation",
-    tone: { bg: "#F1EDFF", fg: "#5B34D6" },
-    icons: ["calendar", "gmail"],
-  },
-  {
-    ask: "Tell me when my boss emails.",
-    result: "Watches Gmail and messages you the moment that email lands.",
-    tag: "Trigger",
-    tone: { bg: "#FDEDEB", fg: "#B42318" },
     icons: ["gmail"],
   },
   {
-    ask: "Turn this voice note into meeting notes in Notion.",
-    result: "Transcribes it and files tidy notes on the right Notion page.",
-    tag: "Notes",
-    tone: { bg: "#F1F0EC", fg: "#3F3D38" },
-    icons: ["notion"],
+    ask: "Every weekday at 9am, summarise my unread email.",
+    result: "Reads your inbox on schedule and sends a short summary to your chat. Pause it any time.",
+    tag: "Automation",
+    tone: { bg: "#F1EDFF", fg: "#5B34D6" },
+    icons: ["gmail", "telegram"],
+  },
+  {
+    ask: "When an email from my manager arrives, tell me right away.",
+    result: "Watches Gmail and messages you the moment that email lands.",
+    tag: "Trigger",
+    tone: { bg: "#FDEDEB", fg: "#B42318" },
+    icons: ["gmail", "telegram"],
   },
 ];
 
@@ -99,12 +97,12 @@ export const automations = [
   },
   {
     kind: "On repeat",
-    example: "Every weekday at 8am, send me today's meetings.",
-    detail: "Daily and weekly routines, in your time zone.",
+    example: "Every weekday at 9am, summarise my unread email.",
+    detail: "Daily and weekly routines.",
   },
   {
     kind: "When something happens",
-    example: "When a new lead fills my form, add it to my CRM.",
+    example: "When an email from my manager arrives, tell me right away.",
     detail: "Triggers from the apps you've connected.",
   },
 ];
@@ -120,11 +118,11 @@ export const trust = [
   },
   {
     title: "It asks before it acts",
-    body: "Sending to other people, deleting things or spending money always waits for your Approve.",
+    body: "Sending to other people, deleting, paying and merging wait for your Approve, in the chat or on Telegram. Delete, pay and merge always ask. For the rest you can tap \"Don't ask again\" yourself, and every skipped ask is kept as Auto-approved.",
   },
   {
     title: "Everything is logged",
-    body: "The activity log shows every action Tex took, when it happened and how many credits it used.",
+    body: "The activity log shows every action Tex took, when it happened and how many credits it used. Approvals keep a record of what was approved and what ran on its own.",
   },
   {
     title: "Not used to train AI",
@@ -150,24 +148,28 @@ export const features = [
     body: "Talk instead of typing, or send a photo or a PDF. Tex handles them as part of the job.",
   },
   {
-    title: "Remembers what matters",
-    body: "People, preferences and ongoing projects stay in your agent's memory, so you don't repeat yourself.",
+    title: "One shared memory",
+    body: "Tex keeps short notes about you: people, preferences, projects. Every chat shares them. See, fix or delete any of them in Settings.",
   },
   {
     title: "Your apps, plus your own tools",
-    body: "Gmail, Google Calendar, Notion, Slack and GitHub, with more being added. On Max you can plug in your own MCP servers too.",
+    body: "Connect Gmail and GitHub from Integrations, with more apps on the way. On Max you can plug in your own MCP servers too.",
   },
   {
     title: "Three ways to run the AI",
-    body: "Your own API key (Anthropic, OpenAI or OpenRouter), your Claude plan (beta), or Textcrew AI, paid in credits. Bring your own AI and that part isn't charged in credits.",
+    body: "Textcrew AI, paid in credits; your own API key (Anthropic, OpenAI or OpenRouter); or your own Claude plan (beta). Bring your own AI and that part isn't charged in credits.",
+  },
+  {
+    title: "Automations on a canvas",
+    body: "Start from a template or describe it to Tex. Each automation is a short chain of up to 6 steps you can see, test and pause.",
   },
   {
     title: "A web app for the details",
-    body: "History, pending approvals, automations, connected apps, credits and the full activity log in one place.",
+    body: "Chat with unread dots, approvals, automations, apps, memory, credits and the full activity log in one place. Link Telegram and your chats there show up in the web app too.",
   },
   {
     title: "Credits you can see",
-    body: "Each task shows what it cost. No surprise bills: at zero, Tex pauses and tells you.",
+    body: "Each task shows what it cost. No surprise bills: at zero, Tex pauses and tells you. A task that fails on our side is refunded.",
   },
 ];
 
@@ -182,20 +184,20 @@ export const captain: CrewMember = {
   id: "tex",
   name: "Tex",
   role: "Captain",
-  body: "The one you text. Tex handles the job itself or, as the crew arrives, hands each piece to the right specialist and puts the results together.",
+  body: "The one you text, in the web chat or on Telegram. Tex handles small jobs itself, hands each bigger piece to the right specialist and puts the results together. You never pick a specialist: just ask.",
 };
 
-// The three specialists arrive with or soon after launch.
+// The three specialists work inside the chat with Tex; there is no separate Crew page in the web app.
 export const crew: CrewMember[] = [
-  { id: "byte", name: "Byte", role: "Coding", body: "Writes and fixes code on a branch and opens a pull request for you to merge. It can also hand work to your own Claude Code." },
-  { id: "patch", name: "Patch", role: "Code review", body: "Runs several reviewers on a pull request, comments on the PR and sends a short verdict to your chat." },
-  { id: "scout", name: "Scout", role: "Research", body: "Searches the web and reads pages. On the Max plan it also drives a real browser, for sites that need a login, clicks or forms, or that have no API." },
+  { id: "byte", name: "Byte", role: "Coding", body: "Writes and fixes code in your GitHub repos on a new branch, runs the tests and opens a pull request for you to merge. It never pushes to your main branch." },
+  { id: "patch", name: "Patch", role: "Code review", body: "Reads a pull request, runs the tests and looks for bugs, security problems and missing tests. Posts one review on the PR and sends a short verdict to your chat. It never merges or approves." },
+  { id: "scout", name: "Scout", role: "Research", body: "Searches the web, reads the pages and comes back with an answer and its links. On the Max plan it can also drive a real browser, for pages that need clicking." },
 ];
 
 export const roadmap = [
   {
     title: "More channels",
-    body: "Where the platforms allow it: iMessage as a beta, WhatsApp in regions where it is permitted, and Slack, email and Discord.",
+    body: "Telegram and the web app are the two today. Where the platforms allow it, iMessage as a beta and WhatsApp in regions where it is permitted may follow.",
   },
   {
     title: "Desktop app",
@@ -203,7 +205,7 @@ export const roadmap = [
   },
   {
     title: "More apps",
-    body: "More integrations, beyond Gmail, Google Calendar, Notion, Slack and GitHub.",
+    body: "Google Calendar, Notion, Slack and more are in our catalogue of 25 apps and get switched on step by step. Gmail and GitHub work today.",
   },
   {
     title: "Teams and workspaces",
@@ -234,6 +236,7 @@ export const plans: Plan[] = [
       "10 apps",
       "1 automation",
       "Your own AI key, your Claude plan (beta) or Textcrew AI",
+      "Credits last 90 days",
     ],
   },
   {
@@ -246,10 +249,11 @@ export const plans: Plan[] = [
     featured: true,
     items: [
       "1,500 credits every month",
-      "All apps",
+      "All 25 apps",
       "5 automations",
       "Top-ups: $10 for 800 credits",
       "Your own AI key, your Claude plan (beta) or Textcrew AI",
+      "Unused credits carry over for 90 days",
     ],
   },
   {
@@ -262,11 +266,13 @@ export const plans: Plan[] = [
     items: [
       "4,500 credits every month",
       "Priority when things get busy",
-      "All apps, plus your own MCP servers",
-      "Browser use for sites without an API, at 2 credits per minute",
+      "All 25 apps, plus your own MCP servers",
       "50 automations",
+      "Scout's web search: 1 credit per search",
+      "Browser use: 2 credits per minute",
       "Top-ups: $10 for 800 credits",
       "Your own AI key, your Claude plan (beta) or Textcrew AI",
+      "Unused credits carry over for 90 days",
     ],
   },
 ];
@@ -300,21 +306,21 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   },
   {
     q: "Which chat apps does it work with?",
-    a: "Telegram and the web app at launch. More channels are planned where the platforms allow it: iMessage as a beta, WhatsApp in regions where it is permitted, and Slack, email and Discord.",
+    a: "Telegram and the web app. Link Telegram with a one-time code and your Telegram chats also show up in the web app. WhatsApp and iMessage are not live yet; we will add channels where the platforms allow it.",
   },
   {
     q: "How many automations can I run?",
     pricing: true,
-    a: "One on Free, five on Pro and 50 on Max. Set one up by texting Tex, like \"every Monday at 9am, send me my week\". Automations pause on their own if you run out of credits.",
+    a: "One on Free, five on Pro and 50 on Max. Each can have up to 6 steps. Start from a template, build it on the canvas in the web app, or just tell Tex, like \"every weekday at 9am, summarise my unread email\". You can also switch on pull-request review for a repo. Automations pause on their own if you run out of credits.",
   },
   {
     q: "Will it do things without asking me?",
-    a: "Not the risky ones. Sending to other people, deleting things or spending money always waits for your Approve. Everything else is logged so you can see exactly what happened.",
+    a: "Not the risky ones. Sending to other people, deleting, paying and changing what is already there wait for your Approve, in the chat or on Telegram. If you trust an action, tap \"Don't ask again\" on its card to make a skip rule, only for those people or for anyone. Delete, pay and merge always ask. Anything that ran on its own is kept under Auto-approved, and everything is logged.",
   },
   {
     q: "What can it connect to?",
     pricing: true,
-    a: "Gmail, Google Calendar, Notion, Slack and GitHub, and more apps are being added. Free connects 10 apps; Pro and Max connect all of them. On Max you can add your own MCP servers, and your agent can use a real browser for sites without an API.",
+    a: "Gmail and GitHub today, from Integrations, Apps in the web app. The catalogue has 25 apps, and more are switched on step by step. Free allows 10 apps; Pro and Max allow all 25. On Max you can add your own MCP servers, and Scout can use a real browser.",
   },
   {
     q: "What is a credit?",
@@ -335,6 +341,10 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
     q: "Do I need my own AI key?",
     pricing: true,
     a: "No. There are three ways to run the AI: your own API key (Anthropic, OpenAI or OpenRouter), your Claude plan (beta), which runs Claude Code, or Textcrew AI, paid in credits. If you bring your own AI, the AI part isn't charged in credits. An API key is encrypted, and only its last four characters are ever shown.",
+  },
+  {
+    q: "What is the crew?",
+    a: "Tex is the one you text. For bigger jobs it hands pieces to Byte (writes code and opens a pull request), Patch (reviews pull requests) and Scout (searches the web), then puts the results together. There is no separate screen for them: you ask in the chat, in the web app or on Telegram.",
   },
   {
     q: "Is my data used to train AI models?",

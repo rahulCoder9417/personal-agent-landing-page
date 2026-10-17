@@ -7,7 +7,7 @@ export const site = {
   tagline: "Got a lot of work? Just text your crew.",
   // Kept under ~160 characters so search results show it whole.
   description:
-    "Text your AI crew on Telegram or the web app. Tex splits the job, gets it done in Gmail, Calendar, Notion, Slack and GitHub, and asks before anything risky.",
+    "Text your AI crew on Telegram or the web app. Tex splits the job, gets it done in Gmail and GitHub, runs automations, and asks before anything risky.",
   keywords: [
     "AI agent",
     "AI assistant",
@@ -19,9 +19,7 @@ export const site = {
     "AI executive assistant",
     "AI automation",
     "Gmail automation",
-    "Google Calendar assistant",
-    "Notion AI agent",
-    "Slack AI agent",
+    "GitHub AI agent",
     "multi-agent AI",
     "Textcrew",
   ],
