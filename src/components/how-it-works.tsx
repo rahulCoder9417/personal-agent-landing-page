@@ -9,16 +9,16 @@ import { Section } from "./section";
 
 // The story told the way you'd actually live it: on your phone's lock screen, one notification at a time.
 const BEATS = [
-  { title: "Text the job", body: "In Telegram or the web app. Type it, or send a voice note.", ms: 3800 },
-  { title: "Tex splits it up", body: "It breaks the job into steps and starts on each one.", ms: 3600 },
-  { title: "You OK the risky part", body: "Anything that sends, deletes or spends waits for your tap.", ms: 4400 },
+  { title: "Text the job", body: "In Telegram or the web app. Type it, or send a voice note or a file.", ms: 3800 },
+  { title: "Tex splits it up", body: "It breaks the job into steps and starts on each one, calling in Byte, Patch or Scout when they fit.", ms: 3600 },
+  { title: "You OK the risky part", body: "Anything that sends, deletes or spends waits for your tap, in the chat or on Telegram.", ms: 4400 },
   { title: "Done, and logged", body: "One reply when it's finished. Every step lands in your activity log.", ms: 4800 },
 ];
 
-const ASK = "Move my 3pm with Maya to tomorrow and let her know";
+const ASK = "Check PR #128 and tell Maya if it's ready";
 // The two pieces Tex splits this job into, one per app.
 const SPLIT = [
-  { app: "calendar", label: "Move the 3pm" },
+  { app: "github", label: "Read PR #128" },
   { app: "gmail", label: "Note to Maya" },
 ] as const;
 const TYPE_MS = 2200;
@@ -80,7 +80,7 @@ function LockScreen({ beat, typed, tapping, approved, onApprove }: { beat: numbe
       id: "split",
       node: (
         <Notification title="Tex">
-          On it. Moving your 3pm in Calendar and drafting the note to Maya in Gmail.
+          On it. Reading PR #128 on GitHub and drafting the note to Maya in Gmail.
           {beat < 3 && (
             <span className="mt-2 flex gap-1.5">
               {SPLIT.map((s) => (
@@ -104,7 +104,7 @@ function LockScreen({ beat, typed, tapping, approved, onApprove }: { beat: numbe
           <span className="font-semibold">Email to Maya</span>
           {!approved && (
             <span className="mt-1 block rounded-xl bg-surface-2 px-2.5 py-2 text-[12.5px] text-muted">
-              “Hi Maya, could we move today&apos;s 3pm to tomorrow, same time? Thanks!”
+              “Hi Maya, PR #128 looks good and is ready to merge. Thanks!”
             </span>
           )}
           {approved ? (
@@ -141,7 +141,7 @@ function LockScreen({ beat, typed, tapping, approved, onApprove }: { beat: numbe
       id: "done",
       node: (
         <Notification title="Tex">
-          Done. Moved to tomorrow at 3pm, and Maya has the note.
+          Done. PR #128 looks ready, and Maya has the note.
           <span className="mt-1.5 block font-mono text-[10.5px] text-muted">3 credits · in your activity log</span>
         </Notification>
       ),

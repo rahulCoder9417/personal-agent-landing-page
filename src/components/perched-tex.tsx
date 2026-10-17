@@ -274,7 +274,7 @@ export function PerchedTex() {
             </ul>
           )}
 
-          {phase === "done" && <p className="mt-2.5 text-[12px] leading-relaxed text-muted">A preview of the crew. Byte and Patch arrive with or soon after launch.</p>}
+          {phase === "done" && <p className="mt-2.5 text-[12px] leading-relaxed text-muted">An example of the crew at work.</p>}
 
           {(phase === "idle" || phase === "done") && (
             <button

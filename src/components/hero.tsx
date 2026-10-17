@@ -18,11 +18,9 @@ export function BetaBadge() {
 
 const floating: { name: BrandName; pos: string; anim: string }[] = [
   { name: "gmail", pos: "left-[7%] top-24", anim: "float-a" },
-  { name: "calendar", pos: "left-[3%] top-64", anim: "float-b" },
-  { name: "notion", pos: "left-[11%] top-[25rem]", anim: "float-c" },
+  { name: "telegram", pos: "left-[3%] top-64", anim: "float-b" },
   { name: "github", pos: "right-[7%] top-20", anim: "float-b" },
-  { name: "telegram", pos: "right-[3%] top-60", anim: "float-c" },
-  { name: "slack", pos: "right-[11%] top-[24rem]", anim: "float-a" },
+  { name: "web", pos: "right-[3%] top-60", anim: "float-c" },
 ];
 
 const channels: BrandName[] = ["telegram", "web"];
@@ -48,8 +46,8 @@ export function Hero() {
           <span aria-hidden className="brand-caret ml-1.5 inline-block h-[0.78em] w-[0.09em] translate-y-[0.06em] bg-accent" />
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-          Send one message on Telegram or in the web app. Tex, your AI captain, splits the job, gets it done in your
-          apps and checks with you before anything risky.
+          Send one message on Telegram or in the web app. Tex, your AI captain, splits the job, calls in Byte, Patch and
+          Scout when it helps, works in your apps and checks with you before anything risky.
         </p>
         <WaitlistForm className="mt-9" />
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-5">

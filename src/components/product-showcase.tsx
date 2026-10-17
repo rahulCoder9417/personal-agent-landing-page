@@ -12,16 +12,15 @@ type Decision = "pending" | "approved" | "rejected";
 type Tab = "activity" | "approvals" | "automations";
 
 const OTHER_APPROVALS: { id: string; icon: BrandName; title: string; preview: string; reason: string }[] = [
-  { id: "slack", icon: "slack", title: "Post today's update in #team", preview: "Shipped the new onboarding flow, fixed 4 bugs, demo Thursday.", reason: "Posts where others see it" },
+  { id: "review", icon: "github", title: "Post Patch's review on PR #131", preview: "Two small things to fix, otherwise good to merge.", reason: "Comments for others to see" },
   { id: "drafts", icon: "gmail", title: "Delete 12 old drafts", preview: "Drafts older than 90 days in Gmail.", reason: "Deletes things" },
-  { id: "renew", icon: "notion", title: "Renew your Notion plan ($10)", preview: "Monthly renewal, same plan as last month.", reason: "Costs money" },
 ];
 
 const AUTOMATIONS: { id: string; icon: BrandName; title: string; when: string; next: string }[] = [
-  { id: "week", icon: "telegram", title: "Send me my week", when: "Every Monday · 9:00", next: "Next run Monday 9:00" },
+  { id: "week", icon: "gmail", title: "Summarise my inbox", when: "Every weekday · 9:00", next: "Next run tomorrow 9:00" },
   { id: "boss", icon: "gmail", title: "Tell me when my boss emails", when: "When it happens · Gmail", next: "Watching your inbox" },
-  { id: "meetings", icon: "calendar", title: "Today's meetings", when: "Weekdays · 8:00", next: "Next run tomorrow 8:00" },
-  { id: "invoice", icon: "telegram", title: "Chase the Acme invoice", when: "Once · Friday 10:00", next: "Runs Friday 10:00" },
+  { id: "review", icon: "github", title: "Review every pull request", when: "When it happens · GitHub", next: "Watching acme/web" },
+  { id: "invoice", icon: "telegram", title: "Remind me to chase the invoice", when: "Once · Friday 10:00", next: "Runs Friday 10:00" },
 ];
 
 function Bubble({ from, children }: { from: "you" | "tex"; children: ReactNode }) {
@@ -61,7 +60,7 @@ export function ProductShowcase() {
   const [tab, setTab] = useState<Tab>("activity");
   const [email, setEmail] = useState<Decision>("pending");
   const [others, setOthers] = useState<Record<string, Decision>>({});
-  const [enabled, setEnabled] = useState<Record<string, boolean>>({ week: true, boss: true, meetings: true, invoice: false });
+  const [enabled, setEnabled] = useState<Record<string, boolean>>({ week: true, boss: true, review: true, invoice: false });
 
   const pending = (email === "pending" ? 1 : 0) + OTHER_APPROVALS.filter((a) => (others[a.id] ?? "pending") === "pending").length;
   const activeCount = Object.values(enabled).filter(Boolean).length;
@@ -96,8 +95,8 @@ export function ProductShowcase() {
               <BrandIcon name="telegram" size={18} className="ml-auto" />
             </div>
             <div className="flex flex-1 flex-col gap-3 px-7 py-7">
-              <Bubble from="you">Move my 3pm with Maya to tomorrow and let her know</Bubble>
-              <Bubble from="tex">On it. Your 3pm is “Roadmap sync”. Moving it to tomorrow, same time.</Bubble>
+              <Bubble from="you">Check PR #128 and tell Maya if it&apos;s ready</Bubble>
+              <Bubble from="tex">On it. PR #128 changes 4 files and the tests pass. Drafting the note to Maya.</Bubble>
               <div className="max-w-[92%] rounded-2xl rounded-bl-md border border-fg/80 bg-surface p-5">
                 <p className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] text-muted">
                   <span aria-hidden className="h-3 w-1 bg-accent" />
@@ -105,7 +104,7 @@ export function ProductShowcase() {
                 </p>
                 <p className="mt-1.5 text-[14px] font-semibold">Send this email to Maya?</p>
                 <p className="mt-2 rounded-lg bg-surface-2 px-3.5 py-2.5 text-[13.5px] leading-relaxed text-muted">
-                  Hi Maya, could we move today&apos;s 3pm to tomorrow, same time? Thanks!
+                  Hi Maya, PR #128 looks good and is ready to merge. Thanks!
                 </p>
                 <div className="mt-3.5">
                   {email === "pending" ? (
@@ -125,8 +124,8 @@ export function ProductShowcase() {
                   <motion.div key={email} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}>
                     <Bubble from="tex">
                       {email === "approved"
-                        ? "Done. Moved to tomorrow at 3pm and Maya has the note."
-                        : "Okay, I won't send it. The meeting is still moved. Want me to change the note?"}
+                        ? "Done. Maya has the note."
+                        : "Okay, I won't send it. Want me to change the note?"}
                     </Bubble>
                   </motion.div>
                 )}
@@ -176,11 +175,11 @@ export function ProductShowcase() {
                   {tab === "activity" && (
                     <ul className="divide-y divide-line">
                       {[
-                        { icon: "calendar" as const, title: "Moved “Roadmap sync” to tomorrow, 3:00 PM", meta: "Google Calendar · 2 credits", status: <Pill tone="done">Done</Pill> },
-                        { icon: "gmail" as const, title: "Email to Maya about the new time", meta: email === "pending" ? "Gmail · waiting for your OK" : "Gmail · 1 credit", status: emailStatus },
-                        { icon: "notion" as const, title: "Filed notes from your voice note", meta: "Notion · 3 credits", status: <Pill tone="done">Done</Pill> },
-                        { icon: "telegram" as const, title: "Every Monday 9:00, send me my week", meta: "Automation · next run Monday", status: <Pill tone="muted">Scheduled</Pill> },
-                        { icon: "slack" as const, title: "Posted yesterday’s update in #team", meta: "Slack · 1 credit", status: <Pill tone="done">Done</Pill> },
+                        { icon: "github" as const, title: "Read PR #128 and its tests", meta: "GitHub · free", status: <Pill tone="done">Done</Pill> },
+                        { icon: "gmail" as const, title: "Email to Maya about PR #128", meta: email === "pending" ? "Gmail · waiting for your OK" : "Gmail · 1 credit", status: emailStatus },
+                        { icon: "gmail" as const, title: "Summary of your unread email", meta: "Automation · 1 credit", status: <Pill tone="done">Done</Pill> },
+                        { icon: "telegram" as const, title: "Every weekday 9:00, summarise my inbox", meta: "Automation · next run tomorrow", status: <Pill tone="muted">Scheduled</Pill> },
+                        { icon: "github" as const, title: "Patch reviewed PR #127", meta: "Automation · Auto-approved", status: <Pill tone="done">Done</Pill> },
                       ].map((a) => (
                         <li key={a.title} className="flex items-center gap-4 px-7 py-5">
                           <BrandIcon name={a.icon} tile size={14} />
@@ -196,8 +195,8 @@ export function ProductShowcase() {
 
                   {tab === "approvals" && (
                     <div className="flex flex-col gap-2.5 p-6">
-                      <p className="mb-1 text-[12.5px] text-muted">Tex waits for you before it sends to others, deletes things or spends money.</p>
-                      {[{ id: "email", icon: "gmail" as const, title: "Send this email to Maya", preview: "Hi Maya, could we move today's 3pm to tomorrow, same time? Thanks!", reason: "Sends to someone else" }, ...OTHER_APPROVALS].map((a) => {
+                      <p className="mb-1 text-[12.5px] text-muted">Tex waits for you before it sends to others, deletes things or spends money. A quiet “Don’t ask again” on a card makes a skip rule, and deleting, paying and merging always ask.</p>
+                      {[{ id: "email", icon: "gmail" as const, title: "Send this email to Maya", preview: "Hi Maya, PR #128 looks good and is ready to merge. Thanks!", reason: "Sends to someone else" }, ...OTHER_APPROVALS].map((a) => {
                         const d = a.id === "email" ? email : (others[a.id] ?? "pending");
                         const decide = (next: Decision) => (a.id === "email" ? setEmail(next) : setOthers((o) => ({ ...o, [a.id]: next })));
                         return (
@@ -209,7 +208,7 @@ export function ProductShowcase() {
                             <div className="min-w-0 flex-1">
                               <p className={`truncate text-[14px] font-medium ${d === "pending" ? "" : "text-muted"}`}>{a.title}</p>
                               <p className="truncate text-[12px] text-muted">
-                                <span className={a.reason === "Deletes things" || a.reason === "Costs money" ? "text-danger" : "text-accent"}>{a.reason}</span>
+                                <span className={a.reason === "Deletes things" ? "text-danger" : "text-accent"}>{a.reason}</span>
                                 {" · "}
                                 {a.preview}
                               </p>
@@ -252,7 +251,7 @@ export function ProductShowcase() {
                       </ul>
                       <div className="m-6 mt-auto rounded-2xl border border-dashed border-line bg-surface-2/50 p-4">
                         <p className="text-[12.5px] text-muted">
-                          Add one by texting Tex, like <span className="font-medium text-fg">“every Friday at 5pm, send me my wins”</span>.
+                          Add one by texting Tex or building it on the canvas, like <span className="font-medium text-fg">“every Friday at 5pm, list the pull requests waiting for my review”</span>.
                         </p>
                         <p className="mt-1.5 font-mono text-[11px] text-muted">{activeCount} active · 5 on Pro</p>
                       </div>

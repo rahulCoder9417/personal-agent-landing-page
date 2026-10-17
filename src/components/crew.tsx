@@ -18,14 +18,14 @@ export function Crew() {
       <Container>
         <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col items-start">
-            <Eyebrow>What&apos;s next</Eyebrow>
+            <Eyebrow>The crew</Eyebrow>
             <h2 id="crew-title" className="mt-5 text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.05] tracking-[-0.04em]">
               Meet your crew.
             </h2>
             <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-              Tex is the captain you text, and it&apos;s there from day one. Three specialists arrive with or soon after
-              launch: Byte for coding, Patch for code review and Scout for research. Tex hands them work and puts the
-              results together. Every send still waits for your OK.
+              Tex is the captain you text. Byte (code), Patch (code review) and Scout (research) work inside the same
+              chat: ask in plain words and Tex hands each piece to the right one, then puts the results together. You
+              never open a separate screen for them, and every send still waits for your OK.
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-4">
@@ -38,7 +38,7 @@ export function Crew() {
 
         <Reveal className="mt-10" delay={0.05}>
           <CrewStory />
-          <p className="mt-3 text-center text-[12.5px] text-muted">A preview of how the crew will work together. The specialists arrive with or soon after launch.</p>
+          <p className="mt-3 text-center text-[12.5px] text-muted">An example of how the crew works together on one job.</p>
         </Reveal>
 
         <Reveal className="mt-16" delay={0.05}>
@@ -53,11 +53,7 @@ export function Crew() {
                 <div className="min-w-0 py-1.5">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-semibold tracking-[-0.02em]">{m.name}</h3>
-                    {m.id === "tex" ? (
-                      <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-medium text-accent">At launch</span>
-                    ) : (
-                      <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-medium text-muted">Soon</span>
-                    )}
+                    <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-medium text-accent">{m.id === "tex" ? "You text" : "In the chat"}</span>
                   </div>
                   <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">{m.role}</p>
                   <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{m.body}</p>

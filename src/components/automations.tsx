@@ -19,8 +19,8 @@ const KINDS: { id: KindId; label: string; hint: string; icon: string; triggers: 
     hint: "Reminders and one-off follow-ups",
     icon: "M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z",
     triggers: [
-      { id: "fri", icon: "calendar", label: "Friday at 10:00", say: "On Friday at 10am", tex: "on Friday at 10am" },
-      { id: "tom", icon: "calendar", label: "Tomorrow at 9:00", say: "Tomorrow at 9am", tex: "tomorrow at 9am" },
+      { id: "fri", icon: "telegram", label: "Friday at 10:00", say: "On Friday at 10am", tex: "on Friday at 10am" },
+      { id: "tom", icon: "telegram", label: "Tomorrow at 9:00", say: "Tomorrow at 9am", tex: "tomorrow at 9am" },
     ],
   },
   {
@@ -29,8 +29,8 @@ const KINDS: { id: KindId; label: string; hint: string; icon: string; triggers: 
     hint: "Daily and weekly routines, in your time zone",
     icon: "M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4",
     triggers: [
-      { id: "mon", icon: "calendar", label: "Every Monday, 9:00", say: "Every Monday at 9am", tex: "every Monday at 9am" },
-      { id: "wkd", icon: "calendar", label: "Weekdays, 8:00", say: "Every weekday at 8am", tex: "every weekday at 8am" },
+      { id: "mon", icon: "telegram", label: "Every Monday, 9:00", say: "Every Monday at 9am", tex: "every Monday at 9am" },
+      { id: "wkd", icon: "gmail", label: "Weekdays, 8:00", say: "Every weekday at 8am", tex: "every weekday at 8am" },
     ],
   },
   {
@@ -40,17 +40,16 @@ const KINDS: { id: KindId; label: string; hint: string; icon: string; triggers: 
     icon: "M13 3L5 13h6l-1 8 8-10h-6z",
     triggers: [
       { id: "boss", icon: "gmail", label: "New email from your boss", say: "When my boss emails", tex: "when your boss emails" },
-      { id: "meet", icon: "calendar", label: "10 min before a meeting", say: "Ten minutes before each meeting", tex: "ten minutes before each meeting" },
-      { id: "lead", icon: "notion", label: "New row in Leads", say: "When a new lead lands in Notion", tex: "when a new lead lands in Notion" },
+      { id: "pr", icon: "github", label: "A pull request opens", say: "When a pull request opens on acme/web", tex: "when a pull request opens on acme/web" },
     ],
   },
 ];
 
 const ACTIONS: Action[] = [
   { id: "summary", icon: "telegram", label: "Message me a summary", say: "message me a one-line summary on Telegram", tex: "I'll message you a one-line summary on Telegram" },
-  { id: "week", icon: "calendar", label: "Send me my week", say: "send me my week", tex: "I'll send you your week" },
-  { id: "chase", icon: "gmail", label: "Chase the invoice", say: "remind me to chase the Acme invoice", tex: "I'll remind you to chase the Acme invoice" },
-  { id: "slack", icon: "slack", label: "Post in #team", say: "draft a status update for #team", tex: "I'll draft the #team update and ask before posting" },
+  { id: "week", icon: "gmail", label: "Summarise my unread email", say: "summarise my unread email", tex: "I'll summarise your unread email" },
+  { id: "chase", icon: "gmail", label: "Draft a reply, ask first", say: "draft a reply and ask me before sending", tex: "I'll draft a reply and ask before sending" },
+  { id: "review", icon: "github", label: "Review the pull request", say: "have Patch review it and send me the verdict", tex: "Patch will review it and send you the verdict" },
 ];
 
 const PRO_LIMIT = 5;
@@ -84,7 +83,7 @@ export function Automations() {
   const [kind, setKind] = useState<KindId>("event");
   const [triggerId, setTriggerId] = useState("boss");
   const [actionId, setActionId] = useState("summary");
-  const [saved, setSaved] = useState<Saved[]>([{ id: "seed-week", icon: "calendar", title: "Send me my week", when: "Every Monday at 9am", on: true }]);
+  const [saved, setSaved] = useState<Saved[]>([{ id: "seed-week", icon: "gmail", title: "Summarise my unread email", when: "Every Monday at 9am", on: true }]);
   const [confirmation, setConfirmation] = useState<{ key: number; text: string } | null>(null);
   const nextKey = useRef(0);
 
@@ -115,7 +114,7 @@ export function Automations() {
       id="automations"
       eyebrow="Automations"
       title="Tired of asking? Automate it."
-      lede="Tell Tex what should happen and when. It runs on time in your time zone and reports back in chat. Try building one."
+      lede="Tell Tex what should happen and when, or build it on a canvas in the web app. It runs on time in your time zone and reports back in chat. Try the idea here."
     >
       <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-line bg-surface shadow-window">
         {/* Kind */}
@@ -260,6 +259,27 @@ export function Automations() {
             </AnimatePresence>
           </ul>
         </div>
+      </div>
+
+      <div className="mx-auto mt-10 max-w-4xl">
+        <p className="text-center text-[15px] font-semibold tracking-[-0.01em]">In the web app, every automation has the same shape</p>
+        <ol className="mt-4 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
+          {[
+            { n: "1", t: "What starts it", d: "A time, a repeat, or something happening in a connected app." },
+            { n: "2", t: "Read (optional)", d: "Tex reads from an app, like your inbox or a pull request." },
+            { n: "3", t: "Tex and the crew", d: "Tex does the thinking, with Byte, Patch or Scout when they fit." },
+            { n: "4", t: "Write or send (optional)", d: "The result goes to an app or your chat. Risky steps ask first." },
+          ].map((x) => (
+            <li key={x.n} className="bg-surface p-4">
+              <p className="font-mono text-[10px] tracking-[0.08em] text-accent">STEP {x.n}</p>
+              <p className="mt-1.5 text-[14px] font-semibold">{x.t}</p>
+              <p className="mt-1 text-[13px] leading-relaxed text-muted">{x.d}</p>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-4 text-center text-[14px] leading-relaxed text-muted">
+          Up to 6 steps each. Start from a ready-made template, including pull-request review for a GitHub repo, test a run before you switch it on, and approve questions an automation asks right on Telegram.
+        </p>
       </div>
 
       <p className="mt-6 text-center text-[14px] text-muted">
