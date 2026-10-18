@@ -17,7 +17,7 @@ export function Pricing() {
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
             Everyone starts on Free with 100 credits, good for 14 days. Pro and Max add credits every month, all apps and more automations.
-            Every plan runs on credits, so you pay for the work Tex actually does.
+            Every plan runs on credits, so you pay for the work Tex actually does. Bring your own Claude plan or API key and you don&apos;t pay for the AI twice: credits cover the agent&apos;s time, not the AI.
           </p>
           <p className="mt-3 text-[15px] text-muted">Pro and Max are at launch prices for now.</p>
         </header>
@@ -121,7 +121,7 @@ export function PricingTeaser() {
               Start free. Pay for what you use.
             </h2>
             <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-muted">
-              Every plan runs on credits, so you pay for the work Tex actually does.
+              Every plan runs on credits, so you pay for the work Tex actually does. Bring your own Claude plan or API key and you don&apos;t pay for the AI twice: credits cover the agent&apos;s time, not the AI.
             </p>
             <ul className="mt-5 flex flex-wrap justify-center gap-2 md:justify-start">
               {plans.map((p) => (

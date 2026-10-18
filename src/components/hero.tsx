@@ -79,6 +79,9 @@ export function Hero() {
           Send one message on Telegram or in the web app. Tex, your AI captain, splits the job, calls in Byte, Patch and
           Scout when it helps, works in your apps and checks with you before anything risky.
         </p>
+        <p className="mt-5 max-w-2xl text-[15px] font-medium text-fg sm:text-base">
+          Bring your own Claude plan or API key. Don&apos;t pay for the AI twice.
+        </p>
         <SignUpActions second={{ href: "#video", label: "Watch the demo", icon: "play" }} className="mt-9" />
         <p className="mt-4 text-[13.5px] text-muted">
           Start with 100 free credits, good for 14 days. Have an account?{" "}

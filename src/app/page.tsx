@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Apps, UseCases } from "@/components/apps";
+import { BringYourOwn } from "@/components/bring-your-own";
 import { Automations } from "@/components/automations";
 import { Crew } from "@/components/crew";
 import { Faq } from "@/components/faq";
@@ -80,6 +81,7 @@ export default function Home() {
         <Automations />
         <Crew />
         <Places />
+        <BringYourOwn />
         <Trust />
         <Features />
         <PricingTeaser />

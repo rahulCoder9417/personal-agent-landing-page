@@ -348,9 +348,9 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
     a: "Tex pauses and tells you in chat, and automations pause too. Upgrade, buy a top-up or redeem a code and it picks up where it left off.",
   },
   {
-    q: "Do I need my own AI key?",
+    q: "Which AI does Tex use? Do I need my own key?",
     pricing: true,
-    a: "No. There are three ways to run the AI: your own API key (Anthropic, OpenAI or OpenRouter), your Claude plan (beta), which runs Claude Code, or Textcrew AI, paid in credits. If you bring your own AI, the AI part isn't charged in credits. An API key is encrypted, and only its last four characters are ever shown.",
+    a: "You choose, and you don't have to bring your own. There are three ways to run the AI: your own API key (Anthropic, OpenAI or OpenRouter), your Claude plan (beta), which runs Claude Code, or Textcrew AI, paid in credits. If you bring your own AI, the AI part isn't charged in credits, so you only pay for the agent's time (1 credit per 5 minutes) and app actions that change something, not the AI twice. An API key is encrypted, and only its last four characters are ever shown.",
   },
   {
     q: "What is the crew?",
