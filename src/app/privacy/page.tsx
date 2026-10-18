@@ -98,7 +98,7 @@ const googleRules = [
 ];
 
 const retention = [
-  ["Beta waitlist signups", "Until you ask us to remove them"],
+  ["Waitlist signups", "Until you ask us to remove them"],
   ["Messages", "1 year, or until you delete them or your account"],
   ["Approvals, automations, activity log", "Until you delete them or your account"],
   ["Access to your connected apps (held by Composio)", "Until you disconnect the app or delete your account"],
@@ -119,11 +119,12 @@ export default function PrivacyPage() {
       </header>
       <main className="flex-1 py-16 sm:py-24">
         <Container className="max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Draft · Private beta</p>
+          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Privacy</p>
           <h1 className="mt-3 text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold leading-[1.02] tracking-[-0.045em]">Privacy at Textcrew</h1>
           <p className="mt-5 text-lg leading-relaxed text-muted">
-            This is a plain-language summary of what we promise. The full privacy policy will be published before launch.
+            This is a plain-language summary of what we promise. The full privacy policy will be published soon.
           </p>
+          <p className="mt-3 text-sm text-muted">Last updated 18 October 2026.</p>
 
           <div className="mt-12 flex flex-col gap-8">
             {promises.map((p) => (
@@ -219,9 +220,9 @@ export default function PrivacyPage() {
           </section>
 
           <section id="waitlist" className="mt-14 scroll-mt-24">
-            <h2 className="text-2xl font-extrabold tracking-[-0.03em]">When you join the beta waitlist</h2>
+            <h2 className="text-2xl font-extrabold tracking-[-0.03em]">If you joined the waitlist</h2>
             <p className="mt-2 leading-relaxed text-muted">
-              We store the following so we can send beta invites, stop spam and fake signups, and understand where interest
+              We store the following so we could tell you when Textcrew opened, honour your waitlist discount, stop spam and fake signups, and understand where interest
               comes from. You&apos;re only on the list once you confirm your email from the link we send. We don&apos;t sell
               any of it, and we&apos;ll delete it whenever you ask.
             </p>

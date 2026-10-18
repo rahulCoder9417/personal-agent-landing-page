@@ -7,7 +7,7 @@ import { Container } from "@/components/section";
 import { plans } from "@/lib/content";
 import { site } from "@/lib/site";
 
-const description = "The terms for using Textcrew in its private beta: who runs it, accounts, acceptable use, your data, credits, payments and refunds.";
+const description = "The terms for using Textcrew: who runs it, accounts, acceptable use, your data, credits, payments and refunds.";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -58,7 +58,7 @@ export default function TermsPage() {
       </header>
       <main className="flex-1 py-16 sm:py-24">
         <Container className="max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Private beta</p>
+          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Terms</p>
           <h1 className="mt-3 text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold leading-[1.02] tracking-[-0.045em]">Terms of service</h1>
           <p className="mt-5 text-lg leading-relaxed text-muted">
             These terms are the agreement between you and Textcrew when you use Textcrew: the web app, the Telegram bot and
@@ -75,12 +75,12 @@ export default function TermsPage() {
               </p>
             </Clause>
 
-            <Clause id="beta" title="Textcrew is in beta">
-              <p>Textcrew is in private beta, and we&apos;re letting people in in small batches. During the beta:</p>
+            <Clause id="beta" title="Changes and beta features">
+              <p>Textcrew is live and open to everyone who signs up. Some parts are still new:</p>
               <List>
                 <li>features can change, break or be removed, and the service can be slow or unavailable at times;</li>
-                <li>some options are labelled beta, such as running the AI on your own Claude plan;</li>
-                <li>we may limit sign-ups, or end the beta, telling you first where we can.</li>
+                <li>some options are labelled beta, such as the desktop and mobile apps and running the AI on your own Claude plan;</li>
+                <li>we may limit sign-ups, or change or end a beta option, telling you first where we can.</li>
               </List>
               <p>Don&apos;t rely on Textcrew as the only copy of anything important.</p>
             </Clause>
@@ -227,7 +227,7 @@ export default function TermsPage() {
 
             <Clause id="liability" title="Limitation of liability">
               <p>
-                Textcrew is provided as it is and as available, especially during the beta. We don&apos;t promise that it will
+                Textcrew is provided as it is and as available, especially for features labelled beta. We don&apos;t promise that it will
                 always work, be free of errors, or suit your purpose.
               </p>
               <p>As far as the law allows:</p>
@@ -260,7 +260,7 @@ export default function TermsPage() {
 
             <Clause id="changes" title="Changes to these terms">
               <p>
-                We may update these terms, for example when we add features or leave the beta. The new version goes on this
+                We may update these terms, for example when we add features or finish testing a beta feature. The new version goes on this
                 page with a new date. For a significant change we&apos;ll tell you in advance, in the app or by email. If you
                 keep using Textcrew after a change takes effect, the new terms apply. If you don&apos;t agree, you can delete
                 your account.
