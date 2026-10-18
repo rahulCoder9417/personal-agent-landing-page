@@ -12,13 +12,14 @@ const TRUST_ICONS = [
   "M14 10a4 4 0 1 0-4 4l-6 6M7 17l2 2", // key
 ];
 
+// One per card in `features`, in the same order, no two alike.
 const FEATURE_ICONS = [
-  "M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3", // voice
-  "M9 4a4 4 0 0 0-4 4v1a4 4 0 0 0 0 7 4 4 0 0 0 4 4h6a4 4 0 0 0 4-4 4 4 0 0 0 0-7V8a4 4 0 0 0-4-4z", // memory
-  "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM16.5 13v7M13 16.5h7", // apps
-  "M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z", // models
-  "M3 5h18v14H3zM3 9h18M8 13h5", // web app
-  "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v10M9.5 9.5c0-1 1-1.5 2.5-1.5s2.5.7 2.5 1.8c0 2.2-5 1.4-5 3.9 0 1.1 1 1.8 2.5 1.8s2.5-.6 2.5-1.5", // credits
+  "M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3", // voice notes and files: microphone
+  "M6 3.5h11.5v17H6a1.5 1.5 0 0 1-1.5-1.5V5A1.5 1.5 0 0 1 6 3.5zM9 3.5v17M12 8h3M12 11.5h3", // shared memory: notebook
+  "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM16.5 13v7M13 16.5h7", // apps and own tools: tiles and a plus
+  "M12 3l9 4.5-9 4.5-9-4.5zM3 12l9 4.5 9-4.5M3 16.5l9 4.5 9-4.5", // three ways to run the AI: three layers
+  "M4 4h6v5H4zM14 15h6v5h-6zM7 9v2.5a1 1 0 0 0 1 1h8a1 1 0 0 1 1 1V15", // automations on a canvas: two linked steps
+  "M3 5h18v14H3zM3 9h18M6 7h.01M8.5 7h.01M7 13h6M7 16h10", // the web app: a browser window
 ];
 
 function Icon({ d }: { d: string }) {
@@ -65,7 +66,7 @@ export function Features() {
         {features.map((f, i) => (
           <li key={f.title} className="flex gap-4 rounded-2xl border border-line bg-surface p-5 shadow-soft">
             <span className="grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-surface-2 text-fg">
-              <Icon d={FEATURE_ICONS[i % FEATURE_ICONS.length]} />
+              <Icon d={FEATURE_ICONS[i]} />
             </span>
             <div>
               <h3 className="font-semibold tracking-[-0.01em]">{f.title}</h3>

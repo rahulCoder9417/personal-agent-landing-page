@@ -142,6 +142,7 @@ export const trust = [
   },
 ];
 
+// Exactly six, for a 3 x 2 grid. Each has its own icon in trust.tsx (FEATURE_ICONS, same order).
 export const features = [
   {
     title: "Voice notes, images and files",
@@ -165,11 +166,7 @@ export const features = [
   },
   {
     title: "A web app for the details",
-    body: "Chat with unread dots, approvals, automations, apps, memory, credits and the full activity log in one place. Link Telegram and your chats there show up in the web app too.",
-  },
-  {
-    title: "Credits you can see",
-    body: "Each task shows what it cost. No surprise bills: at zero, Tex pauses and tells you. A task that fails on our side is refunded.",
+    body: "Chat, approvals, automations, apps, memory and the activity log in one place, with what each task cost. No surprise bills: at zero, Tex pauses and tells you. Your Telegram chats show up here too.",
   },
 ];
 
