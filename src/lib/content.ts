@@ -244,7 +244,7 @@ export const plans: Plan[] = [
       "10 apps",
       "1 automation",
       "Your own AI key, your Claude plan (beta) or Textcrew AI",
-      "Credits last 90 days",
+      "Sign-up credits last 14 days",
     ],
   },
   {
@@ -291,8 +291,8 @@ export const paymentNote =
   "Prices are in US dollars. Depending on where you live, tax such as GST or VAT is added at checkout or already included. Payments are handled by Polar, our merchant of record. Plans renew every month until you cancel; cancel any time in the web app and you keep your plan until the end of the month you paid for.";
 
 export const creditNotes = [
-  { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's running time (1 credit per 10 minutes), actions that change something in your apps (1 credit each; reading and searching are free), browser time on Max (2 credits per minute) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
-  { label: "Credits last 90 days", body: "Every credit is good for 90 days from the day you get it, whether it came from your plan, a top-up or a code. The oldest credits are used first." },
+  { label: "1 credit ≈ 1 cent", body: "Credits pay for your agent's time (1 credit each time it wakes up to work, then 1 credit per 5 minutes it runs), actions that change something in your apps (1 credit each; reading and searching are free), browser time on Max (2 credits per minute) and Textcrew AI if you use it. Bring your own AI and that part isn't charged in credits." },
+  { label: "Credits last 90 days", body: "Credits from your plan, a top-up or a code are good for 90 days from the day you get them. The 100 free credits at sign-up last 14 days. The oldest credits are used first." },
   { label: "No surprise bills", body: "At zero, Tex pauses and tells you in chat. Upgrade, buy a top-up or redeem a code to carry on." },
 ];
 
@@ -305,7 +305,7 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   {
     q: "How does the beta work?",
     pricing: true,
-    a: "Everyone starts on the Free plan with 100 credits. Waitlist members get 50% off their first month of Pro or Max, and beta invites can come with a code that adds extra free credits, so you can put Tex on real work before paying anything.",
+    a: "Everyone starts on the Free plan with 100 credits, good for 14 days. Waitlist members get 50% off their first month of Pro or Max, and beta invites can come with a code that adds extra free credits, so you can put Tex on real work before paying anything.",
   },
   {
     q: "What will it cost?",
@@ -337,7 +337,7 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   {
     q: "What is a credit?",
     pricing: true,
-    a: "One credit is about one cent. Credits pay for Textcrew AI if you use it, your agent's running time (1 credit per 10 minutes), actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free) and, on the Max plan, browser time (2 credits per minute). If you bring your own AI, the AI part isn't charged in credits. Every credit lasts 90 days, and the activity log shows the credits used by every task.",
+    a: "One credit is about one cent. Credits pay for Textcrew AI if you use it, your agent's time (1 credit each time it wakes up to work, then 1 credit per 5 minutes it runs), actions in your apps (1 credit per action that changes something, such as sending an email or creating an event; reading and searching are free) and, on the Max plan, browser time (2 credits per minute). If you bring your own AI, the AI part isn't charged in credits. Credits from a plan, a top-up or a code last 90 days, and the 100 free sign-up credits last 14 days. The activity log shows the credits used by every task.",
   },
   {
     q: "How do I cancel a paid plan?",

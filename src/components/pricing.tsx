@@ -16,7 +16,7 @@ export function Pricing() {
             Start free. Pay for what you use.
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-            Everyone starts on Free with 100 credits. Pro and Max add credits every month, all apps and more automations.
+            Everyone starts on Free with 100 credits, good for 14 days. Pro and Max add credits every month, all apps and more automations.
             Every plan runs on credits, so you pay for the work Tex actually does.
           </p>
           <p className="mt-3 text-[15px] text-muted">Pro and Max are at launch prices for now.</p>

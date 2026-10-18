@@ -64,7 +64,7 @@ export default function TermsPage() {
             These terms are the agreement between you and Textcrew when you use Textcrew: the web app, the Telegram bot and
             this website. They&apos;re short and in plain words. By creating an account or using Textcrew, you agree to them.
           </p>
-          <p className="mt-3 text-sm text-muted">Last updated 16 October 2026.</p>
+          <p className="mt-3 text-sm text-muted">Last updated 18 October 2026.</p>
 
           <div className="mt-12 flex flex-col gap-8">
             <Clause id="who" title="Who we are">
@@ -151,7 +151,7 @@ export default function TermsPage() {
             <Clause id="payments" title="Credits and payments">
               <List>
                 <li>
-                  Textcrew runs on credits. One credit is about one cent. Credits pay for your agent&apos;s running time,
+                  Textcrew runs on credits. One credit is about one cent. Credits pay for waking your agent and its running time,
                   actions that change something in your apps, Textcrew AI if you use it, and browser time on Max.
                 </li>
                 <li>
@@ -176,7 +176,7 @@ export default function TermsPage() {
                   next 21 days and you keep your plan meanwhile; if it still fails, the plan ends and you move to Free.
                 </li>
                 <li>
-                  Each credit lasts 90 days from the day you get it, whether it came from a plan, a top-up or a code. The
+                  Credits from a plan, a top-up or a code last 90 days from the day you get them; the free credits given at sign-up last 14 days. The
                   oldest are used first, and unused credits expire. Credits have no cash value and can&apos;t be moved to
                   another account.
                 </li>
