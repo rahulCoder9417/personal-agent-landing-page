@@ -18,6 +18,8 @@ export function Footer() {
           <Link href="/#faq" className="hover:text-fg">FAQ</Link>
           <Link href="/privacy" className="hover:text-fg">Privacy</Link>
           <Link href="/terms" className="hover:text-fg">Terms</Link>
+          <a href={site.signInUrl} className="hover:text-fg">Sign in</a>
+          <a href={site.signUpUrl} className="font-medium text-fg hover:text-accent">Get started</a>
         </nav>
       </Container>
       <Container className="mt-8">
