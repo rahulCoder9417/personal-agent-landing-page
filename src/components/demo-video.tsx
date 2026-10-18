@@ -62,7 +62,7 @@ export function DemoVideo({ className = "" }: { className?: string }) {
         preload="metadata"
         width={1280}
         height={720}
-        aria-label="Textcrew in 53 seconds: one text, the crew at work, your OK, done."
+        aria-label="Textcrew in 57 seconds: one text, the crew at work, your OK, bring your own AI."
         onPointerDown={takeOver}
         onKeyDown={takeOver}
       >
