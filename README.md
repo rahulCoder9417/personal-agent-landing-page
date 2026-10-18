@@ -1,8 +1,8 @@
 # Textcrew landing page
 
-Marketing site for Textcrew, the personal AI agent you text from Telegram or the web app. It is in **private beta, launching soon**, so the page's job is to explain the product and collect beta waitlist signups.
+Marketing site for Textcrew, the personal AI agent you text from Telegram or the web app. Textcrew is **live** (the web app at app.textcrew.in, and Telegram), so the page's job is to explain the product and send people to sign up: every "Get started" goes to `https://app.textcrew.in/sign-up`, and "Sign in" to `/sign-in` (both set in `src/lib/site.ts`).
 
-Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, three.js (3D hero), motion (scroll reveals) and simple-icons (app logos). Waitlist signups are stored in Neon Postgres through Drizzle ORM. Package manager: pnpm.
+Built with Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, three.js (3D hero), motion (scroll reveals) and simple-icons (app logos). The old waitlist's signups are stored in Neon Postgres through Drizzle ORM. Package manager: pnpm.
 
 ## Run it
 
@@ -26,7 +26,9 @@ Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`, `pnpm db:generate` (new 
 
 On Vercel, add these in the project's environment variables (the Neon integration can set `DATABASE_URL` for you).
 
-## Beta waitlist
+## Waitlist (closed)
+
+The waitlist was the call to action before launch. Its form is no longer on the page; the API and the confirm page stay, so links in emails already sent still work, and people who joined keep 50% off their first month of Pro or Max (`waitlistDeal` in `content.ts`).
 
 `POST /api/waitlist` validates the email, ignores bots that fill the hidden honeypot field, allows at most 5 new signups per IP every 10 minutes (checked in the database, so it holds across serverless instances), then upserts one row per email into `waitlist_signups`.
 
@@ -43,7 +45,7 @@ Each row stores:
 
 1. After saving the row, the route emails a confirmation link, `/waitlist/confirm?token=…`, valid for 48 hours, from `no-reply@textcrew.in`. Only a SHA-256 hash of the token is stored, and a new email replaces the previous link. An already-confirmed address gets no email at all.
 2. The confirm page checks the token only when the visitor presses **Confirm** (a server action), so mail-app link scanners can't confirm an address by opening the link. It records `verified_at` and `verified_ip`.
-3. Signing up again sends a new link at most every 30 minutes, and three a day. The form tells people that if they're already on the waitlist, no email comes.
+3. Signing up again sends a new link at most every 30 minutes, and three a day.
 
 New, pending and confirmed emails all get the same response, so nobody can check who is on the list. The `/privacy#waitlist` section tells visitors what is stored; keep it in sync with the schema in `src/db/schema.ts`. The SQL lives in `drizzle/` if you'd rather run it in the Neon console.
 
@@ -57,9 +59,9 @@ New, pending and confirmed emails all get the same response, so nobody can check
 
 ## What's on the page
 
-Sections, in order: a centred hero with the waitlist form and floating app logos; a product window (chat with a working approval card, plus Activity, Approvals and Automations tabs) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; features; a short pricing teaser that links to `/pricing`; FAQ; and a final waitlist call to action.
+Sections, in order: a centred hero with Get started free and Watch the demo, floating app logos and the 53-second demo video (`public/video/`, muted autoplay while on screen, "Watch with sound"); a product window drawn like the real web app (`src/components/showcase/`: sidebar or phone tabs, the chat with a working "Needs your OK" card, and the Approvals, Automations and Activity screens, sharing one state) with the 3D Tex perched on top, calling crew members in; how it works (the job told through lock-screen notifications from Tex, with a working Approve); integrations (a job receipt that prints each app action and its credits while an app shelf lights up); use cases; an automations builder; the crew (an auto-playing story of Tex handing work to the specialists) and roadmap; privacy and security; six feature cards; a short pricing teaser that links to `/pricing`; FAQ; and a final sign-up call to action.
 
-Other pages: `/pricing` (the plans, the waitlist deal, how credits work, a line on dollars, tax, Polar as merchant of record and cancelling, the FAQ questions about plans and credits, and the waitlist form) and a `/privacy` summary, with a section on data from Google apps (`/privacy#google-data`, Google's "Limited Use" statement), one on payments through Polar (`/privacy#payments`) and a contact line (`/privacy#contact`); and `/terms`, the terms of service (who runs Textcrew, credits and payments, the 14-day refund rule, governing law). Privacy and Terms are linked in the footer. The contact email is `site.contactEmail` in `src/lib/site.ts`, shown in the footer, on Pricing, on Privacy and on Terms; change it there only. The nav and footer link home sections as `/#id`, so they work from every page. The FAQ questions marked `pricing: true` in `content.ts` are the ones `/pricing` repeats.
+Other pages: `/pricing` (the plans, the deal for people who joined the waitlist, how credits work, a line on dollars, tax, Polar as merchant of record and cancelling, the FAQ questions about plans and credits, and the sign-up call to action) and a `/privacy` summary, with a section on data from Google apps (`/privacy#google-data`, Google's "Limited Use" statement), one on payments through Polar (`/privacy#payments`) and a contact line (`/privacy#contact`); and `/terms`, the terms of service (who runs Textcrew, credits and payments, the 14-day refund rule, governing law). Privacy and Terms are linked in the footer. The contact email is `site.contactEmail` in `src/lib/site.ts`, shown in the footer, on Pricing, on Privacy and on Terms; change it there only. The nav and footer link home sections as `/#id`, so they work from every page. The FAQ questions marked `pricing: true` in `content.ts` are the ones `/pricing` repeats.
 
 The visual language follows the products it sits next to (Notis, Multiply, Strawberry): light background, centred sections, real app logos, product mockups and pill buttons.
 
@@ -82,10 +84,10 @@ src/
 ├── components/
 │   ├── agent.tsx               2D mascots (Tex and the crew) as SVG, animated with CSS
 │   ├── tex-3d.tsx              3D Tex for the hero (three.js, loaded on the client only)
-│   ├── product-showcase.tsx    the hero product window (chat + activity feed)
+│   ├── product-showcase.tsx    the product window: the web app with a pretend account (screens in showcase/)
+│   ├── demo-video.tsx          the demo video under the hero
 │   ├── perched-tex.tsx         3D Tex on the window edge, with "Send Tex a task"
 │   ├── brand-icon.tsx          app logos from simple-icons (Slack is a neutral tile)
-│   ├── waitlist-form.tsx       email + preferred chat app
 │   ├── pricing.tsx             the /pricing page body, and the short teaser on the home page
 │   └── …                       one file per section
 ├── db/
