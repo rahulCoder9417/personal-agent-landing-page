@@ -16,7 +16,7 @@ export const steps = [
   },
   {
     title: "Connect your apps",
-    body: "In Integrations, press Connect on Gmail or GitHub. They sign in on their own screens, so we never see your passwords.",
+    body: "In Integrations, press Connect on Gmail, GitHub, Google Calendar or another app. Each signs in on their own screens, so we never see your passwords.",
   },
   {
     title: "Message it",
@@ -30,7 +30,7 @@ export const apps = {
     { icon: "github", name: "GitHub", actions: ["Read pull requests and issues", "Review a pull request", "Open a pull request from a branch"] },
   ],
   categories: ["Email", "Dev", "Calendar", "Notes", "Tasks", "CRM", "Research"],
-  total: "Gmail and GitHub today. 23 more apps are on the way",
+  total: "Gmail, GitHub, Google Calendar, Google Docs and more",
 } as const;
 
 // `who` is the crew member that does the work and answers; it defaults to Tex.
@@ -153,7 +153,7 @@ export const features = [
   },
   {
     title: "Your apps, plus your own tools",
-    body: "Connect Gmail and GitHub from Integrations, with more apps on the way. On Max you can plug in your own MCP servers too.",
+    body: "Connect Gmail, GitHub, Google Calendar, Google Docs and more from Integrations. On Max you can plug in your own MCP servers too.",
   },
   {
     title: "Three ways to run the AI",
@@ -194,6 +194,14 @@ export const crew: CrewMember[] = [
   { id: "scout", name: "Scout", role: "Research", body: "Searches the web, reads the pages and comes back with an answer and its links. On the Max plan it can also drive a real browser, for pages that need clicking." },
 ];
 
+// Where Textcrew can be used. Desktop and mobile are in beta: shown as a label only, no download links.
+export const places: { name: string; status: "Live" | "In beta"; body: string }[] = [
+  { name: "Web app", status: "Live", body: "At app.textcrew.in. Works in your phone's browser too, and you can add it to your home screen." },
+  { name: "Telegram", status: "Live", body: "Link your chat with a one-time code and text Tex like a friend." },
+  { name: "Desktop app", status: "In beta", body: "Tex on your computer. Not open to everyone yet." },
+  { name: "Mobile app", status: "In beta", body: "Tex as an app on your phone. Not open to everyone yet." },
+];
+
 export const roadmap = [
   {
     title: "More channels",
@@ -205,7 +213,7 @@ export const roadmap = [
   },
   {
     title: "More apps",
-    body: "Google Calendar, Notion, Slack and more are in our catalogue of 25 apps and get switched on step by step. Gmail and GitHub work today.",
+    body: "The catalogue has 25 apps, and the full list is on the Integrations page in the web app. New ones are added over time.",
   },
   {
     title: "Teams and workspaces",
@@ -305,6 +313,10 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
     a: "Free is $0. Pro is $19 a month and Max is $30 a month. These are launch prices: the regular prices are $30 and $50 a month. If you join the waitlist, your first month of Pro or Max is half price: $9.50 or $15.",
   },
   {
+    q: "Where can I use Textcrew?",
+    a: "In the web app at app.textcrew.in, which also works in your phone's browser (you can add it to your home screen), and on Telegram. Both are live. A desktop app and a mobile app are in beta.",
+  },
+  {
     q: "Which chat apps does it work with?",
     a: "Telegram and the web app. Link Telegram with a one-time code and your Telegram chats also show up in the web app. WhatsApp and iMessage are not live yet; we will add channels where the platforms allow it.",
   },
@@ -320,7 +332,7 @@ export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   {
     q: "What can it connect to?",
     pricing: true,
-    a: "Gmail and GitHub today, from Integrations, Apps in the web app. The catalogue has 25 apps, and more are switched on step by step. Free allows 10 apps; Pro and Max allow all 25. On Max you can add your own MCP servers, and Scout can use a real browser.",
+    a: "Gmail, GitHub, Google Calendar, Google Docs and more. The full list is on the Integrations page in the web app (Apps). The catalogue has 25 apps: Free allows 10; Pro and Max allow all 25. On Max you can add your own MCP servers, and Scout can use a real browser.",
   },
   {
     q: "What is a credit?",

@@ -8,6 +8,7 @@ import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { HowItWorks } from "@/components/how-it-works";
 import { Nav } from "@/components/nav";
+import { Places } from "@/components/places";
 import { PricingTeaser } from "@/components/pricing";
 import { Features, Trust } from "@/components/trust";
 import { faqs, plans } from "@/lib/content";
@@ -78,6 +79,7 @@ export default function Home() {
         <UseCases />
         <Automations />
         <Crew />
+        <Places />
         <Trust />
         <Features />
         <PricingTeaser />
