@@ -1,272 +1,179 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useId, useState, type ReactNode } from "react";
-import { AgentFigure } from "./agent";
-import { BrandIcon, type BrandName } from "./brand-icon";
+import { useEffect, useRef, useState } from "react";
 import { PerchedTex } from "./perched-tex";
 import { Container } from "./section";
-import { Switch } from "./ui-switch";
+import { ActivityScreen } from "./showcase/activity-screen";
+import { ApprovalsScreen, type ApprovalItem } from "./showcase/approvals-screen";
+import { AutomationsScreen } from "./showcase/automations-screen";
+import { ChatScreen, type Decide, type DoneItem, type NextItem } from "./showcase/chat-screen";
+import { APPROVALS, BALANCE, BASE_ACTIVITY, EMAIL_ID, FIRST_RULE, type ApprovalStatus, type Entry, type Screen, type SkipRule } from "./showcase/data";
+import { MobileTabBar, MobileTopBar, Sidebar } from "./showcase/shell";
 
-type Decision = "pending" | "approved" | "rejected";
-type Tab = "activity" | "approvals" | "automations";
+// The web app (app.textcrew.in) as it looks, with a pretend account: the chat where Tex asks for an OK,
+// and the Approvals, Automations and Activity screens, all sharing one state. Answer the approval in
+// the chat or on Approvals and the rest follows: the badge, the credits, the activity log.
 
-const OTHER_APPROVALS: { id: string; icon: BrandName; title: string; preview: string; reason: string }[] = [
-  { id: "review", icon: "github", title: "Post Patch's review on PR #131", preview: "Two small things to fix, otherwise good to merge.", reason: "Comments for others to see" },
-  { id: "drafts", icon: "gmail", title: "Delete 12 old drafts", preview: "Drafts older than 90 days in Gmail.", reason: "Deletes things" },
-];
-
-const AUTOMATIONS: { id: string; icon: BrandName; title: string; when: string; next: string }[] = [
-  { id: "week", icon: "gmail", title: "Summarise my inbox", when: "Every weekday · 9:00", next: "Next run tomorrow 9:00" },
-  { id: "boss", icon: "gmail", title: "Tell me when my boss emails", when: "When it happens · Gmail", next: "Watching your inbox" },
-  { id: "review", icon: "github", title: "Review every pull request", when: "When it happens · GitHub", next: "Watching acme/web" },
-  { id: "invoice", icon: "telegram", title: "Remind me to chase the invoice", when: "Once · Friday 10:00", next: "Runs Friday 10:00" },
-];
-
-function Bubble({ from, children }: { from: "you" | "tex"; children: ReactNode }) {
-  return from === "you" ? (
-    <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-fg px-4 py-2.5 text-[14.5px] leading-snug text-white">{children}</div>
-  ) : (
-    <div className="max-w-[88%] rounded-2xl rounded-bl-md border border-line bg-surface px-4 py-2.5 text-[14.5px] leading-snug">{children}</div>
-  );
-}
-
-function Pill({ tone, children }: { tone: "done" | "waiting" | "muted" | "danger"; children: ReactNode }) {
-  const cls = {
-    done: "bg-[#E7F6EC] text-[#14713D]",
-    waiting: "bg-accent-soft text-accent",
-    muted: "bg-surface-2 text-muted",
-    danger: "bg-[#FDECEA] text-danger",
-  }[tone];
-  return <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-medium ${cls}`}>{children}</span>;
-}
-
-function DecisionButtons({ onDecide, compact = false }: { onDecide: (d: Exclude<Decision, "pending">) => void; compact?: boolean }) {
-  const h = compact ? "h-8 px-3.5 text-[12.5px]" : "h-9 text-[13.5px]";
-  return (
-    <div className={compact ? "flex shrink-0 gap-1.5" : "grid grid-cols-2 gap-2"}>
-      <button type="button" onClick={() => onDecide("rejected")} className={`${h} cursor-pointer rounded-full border border-line bg-surface font-medium transition-colors hover:border-fg/40`}>
-        Reject
-      </button>
-      <button type="button" onClick={() => onDecide("approved")} className={`${h} cursor-pointer rounded-full bg-fg font-medium text-white transition-colors hover:bg-black`}>
-        Approve
-      </button>
-    </div>
-  );
-}
+const START_STATUS = Object.fromEntries(APPROVALS.map((a) => [a.id, a.start])) as Record<string, ApprovalStatus>;
+const START_ENABLED: Record<string, boolean> = { inbox: true, review: true, boss: true, invoice: false };
+const DECIDED_AT = "10:44 AM";
+// Activity entries that record Tex asking or reporting, rather than something it got done.
+const CHATTER = new Set(["approval requested", "progress"]);
 
 export function ProductShowcase() {
-  const uid = useId();
-  const [tab, setTab] = useState<Tab>("activity");
-  const [email, setEmail] = useState<Decision>("pending");
-  const [others, setOthers] = useState<Record<string, Decision>>({});
-  const [enabled, setEnabled] = useState<Record<string, boolean>>({ week: true, boss: true, review: true, invoice: false });
+  const [screen, setScreen] = useState<Screen>("chat");
+  const [status, setStatus] = useState(START_STATUS);
+  const [decided, setDecided] = useState<string[]>([]);
+  const [rules, setRules] = useState<SkipRule[]>([FIRST_RULE]);
+  const [enabled, setEnabled] = useState(START_ENABLED);
+  const [working, setWorking] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const pending = (email === "pending" ? 1 : 0) + OTHER_APPROVALS.filter((a) => (others[a.id] ?? "pending") === "pending").length;
-  const activeCount = Object.values(enabled).filter(Boolean).length;
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
 
-  const emailStatus =
-    email === "approved" ? <Pill tone="done">Sent</Pill> : email === "rejected" ? <Pill tone="danger">Not sent</Pill> : <Pill tone="waiting">Needs OK</Pill>;
+  const decide: Decide = (id, decision, rule) => {
+    const approval = APPROVALS.find((a) => a.id === id);
+    if (!approval) return;
+    setStatus((s) => ({ ...s, [id]: decision === "approve" ? "approved" : "rejected" }));
+    setDecided((d) => [id, ...d.filter((x) => x !== id)]);
+    const skip = approval.skip;
+    if (rule && skip) {
+      const scope = rule === "listed" ? `Only to ${skip.recipient}` : "To anyone";
+      setRules((r) => [{ id: `rule-${id}`, actionName: skip.actionName, scope, made: "Made today" }, ...r.filter((x) => x.id !== `rule-${id}`)]);
+    }
+    // Tex picks the answer up at once: the chat shows it at work for a moment, then its reply.
+    if (id === EMAIL_ID) {
+      setWorking(true);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setWorking(false), 1200);
+    }
+  };
 
-  const tabs: { id: Tab; label: string; badge?: number }[] = [
-    { id: "activity", label: "Activity" },
-    { id: "approvals", label: "Approvals", badge: pending },
-    { id: "automations", label: "Automations" },
+  const reset = () => {
+    if (timer.current) clearTimeout(timer.current);
+    setStatus(START_STATUS);
+    setDecided([]);
+    setRules([FIRST_RULE]);
+    setEnabled(START_ENABLED);
+    setWorking(false);
+    setScreen("chat");
+  };
+
+  // Newest first: what was answered here, then the rest as they were.
+  const order = [...decided, ...APPROVALS.map((a) => a.id).filter((id) => !decided.includes(id))];
+  const items: ApprovalItem[] = order.flatMap((id) => {
+    const approval = APPROVALS.find((a) => a.id === id);
+    if (!approval) return [];
+    const now = decided.includes(id);
+    return [
+      {
+        approval,
+        status: status[id],
+        when: now ? "Today" : approval.when,
+        settled: now ? `${status[id] === "approved" ? "Approved" : "Denied"} Today, ${DECIDED_AT}` : approval.settled,
+      },
+    ];
+  });
+  const email = items.find((item) => item.approval.id === EMAIL_ID);
+  const pending = items.filter((item) => item.status === "pending").map((item) => item.approval);
+  const balance = BALANCE - decided.filter((id) => status[id] === "approved").length;
+
+  const entries: Entry[] = [
+    ...items
+      .filter((item) => decided.includes(item.approval.id))
+      .flatMap(({ approval, status: settled }): Entry[] => {
+        const answer: Entry = {
+          id: `you-${approval.id}`,
+          time: DECIDED_AT,
+          actor: "user",
+          who: "You",
+          label: "approval decided",
+          summary: `${settled === "approved" ? "Approved" : "Denied"} “${approval.summary}”`,
+          credits: 0,
+          filter: "approvals",
+        };
+        if (settled !== "approved") return [answer];
+        return [{ id: `ran-${approval.id}`, time: DECIDED_AT, actor: "agent", who: "Tex", label: "run app action", summary: approval.summary, credits: 1, filter: "tex" }, answer];
+      }),
+    ...BASE_ACTIVITY,
   ];
+  const done: DoneItem[] = entries
+    .filter((e) => e.actor !== "user" && !CHATTER.has(e.label))
+    .slice(0, 3)
+    .map((e) => ({ title: e.summary, meta: e.credits ? `${e.time} · ${e.credits} credit${e.credits === 1 ? "" : "s"}` : e.time }));
+  const upNext: (NextItem & { id: string })[] = [
+    { id: "inbox", title: "Summarise my inbox", meta: "Tomorrow, 9:00 AM" },
+    { id: "review", title: "Review pull requests", meta: "When a pull request opens or gets new commits", app: "github" },
+    { id: "boss", title: "Boss emails", meta: "When a new email arrives in Gmail", app: "gmail" },
+  ];
+  const next = upNext.filter((n) => enabled[n.id]);
+
+  const changed = decided.length > 0 || rules.length !== 1 || rules[0] !== FIRST_RULE || Object.keys(START_ENABLED).some((k) => enabled[k] !== START_ENABLED[k]);
 
   return (
     <Container className="relative mt-[17rem] pb-20 sm:mt-[18.5rem] sm:pb-28">
-      <div id="demo" className="relative mx-auto max-w-5xl scroll-mt-80">
+      <div id="demo" className="relative mx-auto max-w-6xl scroll-mt-80">
         <PerchedTex />
-        <div className="relative grid overflow-hidden rounded-[22px] border border-line bg-surface text-left shadow-window md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-          {/* Chat */}
-          <div className="flex flex-col border-b border-line bg-[#F7F6F2] md:border-r md:border-b-0">
-            <div className="flex items-center gap-3 border-b border-line bg-surface px-7 py-4">
-              <span className="grid size-9 place-items-center rounded-full bg-accent-soft">
-                <AgentFigure who="tex" glyph size={28} label="Tex" />
-              </span>
-              <div className="leading-tight">
-                <p className="text-sm font-semibold">Tex</p>
-                <p className="flex items-center gap-1.5 font-mono text-[11px] text-muted">
-                  <span className="size-1.5 rounded-full bg-[#22A45D]" />
-                  online
-                </p>
-              </div>
-              <BrandIcon name="telegram" size={18} className="ml-auto" />
-            </div>
-            <div className="flex flex-1 flex-col gap-3 px-7 py-7">
-              <Bubble from="you">Check PR #128 and tell Maya if it&apos;s ready</Bubble>
-              <Bubble from="tex">On it. PR #128 changes 4 files and the tests pass. Drafting the note to Maya.</Bubble>
-              <div className="max-w-[92%] rounded-2xl rounded-bl-md border border-fg/80 bg-surface p-5">
-                <p className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] text-muted">
-                  <span aria-hidden className="h-3 w-1 bg-accent" />
-                  {email === "pending" ? "NEEDS YOUR OK" : email === "approved" ? "APPROVED" : "REJECTED"}
-                </p>
-                <p className="mt-1.5 text-[14px] font-semibold">Send this email to Maya?</p>
-                <p className="mt-2 rounded-lg bg-surface-2 px-3.5 py-2.5 text-[13.5px] leading-relaxed text-muted">
-                  Hi Maya, PR #128 looks good and is ready to merge. Thanks!
-                </p>
-                <div className="mt-3.5">
-                  {email === "pending" ? (
-                    <>
-                      <DecisionButtons onDecide={setEmail} />
-                      <p className="mt-2 text-center text-[11.5px] text-muted">Try it: tap Approve or Reject</p>
-                    </>
-                  ) : (
-                    <button type="button" onClick={() => setEmail("pending")} className="cursor-pointer text-[12.5px] font-medium text-accent hover:underline">
-                      Undo
-                    </button>
-                  )}
-                </div>
-              </div>
-              <AnimatePresence mode="popLayout">
-                {email !== "pending" && (
-                  <motion.div key={email} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}>
-                    <Bubble from="tex">
-                      {email === "approved"
-                        ? "Done. Maya has the note."
-                        : "Okay, I won't send it. Want me to change the note?"}
-                    </Bubble>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <div aria-hidden className="mx-7 mb-7 flex items-center rounded-full border border-line bg-surface px-5 py-3 text-[13.5px] text-muted">
-              Message Tex…
-              <svg viewBox="0 0 24 24" className="ml-auto size-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-                <rect x="9" y="3" width="6" height="11" rx="3" />
-                <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+        <div className="app-ui relative overflow-hidden rounded-[22px] border border-line bg-chrome text-fg shadow-window">
+          {/* The browser's bar, so it reads as the web app at its address. */}
+          <div aria-hidden className="hidden items-center border-b border-line-strong/50 px-4 py-2.5 md:flex">
+            <span className="flex w-16 gap-1.5">
+              <span className="size-2.5 rounded-full bg-line-strong" />
+              <span className="size-2.5 rounded-full bg-line-strong" />
+              <span className="size-2.5 rounded-full bg-line-strong" />
+            </span>
+            <span className="mx-auto flex h-6 items-center gap-1.5 rounded-md bg-surface/80 px-3 font-mono text-[11.5px] text-muted">
+              <svg viewBox="0 0 24 24" className="size-3" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                <rect x="5" y="11" width="14" height="9" rx="2" />
+                <path d="M8 11V8a4 4 0 0 1 8 0v3" />
               </svg>
-            </div>
+              app.textcrew.in
+            </span>
+            <span className="w-16" />
           </div>
 
-          {/* Web app panel with working tabs; a fixed height so switching tabs never resizes the window */}
-          <div className="flex min-h-[30rem] flex-col md:h-[35rem] md:min-h-0">
-            <div role="tablist" aria-label="Web app" className="flex items-center gap-1.5 border-b border-line px-6 py-4 text-[13.5px]">
-              {tabs.map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  role="tab"
-                  id={`${uid}-${t.id}-tab`}
-                  aria-selected={tab === t.id}
-                  aria-controls={`${uid}-${t.id}-panel`}
-                  onClick={() => setTab(t.id)}
-                  className={`flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-colors ${
-                    tab === t.id ? "bg-surface-2 font-medium text-fg" : "text-muted hover:text-fg"
-                  }`}
-                >
-                  {t.label}
-                  {!!t.badge && <span className="grid size-4 place-items-center rounded-full bg-accent text-[10px] text-white">{t.badge}</span>}
-                </button>
-              ))}
-            </div>
-
-            <div role="tabpanel" id={`${uid}-${tab}-panel`} aria-labelledby={`${uid}-${tab}-tab`} className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-              <AnimatePresence mode="wait">
+          <div className="flex h-[720px] flex-col md:h-[720px] md:flex-row">
+            <Sidebar screen={screen} onOpen={setScreen} pending={pending.length} balance={balance} />
+            <MobileTopBar balance={balance} />
+            <main className="@container flex min-h-0 min-w-0 flex-1 overflow-hidden bg-surface max-md:border-t max-md:border-line md:my-2 md:mr-2 md:rounded-[14px] md:shadow-[var(--shadow-raised)]">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.div
-                  key={tab}
+                  key={screen}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="flex flex-1 flex-col"
+                  transition={{ duration: 0.12 }}
+                  className="flex min-h-0 min-w-0 flex-1"
                 >
-                  {tab === "activity" && (
-                    <ul className="divide-y divide-line">
-                      {[
-                        { icon: "github" as const, title: "Read PR #128 and its tests", meta: "GitHub · free", status: <Pill tone="done">Done</Pill> },
-                        { icon: "gmail" as const, title: "Email to Maya about PR #128", meta: email === "pending" ? "Gmail · waiting for your OK" : "Gmail · 1 credit", status: emailStatus },
-                        { icon: "gmail" as const, title: "Summary of your unread email", meta: "Automation · 1 credit", status: <Pill tone="done">Done</Pill> },
-                        { icon: "telegram" as const, title: "Every weekday 9:00, summarise my inbox", meta: "Automation · next run tomorrow", status: <Pill tone="muted">Scheduled</Pill> },
-                        { icon: "github" as const, title: "Patch reviewed PR #127", meta: "Automation · Auto-approved", status: <Pill tone="done">Done</Pill> },
-                      ].map((a) => (
-                        <li key={a.title} className="flex items-center gap-4 px-7 py-5">
-                          <BrandIcon name={a.icon} tile size={14} />
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-[14px] font-medium">{a.title}</p>
-                            <p className="truncate font-mono text-[11px] text-muted">{a.meta}</p>
-                          </div>
-                          {a.status}
-                        </li>
-                      ))}
-                    </ul>
+                  {screen === "chat" && email && (
+                    <ChatScreen email={email.approval} emailStatus={email.status} working={working} onDecide={decide} pending={pending} done={done} next={next} onOpen={setScreen} />
                   )}
-
-                  {tab === "approvals" && (
-                    <div className="flex flex-col gap-2.5 p-6">
-                      <p className="mb-1 text-[12.5px] text-muted">Tex waits for you before it sends to others, deletes things or spends money. A quiet “Don’t ask again” on a card makes a skip rule, and deleting, paying and merging always ask.</p>
-                      {[{ id: "email", icon: "gmail" as const, title: "Send this email to Maya", preview: "Hi Maya, PR #128 looks good and is ready to merge. Thanks!", reason: "Sends to someone else" }, ...OTHER_APPROVALS].map((a) => {
-                        const d = a.id === "email" ? email : (others[a.id] ?? "pending");
-                        const decide = (next: Decision) => (a.id === "email" ? setEmail(next) : setOthers((o) => ({ ...o, [a.id]: next })));
-                        return (
-                          <div
-                            key={a.id}
-                            className={`flex items-center gap-3 rounded-2xl border px-4 py-3 transition-colors ${d === "pending" ? "border-line bg-surface" : "border-line/60 bg-surface-2/50"}`}
-                          >
-                            <BrandIcon name={a.icon} tile size={13} />
-                            <div className="min-w-0 flex-1">
-                              <p className={`truncate text-[14px] font-medium ${d === "pending" ? "" : "text-muted"}`}>{a.title}</p>
-                              <p className="truncate text-[12px] text-muted">
-                                <span className={a.reason === "Deletes things" ? "text-danger" : "text-accent"}>{a.reason}</span>
-                                {" · "}
-                                {a.preview}
-                              </p>
-                            </div>
-                            {d === "pending" ? (
-                              <DecisionButtons compact onDecide={decide} />
-                            ) : (
-                              <div className="flex shrink-0 items-center gap-2.5">
-                                {d === "approved" ? <Pill tone="done">Approved</Pill> : <Pill tone="danger">Rejected</Pill>}
-                                <button type="button" onClick={() => decide("pending")} className="cursor-pointer text-[12px] font-medium text-accent hover:underline">
-                                  Undo
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                      {pending === 0 && <p className="text-center text-[13px] font-medium text-[#14713D]">All caught up.</p>}
-                    </div>
-                  )}
-
-                  {tab === "automations" && (
-                    <div className="flex flex-1 flex-col">
-                      <ul className="divide-y divide-line">
-                        {AUTOMATIONS.map((a) => {
-                          const on = enabled[a.id];
-                          return (
-                            <li key={a.id} className="flex items-center gap-4 px-7 py-4">
-                              <BrandIcon name={a.icon} tile size={14} />
-                              <div className="min-w-0 flex-1">
-                                <p className={`truncate text-[14px] font-medium ${on ? "" : "text-muted"}`}>{a.title}</p>
-                                <p className="truncate font-mono text-[11px] text-muted">
-                                  {a.when} · {on ? a.next : "Paused"}
-                                </p>
-                              </div>
-                              <Switch on={on} label={`${on ? "Pause" : "Resume"} ${a.title}`} onToggle={() => setEnabled((e) => ({ ...e, [a.id]: !e[a.id] }))} />
-                            </li>
-                          );
-                        })}
-                      </ul>
-                      <div className="m-6 mt-auto rounded-2xl border border-dashed border-line bg-surface-2/50 p-4">
-                        <p className="text-[12.5px] text-muted">
-                          Add one by texting Tex or building it on the canvas, like <span className="font-medium text-fg">“every Friday at 5pm, list the pull requests waiting for my review”</span>.
-                        </p>
-                        <p className="mt-1.5 font-mono text-[11px] text-muted">{activeCount} active · 5 on Pro</p>
-                      </div>
-                    </div>
-                  )}
+                  {screen === "approvals" && <ApprovalsScreen items={items} rules={rules} onDecide={decide} onRemoveRule={(id) => setRules((r) => r.filter((x) => x.id !== id))} />}
+                  {screen === "automations" && <AutomationsScreen enabled={enabled} onToggle={(id) => setEnabled((e) => ({ ...e, [id]: !e[id] }))} />}
+                  {screen === "activity" && <ActivityScreen entries={entries} />}
                 </motion.div>
               </AnimatePresence>
-            </div>
-
-            <div className="mt-auto flex items-center justify-between border-t border-line px-7 py-4 font-mono text-[11px] text-muted">
-              <span>Every action is logged</span>
-              <span>credits shown per task</span>
-            </div>
+            </main>
+            <MobileTabBar screen={screen} onOpen={setScreen} pending={pending.length} />
           </div>
         </div>
+        <p className="mt-4 text-center text-[13px] text-muted">
+          Try it: answer Tex&apos;s question, then look in Approvals, Automations and Activity.
+          {changed && (
+            <>
+              {" "}
+              <button type="button" onClick={reset} className="cursor-pointer font-medium text-accent hover:underline">
+                Start over
+              </button>
+            </>
+          )}
+        </p>
       </div>
     </Container>
   );

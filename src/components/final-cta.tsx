@@ -36,8 +36,8 @@ export function FinalCta() {
               Telegram.
             </p>
             <SignUpActions second={{ href: site.signInUrl, label: "Sign in" }} className="mt-8" />
-            <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-accent-soft px-3.5 py-1.5 text-[13.5px] font-medium text-accent">
-              <span aria-hidden className="grid size-5 place-items-center rounded-full bg-accent font-mono text-[10px] font-bold text-white">
+            <p className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-accent-soft px-3.5 py-1.5 text-left text-[13.5px] font-medium text-accent sm:rounded-full">
+              <span aria-hidden className="grid size-5 shrink-0 place-items-center rounded-full bg-accent font-mono text-[10px] font-bold text-white">
                 %
               </span>
               {waitlistDeal}

@@ -104,7 +104,7 @@ export function Hero() {
           href="#demo"
           className="group mt-16 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-[13px] font-medium text-muted shadow-soft transition-colors hover:text-fg"
         >
-          Here&apos;s how Tex handles it
+          Try the web app yourself
           <svg aria-hidden viewBox="0 0 16 16" className="size-3.5 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="M8 3v10M4 9l4 4 4-4" />
           </svg>

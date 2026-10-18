@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -12,6 +12,14 @@ const sans = Geist({
 const mono = Geist_Mono({
   variable: "--font-brand-mono",
   subsets: ["latin"],
+});
+
+// The web app's font, for the product showcase only, so it looks as the app does. Not preloaded:
+// only the home page uses it.
+const appSans = Plus_Jakarta_Sans({
+  variable: "--font-app-sans",
+  subsets: ["latin"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -60,7 +68,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning: browser extensions add attributes to <html> before React loads.
-    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable} ${appSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         {children}
         {/* Vercel Web Analytics: page views and referrers, no cookies */}

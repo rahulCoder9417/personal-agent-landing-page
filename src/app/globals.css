@@ -17,6 +17,21 @@
   --byte: #7b4dff;
   --patch: #f5a623;
   --danger: #b42318;
+  /* The web app's own tokens (app.textcrew.in), used by the product showcase only (see .app-ui). */
+  --chrome: #f4f2ec;
+  --fg-2: #3f3d38;
+  --nav: #55524c;
+  --line-strong: #dcd8cf;
+  --accent-dark: #2440c4;
+  --success: #14713d;
+  --success-soft: #e7f6ec;
+  --online: #22a45d;
+  --danger-soft: #fdecea;
+  --warn: #b54708;
+  --warn-dot: #f79009;
+  --warn-soft: #fffaeb;
+  --warn-line: #fedf89;
+  --faint: #a39f96;
   color-scheme: only light;
 }
 
@@ -35,10 +50,25 @@
   --color-byte: var(--byte);
   --color-patch: var(--patch);
   --color-danger: var(--danger);
+  --color-chrome: var(--chrome);
+  --color-fg-2: var(--fg-2);
+  --color-nav: var(--nav);
+  --color-line-strong: var(--line-strong);
+  --color-accent-dark: var(--accent-dark);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-online: var(--online);
+  --color-danger-soft: var(--danger-soft);
+  --color-warn: var(--warn);
+  --color-warn-dot: var(--warn-dot);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-line: var(--warn-line);
+  --color-faint: var(--faint);
   --font-sans: var(--font-brand-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-brand-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
   --shadow-soft: 0 1px 2px rgb(21 21 21 / 0.04), 0 8px 24px -12px rgb(21 21 21 / 0.12);
   --shadow-window: 0 1px 2px rgb(21 21 21 / 0.05), 0 30px 60px -30px rgb(21 21 21 / 0.25);
+  --shadow-raised: 0 0 0 1px rgb(21 21 21 / 0.06), 0 1px 2px rgb(21 21 21 / 0.06);
 }
 
 html {
@@ -72,6 +102,24 @@ body {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
+}
+
+/* The product showcase (src/components/showcase/) draws the web app as it looks: the app's font
+   (Plus Jakarta Sans), its 14px body text and the few colours where it differs from this page. */
+.app-ui {
+  --surface-2: #f6f5f1;
+  --muted: #716e67;
+  --line: #ebe8e1;
+  font-family: var(--font-app-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  font-feature-settings: "ss01", "cv11";
+  text-align: left;
+}
+
+.app-ui .scroll-pane {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
 /* A faint dot grid behind the hero */
