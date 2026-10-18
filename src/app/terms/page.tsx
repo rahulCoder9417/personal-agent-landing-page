@@ -151,7 +151,7 @@ export default function TermsPage() {
             <Clause id="payments" title="Credits and payments">
               <List>
                 <li>
-                  Textcrew runs on credits. One credit is about one cent. Credits pay for waking your agent and its running time,
+                  Textcrew runs on credits. One credit is about one cent. Credits pay for your agent&apos;s running time,
                   actions that change something in your apps, Textcrew AI if you use it, and browser time on Max.
                 </li>
                 <li>
