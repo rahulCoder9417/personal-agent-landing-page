@@ -101,7 +101,7 @@ export function Hero() {
         </div>
         <div id="video" className="mt-14 w-full max-w-5xl scroll-mt-24 sm:mt-16">
           <DemoVideo />
-          <p className="mt-3 text-[13px] text-muted">Textcrew in 53 seconds: one text, the crew at work, your OK, done.</p>
+          <p className="mt-3 text-[13px] text-muted">Textcrew in 57 seconds: one text, the crew at work, your OK, bring your own AI.</p>
         </div>
         <a
           href="#demo"
