@@ -285,7 +285,8 @@ export const plans: Plan[] = [
   },
 ];
 
-export const waitlistDeal = "Waitlist members get 50% off their first month of Pro or Max.";
+// Textcrew is live: the waitlist is closed, and the people on it keep their deal.
+export const waitlistDeal = "Joined the waitlist? Your first month of Pro or Max is 50% off.";
 
 export const paymentNote =
   "Prices are in US dollars. Depending on where you live, tax such as GST or VAT is added at checkout or already included. Payments are handled by Polar, our merchant of record. Plans renew every month until you cancel; cancel any time in the web app and you keep your plan until the end of the month you paid for.";
@@ -299,18 +300,18 @@ export const creditNotes = [
 // `pricing` marks the questions repeated on the /pricing page.
 export const faqs: { q: string; a: string; pricing?: boolean }[] = [
   {
-    q: "When does Textcrew launch?",
-    a: "We're in private beta now and letting people in in small batches. Join the waitlist and we'll email you when your spot opens.",
+    q: "How do I get started?",
+    a: "Sign up at app.textcrew.in. You start on the Free plan with 100 credits, good for 14 days, and can message Tex in the web app right away. Link Telegram with a one-time code if you'd like to text it there, and connect your apps from Integrations.",
   },
   {
-    q: "How does the beta work?",
+    q: "Can I try it for free?",
     pricing: true,
-    a: "Everyone starts on the Free plan with 100 credits, good for 14 days. Waitlist members get 50% off their first month of Pro or Max, and beta invites can come with a code that adds extra free credits, so you can put Tex on real work before paying anything.",
+    a: "Yes. Everyone starts on the Free plan with 100 credits, good for 14 days, and a coupon code can add more free credits, so you can put Tex on real work before paying anything.",
   },
   {
-    q: "What will it cost?",
+    q: "What does it cost?",
     pricing: true,
-    a: "Free is $0. Pro is $19 a month and Max is $30 a month. These are launch prices: the regular prices are $30 and $50 a month. If you join the waitlist, your first month of Pro or Max is half price: $9.50 or $15.",
+    a: "Free is $0. Pro is $19 a month and Max is $30 a month. These are launch prices: the regular prices are $30 and $50 a month. If you joined the waitlist, your first month of Pro or Max is half price: $9.50 or $15.",
   },
   {
     q: "Where can I use Textcrew?",

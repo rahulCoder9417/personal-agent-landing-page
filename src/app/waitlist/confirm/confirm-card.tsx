@@ -1,18 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
 import { AgentFigure } from "@/components/agent";
+import { site } from "@/lib/site";
 import { confirmWaitlist, type ConfirmState } from "./actions";
 
 const COPY: Record<Exclude<ConfirmState["status"], "idle">, { title: string; body: string }> = {
   confirmed: {
     title: "You're on the list.",
-    body: "We'll email you when your invite is ready. Your first month of Pro or Max is 50% off.",
+    body: "Your first month of Pro or Max is 50% off. Textcrew is live, so you can sign up now.",
   },
   invalid: {
     title: "This link has expired or was already used.",
-    body: "If you already confirmed, you're on the list. If not, enter your email again and we'll send a fresh link.",
+    body: "If you already confirmed, you're on the list. Textcrew is live now, so you can sign up any time.",
   },
   error: {
     title: "Something went wrong on our side.",
@@ -36,12 +36,9 @@ export function ConfirmCard({ token }: { token: string }) {
           <>
             <h1 className="mt-6 text-2xl font-bold tracking-[-0.03em]">{done.title}</h1>
             <p className="mt-2 leading-relaxed text-muted">{done.body}</p>
-            <Link
-              href={state.status === "confirmed" ? "/" : "/#waitlist"}
-              className="mt-7 inline-flex h-10 items-center rounded-full bg-fg px-5 text-sm font-medium text-white hover:bg-black"
-            >
-              {state.status === "confirmed" ? "Back to Textcrew" : "Get a new link"}
-            </Link>
+            <a href={site.signUpUrl} className="mt-7 inline-flex h-10 items-center rounded-full bg-fg px-5 text-sm font-medium text-white hover:bg-black">
+              Get started free
+            </a>
           </>
         ) : (
           <>
@@ -49,7 +46,7 @@ export function ConfirmCard({ token }: { token: string }) {
               {state.status === "error" ? COPY.error.title : "Confirm your email"}
             </h1>
             <p className="mt-2 leading-relaxed text-muted">
-              {state.status === "error" ? COPY.error.body : "One tap and you're on the Textcrew beta waitlist."}
+              {state.status === "error" ? COPY.error.body : "One tap and you're on the Textcrew waitlist."}
             </p>
             <form action={action} className="mt-7">
               <input type="hidden" name="token" value={token} />

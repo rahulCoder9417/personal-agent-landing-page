@@ -22,7 +22,7 @@ export function FaceStack({ size = 36, label = true, className = "" }: { size?: 
         <span className="text-left text-[13px] leading-tight text-muted">
           <span className="font-medium text-fg">Tex</span> + 3 specialists
           <br />
-          on the way
+          in every chat
         </span>
       )}
     </div>

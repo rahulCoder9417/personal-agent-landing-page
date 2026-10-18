@@ -1,4 +1,5 @@
 import { captain, crew, roadmap, type AgentId } from "@/lib/content";
+import { site } from "@/lib/site";
 import { Agent3D } from "./agent-3d";
 import { CrewStory } from "./crew-story";
 import { FaceStack } from "./face-stack";
@@ -30,8 +31,8 @@ export function Crew() {
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-4">
             <FaceStack size={40} />
-            <a href="#waitlist" className="inline-flex h-10 items-center rounded-full bg-fg px-5 text-sm font-medium text-white hover:bg-black">
-              Get early access
+            <a href={site.signUpUrl} className="inline-flex h-10 items-center rounded-full bg-fg px-5 text-sm font-medium text-white hover:bg-black">
+              Get started free
             </a>
           </div>
         </Reveal>

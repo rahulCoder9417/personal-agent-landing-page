@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 import { Reveal } from "./reveal";
 import { Container, Eyebrow } from "./section";
 
-// The body of the /pricing page: its header, the waitlist deal, the three plans and how credits work.
+// The body of the /pricing page: its header, the deal for people who joined the waitlist, the three plans and how credits work.
 export function Pricing() {
   return (
     <section id="plans" aria-labelledby="pricing-title" className="relative overflow-hidden pb-20 pt-16 sm:pb-28 sm:pt-24">
@@ -22,16 +22,11 @@ export function Pricing() {
           <p className="mt-3 text-[15px] text-muted">Pro and Max are at launch prices for now.</p>
         </header>
 
-        <div className="mb-6 mt-12 flex flex-col items-center justify-between gap-4 rounded-2xl border border-accent/25 bg-accent-soft px-6 py-4 text-center sm:mt-14 sm:flex-row sm:text-left">
-          <p className="flex items-center gap-3 text-[15px] font-medium text-fg">
-            <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full bg-accent font-mono text-[12px] font-bold text-white">
-              %
-            </span>
-            {waitlistDeal}
-          </p>
-          <a href="#waitlist" className="inline-flex h-9 shrink-0 items-center rounded-full bg-accent px-4 text-sm font-medium text-white hover:opacity-90">
-            Join the waitlist
-          </a>
+        <div className="mb-6 mt-12 flex items-center justify-center gap-3 rounded-2xl border border-accent/25 bg-accent-soft px-6 py-4 text-left sm:mt-14">
+          <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full bg-accent font-mono text-[12px] font-bold text-white">
+            %
+          </span>
+          <p className="text-[15px] font-medium text-fg">{waitlistDeal}</p>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-line lg:rounded-3xl lg:border lg:border-line lg:bg-surface lg:shadow-soft">
@@ -58,17 +53,17 @@ export function Pricing() {
               <p className="mt-3 min-h-7">
                 {p.waitlist && (
                   <span className="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-[13px] font-medium text-accent">
-                    Waitlist: {p.waitlist} for your first month
+                    Joined the waitlist? {p.waitlist} for your first month
                   </span>
                 )}
               </p>
               <a
-                href="#waitlist"
+                href={site.signUpUrl}
                 className={`mt-5 inline-flex h-11 items-center justify-center rounded-full text-sm font-medium transition-colors ${
                   p.featured ? "bg-fg text-white hover:bg-black" : "bg-surface-2 text-fg hover:bg-line"
                 }`}
               >
-                Join the beta
+                {p.name === "Free" ? "Get started free" : "Get started"}
               </a>
               <ul className="mt-7 flex flex-col gap-3">
                 {p.items.map((item) => (

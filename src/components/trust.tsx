@@ -59,7 +59,7 @@ export function Features() {
       id="features"
       eyebrow="Out of the box"
       title="Everything Tex does on day one."
-      lede="What you get the moment your beta invite lands."
+      lede="What you get the moment you sign up."
     >
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((f, i) => (

@@ -1,9 +1,9 @@
-import type { AgentId } from "@/lib/content";
+import { waitlistDeal, type AgentId } from "@/lib/content";
+import { site } from "@/lib/site";
 import { Agent3D } from "./agent-3d";
 import { FaceStack } from "./face-stack";
-import { BetaBadge } from "./hero";
+import { LiveBadge, SignUpActions } from "./hero";
 import { Container } from "./section";
-import { WaitlistForm } from "./waitlist-form";
 
 // Feet sit 85% down each still render, so a -15% bottom margin stands every agent on the card's top edge.
 const perched: { who: AgentId; size: number; pose: "left" | "front" | "right"; hideSm?: boolean }[] = [
@@ -16,7 +16,7 @@ const perched: { who: AgentId; size: number; pose: "left" | "front" | "right"; h
 export function FinalCta() {
   return (
     // overflow-x-clip: on narrow phones the perched crew is wider than the screen; clip it instead of scrolling sideways.
-    <section id="waitlist" aria-labelledby="waitlist-title" className="overflow-x-clip pb-24 pt-52 sm:pb-32">
+    <section id="get-started" aria-labelledby="get-started-title" className="overflow-x-clip pb-24 pt-52 sm:pb-32">
       <Container>
         <div className="relative mx-auto max-w-4xl">
           <div className="absolute inset-x-0 bottom-full flex items-end justify-center">
@@ -27,15 +27,21 @@ export function FinalCta() {
             ))}
           </div>
           <div className="relative flex flex-col items-center rounded-[28px] border border-line bg-surface px-6 pb-14 pt-16 text-center shadow-window sm:px-12">
-            <BetaBadge />
-            <h2 id="waitlist-title" className="mt-6 text-[clamp(2.2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.045em]">
-              Get your crew early.
+            <LiveBadge />
+            <h2 id="get-started-title" className="mt-6 text-[clamp(2.2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.045em]">
+              Put your crew to work.
             </h2>
             <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted">
-              We&apos;re letting beta testers in small batches before launch. Join the waitlist and your first month of Pro
-              or Max is half price.
+              Sign up in a minute and start with 100 free credits, good for 14 days. Text Tex in the web app, or link
+              Telegram.
             </p>
-            <WaitlistForm showChannels className="mt-8" />
+            <SignUpActions second={{ href: site.signInUrl, label: "Sign in" }} className="mt-8" />
+            <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-accent-soft px-3.5 py-1.5 text-[13.5px] font-medium text-accent">
+              <span aria-hidden className="grid size-5 place-items-center rounded-full bg-accent font-mono text-[10px] font-bold text-white">
+                %
+              </span>
+              {waitlistDeal}
+            </p>
             <FaceStack size={34} className="mt-8" />
           </div>
         </div>

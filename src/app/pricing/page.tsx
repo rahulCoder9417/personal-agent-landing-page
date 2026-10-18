@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 const price = (name: string) => plans.find((p) => p.name === name)?.price;
 
 // Prices come from content.ts so the search snippet can't drift from the plans.
-const description = `Textcrew plans and credits: start free with 100 credits, or go Pro for ${price("Pro")} a month or Max for ${price("Max")} a month. Waitlist members get 50% off the first month.`;
+const description = `Textcrew plans and credits: start free with 100 credits, or go Pro for ${price("Pro")} a month or Max for ${price("Max")} a month. If you joined the waitlist, your first month is 50% off.`;
 
 export const metadata: Metadata = {
   title: "Pricing",

@@ -23,7 +23,11 @@ export const site = {
     "multi-agent AI",
     "Textcrew",
   ],
-  status: "Private beta · Launching soon",
+  status: "Live on the web and Telegram",
+  // The web app, where people sign up and sign in. Every "Get started" on the site goes to sign-up.
+  appUrl: "https://app.textcrew.in",
+  signUpUrl: "https://app.textcrew.in/sign-up",
+  signInUrl: "https://app.textcrew.in/sign-in",
   // Where people write to us: questions, account and payment help. Shown in the footer, on the
   // privacy page and the pricing page. Change it here only.
   contactEmail: "support@textcrew.in",

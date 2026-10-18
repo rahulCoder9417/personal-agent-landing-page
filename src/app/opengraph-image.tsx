@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Textcrew: got a lot of work? Just text your crew. Private beta, launching soon.";
+export const alt = "Textcrew: got a lot of work? Just text your crew. Live on the web and Telegram.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,7 +40,7 @@ export default async function Image() {
               color: "#6A6862",
             }}
           >
-            Private beta · Launching soon
+            Live on the web and Telegram
           </div>
         </div>
         <div
